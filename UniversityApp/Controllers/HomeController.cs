@@ -44,6 +44,7 @@ namespace UniversityApp.Controllers
                     HttpContext.Session.SetString("username", obj.Username.ToString());
 
 
+                    HttpContext.Session.SetString("role", "student");
                     return RedirectToAction("Index");
                 }
             //}
