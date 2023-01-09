@@ -81,7 +81,7 @@ namespace UniversityApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["Userid"] = new SelectList(_context.Users, "Userid", "Userid", student.Userid);
+            ViewData["Userid"] = new SelectList(_context.Users, "Userid", "Userid", student.Userid); // hello
             return View(student);
         }
 
