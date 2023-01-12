@@ -1,0 +1,33 @@
+﻿@model UniversityApp.Models.Course
+
+@{
+    ViewData["Title"] = "Registered Students";
+}
+
+<div>
+    <h4>Registered Students:</h4>
+    <table class="table">
+        @foreach (var item in Model.CourseHasStudents)
+        {
+                <tr>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.Student.RegistrationNumber)
+                    </td>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.Student.Name)
+                    </td>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.Student.Surname)
+                    </td>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.Grade)
+                    </td>
+                </tr>
+        }
+
+    </table>
+</div>
+
+<div>
+    <a asp-action="AddGrades" asp-route-id="@Model?.CourseId">Add Grades</a> |
+</div>
