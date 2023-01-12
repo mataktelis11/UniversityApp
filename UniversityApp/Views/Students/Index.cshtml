@@ -57,3 +57,22 @@
 }
     </tbody>
 </table>
+@{
+    //UniversityApp.Models.CourseHasStudent db = new UniversityApp.Models.CourseHasStudent();
+    //List<CourseHasStudent>
+}
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Code</th>
+        <th>Name</th>
+    </tr>
+    @foreach (var teacher in Model)
+    {
+        <tr>
+            <td>@teacher.CourseHasStudents.</td>
+            <td>@teacher.Surname</td>
+            <td>@teacher.Name</td>
+        </tr>
+    }
+</table>

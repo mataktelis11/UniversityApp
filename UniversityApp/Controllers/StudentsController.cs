@@ -17,6 +17,21 @@ namespace UniversityApp.Controllers
         {
             _context = context;
         }
+        /*public IActionResult Grades()
+        {
+            return View();
+        }*/
+
+       
+        public IActionResult Grades()
+        {
+            var s1 = HttpContext.Session.GetString("userid");
+
+            var query = _context.Students.Where(a => a.Userid.ToString().Equals(s1)).FirstOrDefault();
+            //var query2 = _context.CourseHasStudents.Where(a => a.StudentId.ToString().Equals(query.StudentId.ToString()));
+            
+            return View(_context.CourseHasStudents.Where(a => a.StudentId.ToString().Equals(query.StudentId.ToString())));
+        }
 
         // GET: Students
         public async Task<IActionResult> Index()
@@ -81,7 +96,7 @@ namespace UniversityApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["Userid"] = new SelectList(_context.Users, "Userid", "Userid", student.Userid); // hello
+            ViewData["Userid"] = new SelectList(_context.Users, "Userid", "Userid", student.Userid); 
             return View(student);
         }
 

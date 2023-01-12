@@ -15,6 +15,7 @@ namespace UniversityApp.Controllers
         {
             _logger = logger;
         }
+        
 
         public IActionResult Index()
         {
@@ -32,6 +33,8 @@ namespace UniversityApp.Controllers
         }
 
 
+
+
         [HttpPost]
         public ActionResult Login(User user)
         {
@@ -42,9 +45,10 @@ namespace UniversityApp.Controllers
                 if (obj != null)
                 {
                     HttpContext.Session.SetString("username", obj.Username.ToString());
+                    HttpContext.Session.SetString("userid", obj.Userid.ToString());
 
-
-                    return RedirectToAction("Index");
+                //return RedirectToAction("Index");
+                return RedirectToAction("Grades","Students");
                 }
             //}
             return RedirectToAction("Privacy");
