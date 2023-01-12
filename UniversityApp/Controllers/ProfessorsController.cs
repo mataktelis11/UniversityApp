@@ -77,6 +77,38 @@ namespace UniversityApp.Controllers
             return RedirectToAction("RegisteredStudents", new { id = id });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> UploadGrades(int CourseId, IFormFile usercsv)
+        {
+            string filename = usercsv.FileName;
+            filename = Path.GetFileName(filename);
+
+            string uploadfilepath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Files", filename);
+            var stream = new FileStream(uploadfilepath, FileMode.Create);
+            await usercsv.CopyToAsync(stream);
+
+            stream.Close();
+
+            string _path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Files", filename);
+
+            string[] lines = System.IO.File.ReadAllLines(_path);
+
+            foreach (string line in lines)
+            {
+                string[] args = line.Split(',');
+                Student selectedStudent = _context.Students.Where(s => s.RegistrationNumber == Int32.Parse(args[0])).Single();
+                CourseHasStudent courseHasStudent = _context.CourseHasStudents.Where(x => x.CourseId == CourseId && x.StudentId == selectedStudent.StudentId).Single();
+                courseHasStudent.Grade = Int32.Parse(args[1]);
+
+                _context.Update(courseHasStudent);
+                await _context.SaveChangesAsync();
+
+
+            }
+
+            return RedirectToAction("RegisteredStudents", new { id = CourseId });
+        }
+
 
         // GET: Professors/Create
         public IActionResult Create()

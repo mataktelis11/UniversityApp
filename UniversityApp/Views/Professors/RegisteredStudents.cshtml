@@ -28,6 +28,11 @@
     </table>
 </div>
 
-<div>
-    <a asp-action="AddGrades" asp-route-id="@Model?.CourseId">Add Grades</a> |
-</div>
+@using (Html.BeginForm("UploadGrades", "Professors", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    <span><b>Upload a .csv file</b></span>
+    @Html.HiddenFor(model=>model.CourseId)
+    <input type = "file" name="usercsv" />
+    <br />
+    <input type="submit" value="Upload" />
+}

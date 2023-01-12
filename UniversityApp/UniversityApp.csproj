@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <Folder Include="UploadedGrades\" />
+    <Folder Include="wwwroot\Files\" />
   </ItemGroup>
 
 </Project>
