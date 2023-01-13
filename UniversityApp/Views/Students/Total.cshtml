@@ -1,0 +1,51 @@
+﻿@model UniversityApp.Models.Student
+
+
+@{
+    ViewData["Title"] = "Total";
+}
+
+@if (Context.Session.GetString("username") != null)
+{
+    float sum = 0;
+    int c=0;
+    <div class="container">
+        <div class="row">
+            <h1 class="display-1 text-center"> Grades </h1>
+        </div>
+        <hr />
+        <br />
+        <div class="row">
+            <table class="table table-bordered table-responsive table-hover">
+                <thead>
+                    <tr>
+                        <td> Course Name </td>
+                        <td>Semester</td>
+                        <td> Grade </td>
+                        <td>Total</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                        @foreach (var grade in Model.CourseHasStudents)
+                        {
+                            if (grade.Grade != null)
+                            {
+                            sum += (int)grade.Grade;
+                            c++;
+                            <tr>
+                                    <td> @grade.Course.Title  </td>
+                                    <td> @grade.Course.Semester</td>
+                                    <td> @grade.Grade </td>
+                                </tr>
+                            }
+                        }
+                    @{
+                        sum = sum / c;
+                    }
+                    <tr bgcolor="#fcdda6"><td>Total</td><td style="display:collapse;"></td><td style="display:collapse;"></td><td>@sum</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

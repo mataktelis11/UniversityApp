@@ -33,7 +33,7 @@ public partial class Student
     public int? Userid { get; set; }
 
     [InverseProperty("Student")]
-    public virtual ICollection<CourseHasStudent> CourseHasStudents { get; } = new List<CourseHasStudent>();
+    public virtual ICollection<CourseHasStudent> CourseHasStudents { get; set; } = new List<CourseHasStudent>();
 
     [ForeignKey("Userid")]
     [InverseProperty("Student")]
