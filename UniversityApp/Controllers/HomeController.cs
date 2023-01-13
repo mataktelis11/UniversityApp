@@ -51,7 +51,7 @@ namespace UniversityApp.Controllers
                 return RedirectToAction("Home","Students");
                 }
             //}
-            return RedirectToAction("Privacy");
+            return RedirectToAction("Login");
         }
 
         public ActionResult Logout()
