@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using UniversityApp.Models;
+
 
 namespace UniversityApp.Controllers
 {
@@ -18,12 +20,20 @@ namespace UniversityApp.Controllers
         {
             _context = context;
         }
-        public IActionResult Semesters()
+        public IActionResult Semesters(int? page)
         {
             var student = StudentGetter();
-            //student.CourseHasStudents = (ICollection<CourseHasStudent>)student.CourseHasStudents.OrderBy(c => c.Grade).ThenBy(c => c.CourseId);
 
-            return View(student);
+            ViewData["CurrentPage"] = page;
+            
+            if (page == null)
+            {
+                ViewData["CurrentPage"] = 1;
+            }
+            var courses = student.CourseHasStudents.Where(c => c.Course.Semester.ToString() == ViewData["CurrentPage"].ToString());
+           
+
+            return View(courses);
         }
         public  Student StudentGetter()
         {

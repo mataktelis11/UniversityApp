@@ -1,112 +1,81 @@
-﻿@model UniversityApp.Models.Student
-
+﻿@model IEnumerable<UniversityApp.Models.CourseHasStudent>
 
 @{
     ViewData["Title"] = "Semesters";
 }
+<style>
+    nav {
+        border: 1px;
+        background-color: green;
+        color: white;
+        padding: 6px;
+    }
 
-@if (Context.Session.GetString("username") != null)
-{
-
-    <div class="container">
-        <div class="row">
-            <h1 class="display-1 text-center"> Grades </h1>
-        </div>
-        <hr />
-        <br />
-        <div class="row">
-            <table class="table table-bordered table-responsive table-hover" style="empty-cells:hide" id="myTable">
-                <thead class="table-dark">
-                    <tr>
-                        <td> Course Name </td>
-                        <td onclick="sortTable(1)" > Semester</td>
-                        <td> Grade </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (int i=8;i>0;i--){
-                    @foreach (var grade in Model.CourseHasStudents)
+    a {
+        text-decoration: none;
+        color: white;
+        font-size: 20px;
+    }
+</style>
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-white border-bottom box-shadow mb-3">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+            <ul class="navbar-nav flex-grow-1">
+                @if (Context.Session.GetString("role") == "Students")
+                {
+                    for (int i = 1; i < 9; i++)
                     {
-                            if (i == grade.Course.Semester)
-                            {
-                                
-                                <tr >
-                                    <td> @grade.Course.Title  </td>
-                                    <td> @grade.Course.Semester</td>
-                                    <td> @grade.Grade </td>
-                                </tr>
-                            }
-                        }
-                        <tr class="blank_row"><td colspan="3"></td></tr>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Students" asp-action="Semesters" asp-route-page=@i>@i</a>
+                        </li>
                     }
-
-                </tbody>
-            </table>
+                }
+            </ul>
         </div>
     </div>
-}
+</nav>
 
-<script type="text/javascript">
-    function sortTable(n) {
-        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-        table = document.getElementById("myTable");
-        switching = true;
-        //Set the sorting direction to ascending:
-        dir = "asc";
-        /*Make a loop that will continue until
-        no switching has been done:*/
-        while (switching) {
-            //start by saying: no switching is done:
-            switching = false;
-            var rows1 = table.rows;
-            /*Loop through all table rows (except the
-            first, which contains table headers):*/
-            for (i=1;i<rows1.length;i++){
-                
-                if (rows1[i].getElementsByTagName("TD")[n] === undefined) {
-                    table.deleteRow(i);
-                }        
-            }
-            rows=table.rows;
-            for (i = 1; i < (rows.length - 1); i++) {
-                //start by saying there should be no switching:
-                shouldSwitch = false;
-                /*Get the two elements you want to compare,
-                one from current row and one from the next:*/
-                x = rows[i].getElementsByTagName("TD")[n];
-                y = rows[i+1].getElementsByTagName("TD")[n];
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Course
+            </th>
+            <th>
+                Grade
+            </th>
+            <th>
+                Semester
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            if (ViewData["CurrentPage"].ToString() == item.Course.Semester.ToString())
+            {
 
-                /*check if the two rows should switch place,
-                based on the direction, asc or desc:*/
-                if (dir == "asc") {
-                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                        //if so, mark as a switch and break the loop:
-                        shouldSwitch = true;
-                        break;
-                    }
-                } else if (dir == "desc") {
-                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                        //if so, mark as a switch and break the loop:
-                        shouldSwitch = true;
-                        break;
-                    }
-                }
-            }
-            if (shouldSwitch) {
-                /*If a switch has been marked, make the switch
-                and mark that a switch has been done:*/
-                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                switching = true;
-                //Each time a switch is done, increase this count by 1:
-                switchcount++;
-            } else {
-                /*If no switching has been done AND the direction is "asc",
-                set the direction to "desc" and run the while loop again.*/
-                if (switchcount == 0 && dir == "asc") {
-                    dir = "desc";
-                    switching = true;
-                }
+
+                <tr>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.Course.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Grade)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Course.Semester)
+                    
+                </td>
+            </tr>
             }
         }
-    }
-</script>
+    </tbody>
+</table>
+
+
