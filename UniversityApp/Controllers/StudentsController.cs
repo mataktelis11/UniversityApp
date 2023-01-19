@@ -37,13 +37,13 @@ namespace UniversityApp.Controllers
         }
         public  Student StudentGetter()
         {
-            var s1 = HttpContext.Session.GetString("userid");
+            var id = HttpContext.Session.GetString("userid");
 
-            var current_student = _context.Students.Where(a => a.Userid.ToString().Equals(s1)).FirstOrDefault();
+            var current_student = _context.Students.Where(a => a.Userid.ToString().Equals(id)).FirstOrDefault();
 
             var student = _context.Students.Include(x => x.CourseHasStudents).ThenInclude(x => x.Course)
                 .FirstOrDefault(m => m.StudentId == current_student.StudentId);
-            var student1 = student;
+            
             return student;
         }
        
