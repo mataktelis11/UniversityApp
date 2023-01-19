@@ -1,0 +1,39 @@
+﻿@model UniversityApp.Models.Student
+
+
+@{
+    ViewData["Title"] = "Grades";
+}
+
+@if (Context.Session.GetString("username") != null)
+{
+
+    <div class="container">
+        <div class="row">
+            <h1 class="display-1 text-center"> Grades </h1>
+        </div>
+        <hr />
+        <br />
+        <div class="row">
+            <table class="table table-bordered table-responsive table-hover">
+                <thead class="table-dark ">
+                    <tr>
+                        <td> Course Name </td>
+                        <td> Grade </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var grade in Model.CourseHasStudents)
+                    {
+                        <tr>
+                            <td> @grade.Course.Title </td>
+                            <td> @grade.Grade </td>
+                        </tr>
+                    }
+                    
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
