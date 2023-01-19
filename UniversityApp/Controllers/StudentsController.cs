@@ -58,6 +58,8 @@ namespace UniversityApp.Controllers
             var student = StudentGetter();
             return View(student);
         }
+
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public IActionResult Home()
         {
             var student = StudentGetter();

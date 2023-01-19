@@ -58,6 +58,8 @@ namespace UniversityApp.Controllers
         {
             HttpContext.Session.Clear();
             HttpContext.Session.Remove("username");
+            HttpContext.Session.Remove("userid");
+            HttpContext.Session.Remove("role");
             return RedirectToAction("Login");
         }
 
