@@ -81,8 +81,8 @@ CREATE TABLE dbo.Course_has_students
 insert into dbo.Users (userid, Username, Password, Role) values(121, 'telis', '123', 'Students');
 insert into dbo.Users (userid, Username, Password, Role) values(453, 'lakis', '123', 'Students');
 insert into dbo.Users (userid, Username, Password, Role) values(698, 'bazel', '123', 'Students');
-insert into dbo.Users (userid, Username, Password, Role) values(677, 'alepis', '123', 'Proffessors');
-insert into dbo.Users (userid, Username, Password, Role) values(899 ,'manos', '123', 'Proffessors');
+insert into dbo.Users (userid, Username, Password, Role) values(677, 'alepis', '123', 'Professors');
+insert into dbo.Users (userid, Username, Password, Role) values(899 ,'manos', '123', 'Professors');
 insert into dbo.Users (userid, Username, Password, Role) values(999, 'jennie', '123', 'Secretaries');
 
 ---- adding 'Students'
@@ -121,7 +121,7 @@ insert into dbo.Course_has_students (GradeId, CourseId, StudentId, Grade) values
 insert into dbo.Course_has_students (GradeId, CourseId, StudentId, Grade) values (9, 71, 3, 10);
 insert into dbo.Course_has_students (GradeId, CourseId, StudentId, Grade) values (10, 72, 3, 10);
 insert into dbo.Course_has_students (GradeId, CourseId, StudentId, Grade) values (11, 73, 3, 10);
-insert into dbo.Course_has_students (GradeId, CourseId, StudentId, Grade) values (12, 74, 3, 10);
+insert into dbo.Course_has_students (GradeId, CourseId, StudentId) values (12, 74, 3);
 
 
 -- testing

@@ -1,0 +1,38 @@
+﻿@model UniversityApp.Models.Course
+
+@{
+    ViewData["Title"] = "Registered Students";
+}
+
+<div>
+    <h4>Registered Students:</h4>
+    <table class="table">
+        @foreach (var item in Model.CourseHasStudents)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Student.RegistrationNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Student.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Student.Surname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Grade)
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+@using (Html.BeginForm("UploadGrades", "Professors", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    <span><b>Upload a .csv file</b></span>
+    @Html.HiddenFor(model=>model.CourseId)
+    <input type="file" name="usercsv" onchange="form.submit()" />
+    <br />
+    <input type="submit" value="Upload" />
+}
