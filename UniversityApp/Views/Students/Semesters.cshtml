@@ -19,6 +19,29 @@
 </style>*@
 
 
+    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+      Settings
+    </button>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Display setting</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div>
+          Choose how you want to display your grades
+        </div>
+        <div class="btn-group" role="group" aria-label="Basic 243432">
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio11" autocomplete="off" onclick="location.href='@Url.Action("Grades", "Students")'">
+                <label class="btn btn-outline-primary" for="btnradio11">View Grades by title</label>
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio21" autocomplete="off" checked="" onclick="location.href='@Url.Action("Semesters", "Students")'">
+                <label class="btn btn-outline-primary" for="btnradio21">View Grades by Semester</label>
+        </div>
+      </div>
+    </div>
+
+
 <div class="mx-auto">
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
 
