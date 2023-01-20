@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Semesters";
 }
-<style>
+@*<style>
     nav {
         border: 1px;
         background-color: green;
@@ -16,8 +16,35 @@
         color: white;
         font-size: 20px;
     }
-</style>
-<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-white border-bottom box-shadow mb-3">
+</style>*@
+
+
+<div class="mx-auto">
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+
+        @{
+            for (int i = 1; i < 9; i++)
+            {
+                var btnid = "btnradio" + i.ToString();
+
+                if (Int32.Parse(ViewData["CurrentPage"].ToString()) == i)
+                {
+                    <input type="radio" class="btn-check" name="btnradio" id=@btnid autocomplete="off" checked="" onclick="location.href='@Url.Action("Semesters", "Students", new { page = @i})'">
+                }
+                else
+                {
+                    <input type="radio" class="btn-check" name="btnradio" id=@btnid autocomplete="off" onclick="location.href='@Url.Action("Semesters", "Students", new { page = @i})'" asp-route-page=@i>
+                }
+                <label class="btn btn-outline-primary" for=@btnid >Semester @i</label>
+            }
+        }
+    </div>
+</div>
+
+
+
+
+@*<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-white border-bottom box-shadow mb-3">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -38,7 +65,7 @@
         </div>
     </div>
 </nav>
-
+*@
 <table class="table">
     <thead>
         <tr>
