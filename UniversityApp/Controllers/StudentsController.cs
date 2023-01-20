@@ -59,8 +59,14 @@ namespace UniversityApp.Controllers
             return View(student);
         }
 
+
+        public IActionResult Index()
+        {
+            return RedirectToAction("Account");
+        }
+
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-        public IActionResult Home()
+        public IActionResult Account()
         {
             try
             {

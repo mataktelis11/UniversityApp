@@ -1,0 +1,4 @@
+\babel@toc {english}{}
+\contentsline {section}{\numberline {1}Ζητούμενα}{2}{section.1}%
+\contentsline {section}{\numberline {2}Student Controller}{2}{section.2}%
+\contentsline {section}{\numberline {3}Πηγές}{2}{section.3}%

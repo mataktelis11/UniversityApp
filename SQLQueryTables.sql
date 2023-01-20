@@ -98,16 +98,59 @@ insert into dbo.Professors (ProfessorId, AFM, Name, Surname, Department, userid)
 insert into dbo.Secretaries(SecretaryId, Name, Surname, Department, userid) values (1, 'Jennie', 'Sklaveniti', 'IT', 999);
 
 -- adding 'Courses'
-insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (77, 'Image Prosessing', 7, 1);
-insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (50, 'Pattern Recognition', 6, 1);
-insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (67, 'Introduction to IR', 4, 2);
 
-insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (69, 'Introduction to Computer Science', 1, 2);
-insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (70, 'Object-oriented programming', 2, 2);
-insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (71, 'Compilers', 3, 2);
-insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (72, 'Algorithms', 4, 2);
-insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (73, 'Cryptography', 5, 2);
-insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (74, 'Bioinformatics', 6, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (1, 'Calculus 1', 7, 1);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (2, 'Introduction to Programming', 7, 1);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (3, 'Introduction to Computer Science', 7, 1);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (4, 'Logic Design of Digital Systems', 7, 1);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (5, 'Mathematics fro Computer Science', 7, 1);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (6, 'Internet Techologies', 7, 1);
+
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (7, 'Object-oriented programming', 2, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (8, 'Calculus 2', 7, 1);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (9, 'Computer Architecture', 7, 1);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (10, 'Discrete Mathematics', 7, 1);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (11, 'Data Structures', 7, 1);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (12, 'Applied Algebra', 7, 1);
+
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (13, 'Object-oriented application development', 2, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (14, 'Compilers', 3, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (15, 'Operating Systems', 2, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (16, 'Mathematical programming', 2, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (17, 'Statistics and Probability', 2, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (18, 'Applications of Graph Theory', 2, 2);
+
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (19, 'Algorithms', 4, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (20, 'Databases', 4, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (21, 'Computer Networks', 4, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (22, 'Applied Combinatorics', 4, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (23, 'Information and Coding Theory', 4, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (24, 'Principles and Applications of Signals and Systems', 4, 2);
+
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (25, 'Pattern Recognition', 6, 1);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (26, 'Human-Computer Interaction', 5, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (27, 'Information Systems', 5, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (28, 'Database Management Systems', 5, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (29, 'Programming in Logic', 5, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (30, 'Game theory and applications', 5, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (31, 'Learning Management Software', 5, 2);
+
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (32, 'Artificial Intelligence and Expert Systems', 6, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (33, 'Software Engineering', 6, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (34, 'Data Analytics', 6, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (35, 'Bioinformatics', 6, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (36, 'Multimedia Systems', 6, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (37, 'Parallel Computing', 6, 2);
+
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (38, 'Image Analysis', 7, 1);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (39, 'Introduction to Infromation Retrieval', 4, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (40, 'Virtual Reality', 5, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (41, 'Computational Geometry', 5, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (42, 'Computer Game Development Technologies', 5, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (43, 'Geographical Information Systems', 5, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (44, 'Knowlegde Management', 5, 2);
+
+
 
 -- adding 'Course_has_students'
 insert into dbo.Course_has_students (GradeId, CourseId, StudentId, Grade) values (1, 77, 1, 5);

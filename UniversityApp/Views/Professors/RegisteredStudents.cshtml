@@ -7,6 +7,15 @@
 <div>
     <h4>Registered Students:</h4>
     <table class="table">
+    <thead>
+        <tr>
+            <th>Registration Number</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Grade</th>
+        </tr>
+    </thead>
+        <tbody>
         @foreach (var item in Model.CourseHasStudents)
         {
             <tr>
@@ -24,8 +33,9 @@
                 </td>
             </tr>
         }
-
+        </tbody>
     </table>
+        
 </div>
 
 @using (Html.BeginForm("UploadGrades", "Professors", FormMethod.Post, new { @enctype = "multipart/form-data" }))
