@@ -62,9 +62,16 @@ namespace UniversityApp.Controllers
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public IActionResult Home()
         {
-            var student = StudentGetter();
-            student = _context.Students.Include(x => x.User).Where(a => a.Userid== student.Userid).FirstOrDefault();
-            return View(student);
+            try
+            {
+                var student = StudentGetter();
+                student = _context.Students.Include(x => x.User).Where(a => a.Userid == student.Userid).FirstOrDefault();
+                return View(student);
+            }
+            catch(Exception ex) {
+                return View("AuthorizationError");
+            }
+
         }
 
         private bool StudentExists(int id)
