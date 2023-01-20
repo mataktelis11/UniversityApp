@@ -84,7 +84,35 @@ namespace UniversityApp.Controllers
                 return View("NoRightsError");
 
             var student = StudentGetter();
-            return View(student);
+
+            // number of registered lessons
+            int reglessons = _context.CourseHasStudents.Where(s => s.StudentId == student.StudentId).Count();
+
+            // number of passed lessons
+            var passedlessons = _context.CourseHasStudents.Where(s => s.StudentId == student.StudentId && s.Grade >= 5);
+
+            int etcs = passedlessons.Count() * 5;
+
+            int sum = 0;
+
+            foreach(var item in passedlessons)
+            {
+                sum += (int)item.Grade;
+            }
+
+            
+
+
+
+
+            ViewData["reglessons"] = reglessons;
+            ViewData["passedlessons"] = passedlessons.Count();
+            ViewData["etcs"] = etcs;
+
+            ViewData["average"] = sum / passedlessons.Count();
+
+            //var student = StudentGetter();
+            return View();
         }
 
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
