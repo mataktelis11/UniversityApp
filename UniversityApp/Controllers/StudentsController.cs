@@ -20,8 +20,31 @@ namespace UniversityApp.Controllers
         {
             _context = context;
         }
+
+        // utility function
+        public Student StudentGetter()
+        {
+            var id = HttpContext.Session.GetString("userid");
+
+            var current_student = _context.Students.Where(a => a.Userid.ToString().Equals(id)).FirstOrDefault();
+
+            var student = _context.Students.Include(x => x.CourseHasStudents).ThenInclude(x => x.Course)
+                .FirstOrDefault(m => m.StudentId == current_student.StudentId);
+
+            return student;
+        }
+
+
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public IActionResult Semesters(int? page)
         {
+            if(HttpContext.Session.GetString("userid")==null)
+                return View("AuthorizationError");
+
+            if (!(HttpContext.Session.GetString("role").Equals("Students")))
+                return View("NoRightsError");
+
+
             var student = StudentGetter();
 
             ViewData["CurrentPage"] = page;
@@ -35,48 +58,61 @@ namespace UniversityApp.Controllers
 
             return View(courses);
         }
-        public  Student StudentGetter()
-        {
-            var id = HttpContext.Session.GetString("userid");
 
-            var current_student = _context.Students.Where(a => a.Userid.ToString().Equals(id)).FirstOrDefault();
 
-            var student = _context.Students.Include(x => x.CourseHasStudents).ThenInclude(x => x.Course)
-                .FirstOrDefault(m => m.StudentId == current_student.StudentId);
-            
-            return student;
-        }
-       
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public IActionResult Grades()
         {
+            if (HttpContext.Session.GetString("userid") == null)
+                return View("AuthorizationError");
+
+            if (!(HttpContext.Session.GetString("role").Equals("Students")))
+                return View("NoRightsError");
+
             var student = StudentGetter();
 
             return View(student);
         }
+
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public IActionResult Total()
         {
+            if (HttpContext.Session.GetString("userid") == null)
+                return View("AuthorizationError");
+
+            if (!(HttpContext.Session.GetString("role").Equals("Students")))
+                return View("NoRightsError");
+
             var student = StudentGetter();
             return View(student);
         }
 
-
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public IActionResult Index()
         {
+            if (HttpContext.Session.GetString("userid") == null)
+                return View("AuthorizationError");
+
+            if (!(HttpContext.Session.GetString("role").Equals("Students")))
+                return View("NoRightsError");
+
             return RedirectToAction("Account");
         }
 
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public IActionResult Account()
         {
-            try
-            {
-                var student = StudentGetter();
-                student = _context.Students.Include(x => x.User).Where(a => a.Userid == student.Userid).FirstOrDefault();
-                return View(student);
-            }
-            catch(Exception ex) {
+
+            if (HttpContext.Session.GetString("userid") == null)
                 return View("AuthorizationError");
-            }
+
+            if(!(HttpContext.Session.GetString("role").Equals("Students")))
+                return View("NoRightsError");
+
+            var student = StudentGetter();
+            student = _context.Students.Include(x => x.User).Where(a => a.Userid == student.Userid).FirstOrDefault();
+            return View(student);
+
 
         }
 

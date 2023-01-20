@@ -18,6 +18,18 @@ namespace UniversityApp.Controllers
             _context = context;
         }
 
+
+        // GET: Secretary's account welcome
+        public async Task<IActionResult> Account()
+        {
+            var userid = HttpContext.Session.GetString("userid");
+
+            var secretary = _context.Secretaries.Where(s => s.Userid.ToString().Equals(userid)).FirstOrDefault();
+
+            return View(secretary);
+        }
+
+
         // GET: Secretaries
         public async Task<IActionResult> Index()
         {
