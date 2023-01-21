@@ -18,24 +18,42 @@ namespace UniversityApp.Controllers
             _context = context;
         }
 
+        // GET: Secretaries
+        // Redirect to wellcome page
+        public async Task<IActionResult> Index()
+        {
+            return await Task.Run<ActionResult>(() => RedirectToAction("Account"));
+        }
 
-        // GET: Secretary's account welcome
+
+        // GET: Secretaries/Account
+        // Secretay's wellcome page
         public async Task<IActionResult> Account()
         {
-            var userid = HttpContext.Session.GetString("userid");
+            if (HttpContext.Session.GetString("userid") == null)
+                return View("AuthorizationError");
 
-            var secretary = _context.Secretaries.Where(s => s.Userid.ToString().Equals(userid)).FirstOrDefault();
+            if (!(HttpContext.Session.GetString("role").Equals("Secretaries")))
+                return View("NoRightsError");
+
+            var userid = HttpContext.Session.GetString("userid");
+            var secretary = await _context.Secretaries.Where(s => s.Userid.ToString().Equals(userid)).FirstOrDefaultAsync();
 
             return View(secretary);
         }
 
-
-        // GET: Secretaries
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> UniversityCourses()
         {
-            var universityDBContext = _context.Secretaries.Include(s => s.User);
-            return View(await universityDBContext.ToListAsync());
+            if (HttpContext.Session.GetString("userid") == null)
+                return View("AuthorizationError");
+
+            if (!(HttpContext.Session.GetString("role").Equals("Secretaries")))
+                return View("NoRightsError");
+
+            var universityDBcontext = _context.Courses.Include(c => c.Professor).OrderBy( c => c.Semester);
+            return View(await universityDBcontext.ToListAsync());
         }
+
 
         // GET: Secretaries/Details/5
         public async Task<IActionResult> Details(int? id)

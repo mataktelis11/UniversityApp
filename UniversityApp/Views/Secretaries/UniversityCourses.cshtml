@@ -1,0 +1,62 @@
+﻿@model IEnumerable<UniversityApp.Models.Course>
+
+@{
+    ViewData["Title"] = "University Courses";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Semester)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Professor)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @{
+            foreach (var item in Model)
+            {
+
+                var trclass = (item.Professor != null) ? "table-primary" : "table-warning";
+
+                <tr class="@trclass">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Semester)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Professor.ProfessorId)
+                </td>
+
+                <td>
+
+                @if(@item.Professor != null){
+                    <a asp-action="Details" asp-route-id="@item.CourseId">View Details</a>
+                }
+                else{
+                    <a asp-action="Details" asp-route-id="@item.CourseId">Assign a Professor</a>
+                }
+
+                </td>
+            </tr>
+            }
+        }
+
+
+    </tbody>
+</table>

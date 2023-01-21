@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using UniversityApp.Models;
 
@@ -18,23 +19,42 @@ namespace UniversityApp.Controllers
             _context = context;
         }
 
-        // GET: Professor Account welcome
+        // GET: Professors
+        // redirect to wellcome page
+        public async Task<IActionResult> Index()
+        {
+            return await Task.Run<ActionResult>(() => RedirectToAction("Account"));
+        }
+
+        // GET: Professors/Account
+        // Welcome page of Professor-role user who logged in.
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public async Task<IActionResult> Account()
         {
+            if (HttpContext.Session.GetString("userid") == null)
+                return View("AuthorizationError");
+
+            if (!(HttpContext.Session.GetString("role").Equals("Professors")))
+                return View("NoRightsError");
 
             var userid = HttpContext.Session.GetString("userid");
-
-            var professor = _context.Professors.Where(p => p.Userid.ToString().Equals(userid)).FirstOrDefault();
+            var professor = await _context.Professors.Where(p => p.Userid.ToString().Equals(userid)).FirstOrDefaultAsync();
 
             return View(professor);
         }
 
-        // GET: Professor's Lessons
+        // GET: Professors/Lessons
+        // Retrieve the lessons of the logged in professor.
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public async Task<IActionResult> Lessons()
         {
+            if (HttpContext.Session.GetString("userid") == null)
+                return View("AuthorizationError");
+
+            if (!(HttpContext.Session.GetString("role").Equals("Professors")))
+                return View("NoRightsError");
 
             var userid = HttpContext.Session.GetString("userid");
-
             var professor = _context.Professors.Where(p => p.Userid.ToString().Equals(userid)).FirstOrDefault();
 
             var lessons = await _context.Courses.Where(c => c.ProfessorId == professor.ProfessorId).ToListAsync();
@@ -42,10 +62,23 @@ namespace UniversityApp.Controllers
             return View(lessons);
         }
 
-        // GET: Registered Students of a Course
+        // GET: Professors/RegisteredStudents/6
+        // Retrieve Registered Students of a Course.
         public async Task<IActionResult> RegisteredStudents(int? id)
         {
-            //TODO: check if the given course belongs to current professor
+            if (HttpContext.Session.GetString("userid") == null)
+                return View("AuthorizationError");
+
+            if (!(HttpContext.Session.GetString("role").Equals("Professors")))
+                return View("NoRightsError");
+
+            var userid = HttpContext.Session.GetString("userid");
+            var professor = _context.Professors.Where(p => p.Userid.ToString().Equals(userid)).FirstOrDefault();
+
+            var course = await _context.Courses.FirstOrDefaultAsync(c => c.CourseId == id && c.ProfessorId == professor.ProfessorId);
+
+            if (course == null)
+                return View("NoRightsError");
 
             var registered_students = await _context.Courses
                 .Include(cs => cs.CourseHasStudents)
@@ -55,14 +88,9 @@ namespace UniversityApp.Controllers
             return View(registered_students);
         }
 
-        // GET: Professors
-        public async Task<IActionResult> Index()
-        {
-            var universityDBContext = _context.Professors.Include(p => p.User);
-            return View(await universityDBContext.ToListAsync());
-        }
+        // POST: Professors/UploadGrades/CourseId/6
+        // Professor uploads grades with .csv file for specified course
 
-        // POST: Professor uploads grades
         [HttpPost]
         public async Task<IActionResult> UploadGrades(int CourseId, IFormFile usercsv)
         {
@@ -88,10 +116,7 @@ namespace UniversityApp.Controllers
 
                 _context.Update(courseHasStudent);
                 await _context.SaveChangesAsync();
-
-
             }
-
             return RedirectToAction("RegisteredStudents", new { id = CourseId });
         }
 
