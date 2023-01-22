@@ -7,7 +7,7 @@
 <h1>Students</h1>
 
 <p>
-    <a asp-action="Create">Add a new Student</a>
+    <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("CreateCourse", "Secretaries")'"><i class="bi bi-plus-circle-fill"></i> Add a new Student</button>
 </p>
 <table class="table">
     <thead>
@@ -38,7 +38,7 @@
                     @Html.DisplayFor(modelItem => item.Department)
                 </td>
                 <td>
-                    <button type="button" class="btn btn-info">More Details</button>
+                    <button type="button" class="btn btn-info" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new { @id = item.StudentId })'">More Details</button>
                 </td>
             </tr>
         }

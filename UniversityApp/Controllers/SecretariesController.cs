@@ -156,6 +156,27 @@ namespace UniversityApp.Controllers
             return View(await UniversityDBContext.ToListAsync());
         }
 
+        // GET: Secretaries/StudentDetails/6
+        public async Task<IActionResult> StudentDetails(int? id)
+        {
+            if (id == null || _context.Students == null)
+            {
+                return NotFound();
+            }
+
+            var student = await _context.Students.Include(x => x.CourseHasStudents).ThenInclude(x => x.Course)
+                .FirstOrDefaultAsync(m => m.StudentId == id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            return View(student);
+        }
+
+
+
+
         // GET: Secretaries/UniversityProfessors
         // obtain all the Professors
         public async Task<IActionResult> UniversityProfessors()
@@ -163,6 +184,38 @@ namespace UniversityApp.Controllers
             var UniversityDBContext = _context.Professors;
             return View(await UniversityDBContext.ToListAsync());
         }
+
+        // GET: Secretaries/ProfessorDetails/6
+        public async Task<IActionResult> ProfessorDetails(int? id)
+        {
+            if (id == null || _context.Professors == null)
+            {
+                return NotFound();
+            }
+
+            var professor = await _context.Professors
+                .Include(p => p.Courses)              
+                .FirstOrDefaultAsync(m => m.ProfessorId == id);
+            if (professor == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["availableCourses"] = _context.Courses.Where(c => c.Professor == null || c.ProfessorId == null).ToList();
+
+            return View(professor);
+        }
+
+
+
+
+        //// GET: Professors/Create
+        //public IActionResult Create()
+        //{
+        //    ViewData["Userid"] = new SelectList(_context.Users, "Userid", "Userid");
+        //    return View();
+        //}
+
 
         // bellow are the build in methods
 
