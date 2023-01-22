@@ -54,6 +54,14 @@ insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (42, 'Co
 insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (43, 'Geographical Information Systems', 7, 2);
 insert into dbo.Courses (CourseId, Title, Semester) values (44, 'Knowlegde Management', 7);
 
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (45, 'Network Security', 8, 1);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (46, 'Intelligent Agents', 8, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (47, 'Blockchain Technologies and Applications', 8, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (48, 'Educational Software', 8, 2);
+insert into dbo.Courses (CourseId, Title, Semester, ProfessorId) values (49, 'Speech and Audio Processing', 8, 2);
+insert into dbo.Courses (CourseId, Title, Semester) values (50, 'IT Projcet Management', 8);
+
+
 --insert into dbo.Students (studentId, Registration_number, Name, Surname, Department, userid) values (1,'19001','Jared', 'Ibbeson', 'IT', '31');
 
 --insert into dbo.Course_has_students (GradeId, CourseId, StudentId, Grade) values (1, 1, 1, 5);

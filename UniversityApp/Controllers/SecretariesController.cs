@@ -56,6 +56,33 @@ namespace UniversityApp.Controllers
             return View(await universityDBcontext.ToListAsync());
         }
 
+        // GET: Secretaries/CreateCourse
+        // Form to create a new Course
+        public IActionResult CreateCourse()
+        {
+            ViewData["ProfessorId"] = new SelectList(_context.Professors, "ProfessorId", "ProfessorId");
+            return View();
+        }
+
+
+        //has bug
+        // POST: Courses/CreateCourse
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("CourseId,Title,Semester,ProfessorId")] Course course)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(course);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(UniversityCourses));
+            }
+
+            return View(course);
+        }
+
         // GET: Secretaries/UniversityCourses/6
         // Form to assign a professor for a given Course
         public async Task<IActionResult> AssignProfessor(int id)
@@ -110,6 +137,27 @@ namespace UniversityApp.Controllers
             ViewData["ProfessorId"] = new SelectList(_context.Professors, "ProfessorId", "ProfessorId", course.ProfessorId);
             return View(course);
         }
+
+
+        //
+
+        // GET: Secretaries/UniversityStudents
+        // obtain all the students
+        public async Task<IActionResult> UniversityStudents()
+        {
+            var UniversityDBContext = _context.Students;
+            return View(await UniversityDBContext.ToListAsync());
+        }
+
+        // GET: Secretaries/UniversityProfessors
+        // obtain all the Professors
+        public async Task<IActionResult> UniversityProfessors()
+        {
+            var UniversityDBContext = _context.Professors;
+            return View(await UniversityDBContext.ToListAsync());
+        }
+
+        // bellow are the build in methods
 
 
         // GET: Secretaries/Details/5
