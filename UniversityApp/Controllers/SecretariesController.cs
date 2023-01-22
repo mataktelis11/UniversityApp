@@ -60,19 +60,23 @@ namespace UniversityApp.Controllers
         // Form to create a new Course
         public IActionResult CreateCourse()
         {
-            ViewData["ProfessorId"] = new SelectList(_context.Professors, "ProfessorId", "ProfessorId");
+            List<SelectListItem> professors = new SelectList(_context.Professors, "ProfessorId", "ProfessorId").ToList();
+            professors.Insert(0, (new SelectListItem { Text = "[None]" }));
+            ViewData["ProfessorId"] = professors;
             return View();
         }
 
-
-        //has bug
         // POST: Courses/CreateCourse
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CourseId,Title,Semester,ProfessorId")] Course course)
-        {
+        public async Task<IActionResult> CreateCourse([Bind("CourseId,Title,Semester,ProfessorId")] Course course)
+        {          
+            if(course.ProfessorId== null)
+            {
+                ModelState.Remove("ProfessorId");
+            }
             if (ModelState.IsValid)
             {
                 _context.Add(course);
@@ -80,6 +84,9 @@ namespace UniversityApp.Controllers
                 return RedirectToAction(nameof(UniversityCourses));
             }
 
+            List<SelectListItem> professors = new SelectList(_context.Professors, "ProfessorId", "ProfessorId").ToList();
+            professors.Insert(0, (new SelectListItem { Text = "[None]" }));
+            ViewData["ProfessorId"] = professors;
             return View(course);
         }
 
