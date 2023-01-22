@@ -42,6 +42,8 @@ namespace UniversityApp.Controllers
             return View(secretary);
         }
 
+        // GET: Secretaries/UniversityCourses
+        // Retrieve all the courses
         public async Task<IActionResult> UniversityCourses()
         {
             if (HttpContext.Session.GetString("userid") == null)
@@ -52,6 +54,61 @@ namespace UniversityApp.Controllers
 
             var universityDBcontext = _context.Courses.Include(c => c.Professor).OrderBy( c => c.Semester);
             return View(await universityDBcontext.ToListAsync());
+        }
+
+        // GET: Secretaries/UniversityCourses/6
+        // Form to assign a professor for a given Course
+        public async Task<IActionResult> AssignProfessor(int id)
+        {
+            if (HttpContext.Session.GetString("userid") == null)
+                return View("AuthorizationError");
+
+            if (!(HttpContext.Session.GetString("role").Equals("Secretaries")))
+                return View("NoRightsError");
+
+            var course = await _context.Courses.FindAsync(id);
+
+            ViewData["Professorid"] = new SelectList(_context.Professors, "ProfessorId", "ProfessorId");
+
+            return View(course);
+        }
+
+        // POST: Secretaries/AssignProfessor/6
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignProfessor(int id, [Bind("CourseId,Title,Semester,ProfessorId")] Course course)
+        {
+            if (id != course.CourseId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(course);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    var length = await _context.Courses.Where(c => c.CourseId == course.CourseId).ToListAsync();
+
+                    if (length.Count <1)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(UniversityCourses));
+            }
+            ViewData["ProfessorId"] = new SelectList(_context.Professors, "ProfessorId", "ProfessorId", course.ProfessorId);
+            return View(course);
         }
 
 
