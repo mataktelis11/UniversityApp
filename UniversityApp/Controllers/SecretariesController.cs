@@ -291,12 +291,33 @@ namespace UniversityApp.Controllers
                 return NotFound();
             }
 
-            ViewData["availableCourses"] = _context.Courses.Where(c => c.Professor == null || c.ProfessorId == null).ToList();
+            ViewData["availableCourses"] = new SelectList(_context.Courses.Where(c => c.Professor == null || c.ProfessorId == null), "CourseId", "CourseId");
 
             return View(professor);
         }
 
 
+
+        [HttpPost]
+        public async Task<IActionResult> AssignProfessorCourse(int courseid, int professorid)
+        {
+
+            var professor = await _context.Professors
+                .Include(p => p.Courses)
+                .FirstOrDefaultAsync(m => m.ProfessorId == professorid);
+            if (professor == null)
+            {
+                return NotFound();
+            }
+
+
+            Course course = _context.Courses.Where(c => c.CourseId== courseid).FirstOrDefault();
+            course.ProfessorId = professorid;
+            _context.Update(course);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ProfessorDetails", new { id = professorid });
+        }
 
 
         //// GET: Professors/Create

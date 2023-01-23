@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Professor Details";
-    var availableCourses = ViewData["availableCourses"] as List<UniversityApp.Models.Course>;
+    //var availableCourses = ViewData["availableCourses"] as List<UniversityApp.Models.Course>;
 }
 
 <h1>Details</h1>
@@ -55,7 +55,6 @@
         <tr>
             <th>Title</th>
             <th>Semester</th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -68,17 +67,14 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Semester)
                 </td>
-                <td>
-                    <a asp-action="RegisteredStudents" asp-route-id="@item.CourseId">Edit</a>
-                </td>
             </tr>
         }
     </tbody>
 </table>
 
-<h1>Avaible Courses</h1>
+@*<h1>Avaible Courses</h1>*@
 
-<table class="table">
+@*<table class="table">
     <thead>
         <tr>
             <th>Title</th>
@@ -103,3 +99,22 @@
         }
     </tbody>
 </table>
+*@
+
+
+<h2>Assign a new Course to this Professor</h2>
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AssignProfessorCourse">
+            <div class="form-group">
+                <select class="form-control" asp-items="ViewBag.availableCourses" name="courseid"></select>
+            </div>
+            <input type="number" name="professorid" value="@Model.ProfessorId">
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
