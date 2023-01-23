@@ -1,0 +1,60 @@
+﻿@model UniversityApp.Models.Student
+
+@{
+    ViewData["Title"] = "Details";
+    var availableCourses = ViewData["availableCourses"] as List<UniversityApp.Models.Course>;
+    var check = ViewData["check"].ToString();
+}
+
+<p>@check</p>
+
+<h1>Avaible Courses</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Semester</th>
+            <th>Select</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in availableCourses)
+        {
+                    <tr>
+                        <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                    @Html.DisplayFor(modelItem => item.Semester)
+                        </td>
+                        <td>
+                    <input class="form-check-input" type="checkbox" value="" id="@item.CourseId" name="common-check" onclick="updatebox()">
+                        </td>
+                    </tr>
+        }
+    </tbody>
+</table>
+
+
+
+<form asp-action="StudentAssignCourses">
+    <input type="number" id="id" value="@Model.StudentId" name="id"/>
+    <input type="text" id="selectedCourses" name="selectedCourses"/>
+    <input type="submit" value="Submit" class="btn btn-primary" />
+</form>
+
+<script>
+    function updatebox() {
+
+        var arrCheckboxes = document.querySelectorAll('input[name=common-check]:checked');
+        var textBox = document.getElementById("selectedCourses");
+        var strCheck = "";
+
+        for (var i = 0; i < arrCheckboxes.length; i++) {
+
+            strCheck += arrCheckboxes[i].getAttribute('id') + " ";
+        }
+        textBox.value = strCheck
+  }
+</script>

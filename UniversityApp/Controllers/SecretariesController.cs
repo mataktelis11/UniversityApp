@@ -164,16 +164,105 @@ namespace UniversityApp.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Students.Include(x => x.CourseHasStudents).ThenInclude(x => x.Course)
+            var student = await _context.Students
+                .Include(x => x.CourseHasStudents)
+                .ThenInclude(x => x.Course)
                 .FirstOrDefaultAsync(m => m.StudentId == id);
+
             if (student == null)
             {
                 return NotFound();
             }
 
+
             return View(student);
         }
 
+
+        // GET: Secretaries/StudentAssignCourses/6
+        public async Task<IActionResult> StudentAssignCourses(int? id)
+        {
+            if (id == null || _context.Students == null)
+            {
+                return NotFound();
+            }
+
+            var student = await _context.Students.FirstOrDefaultAsync(m => m.StudentId == id);
+
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            // get the courses that this Student has registered
+            var registeredCourses = from c in _context.CourseHasStudents
+                                    where c.StudentId == student.StudentId
+                                    select c.Course;
+            // get the courses that this Student hasnt registered
+            var availableCourses = _context.Courses.Where(course => !registeredCourses.Contains(course));
+
+            ViewData["availableCourses"] = availableCourses.ToList();
+
+            ViewData["check"] = "nones";
+
+            return View(student);
+        }
+
+        // GET: Secretaries/StudentAssignCourses/6
+        [HttpPost]
+        public async Task<IActionResult> StudentAssignCourses(int id, string selectedCourses)
+        {
+            if (id == null || _context.Students == null)
+            {
+                return NotFound();
+            }
+
+            var student = await _context.Students.FirstOrDefaultAsync(m => m.StudentId == id);
+
+            if (student == null)
+            {
+                return NotFound();
+            }
+           
+            int gradeId = 1;
+            if(_context.CourseHasStudents.Count() > 0)
+            {
+                gradeId = Int32.Parse(_context.CourseHasStudents.OrderByDescending(chs => chs.GradeId).FirstOrDefault().GradeId.ToString());
+            }
+
+            var s = selectedCourses.Split(' ');
+
+            foreach (string course in selectedCourses.Split(' '))
+            {
+                if (course.Equals(""))
+                    continue;
+                int courseid = Int32.Parse(course);
+
+                CourseHasStudent courseNew = new CourseHasStudent();
+                courseNew.StudentId = id;
+                courseNew.Student = student;
+                courseNew.CourseId = courseid;
+                courseNew.GradeId = gradeId;
+                gradeId++;
+
+                _context.CourseHasStudents.Add(courseNew);
+            }
+
+
+            await _context.SaveChangesAsync();
+
+            ViewData["check"] = selectedCourses;
+
+            // get the courses that this Student has registered
+            var registeredCourses = from c in _context.CourseHasStudents
+                                    where c.StudentId == student.StudentId
+                                    select c.Course;
+            // get the courses that this Student hasnt registered
+            var availableCourses = _context.Courses.Where(course => !registeredCourses.Contains(course));
+
+            ViewData["availableCourses"] = availableCourses.ToList();
+            return View(student);
+        }
 
 
 
