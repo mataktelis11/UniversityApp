@@ -1,0 +1,26 @@
+﻿@{
+    //ViewData["nonexistingStudents"] = nonexistingStudents;
+    //ViewData["invalidStudents"] = invalidStudents;
+    //ViewData["CourseId"] = CourseId;
+
+    var nonexistingStudents = ViewData["nonexistingStudents"] as List<string>;
+    var invalidStudents = ViewData["invalidStudents"] as List<string>;
+    var courseId = (int)ViewData["CourseId"];
+}
+
+<h3>Students that already have a grade:</h3>
+
+@foreach (string s in @invalidStudents)
+{
+    <p>@s</p>
+}
+
+<h3>Students that do not exist:</h3>
+
+@foreach (string s in @nonexistingStudents)
+{
+        <p>@s</p>
+}
+
+
+<a asp-area="" asp-controller="Professors" asp-action="RegisteredStudents" asp-route-id=@courseId>Back to registed students</a>

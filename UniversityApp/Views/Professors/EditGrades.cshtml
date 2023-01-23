@@ -44,8 +44,8 @@
 <button class="btn btn-lg btn-primary" type="button" onclick="getGrades()">Block button</button>
 
 <form asp-action="EditGrades" id="gradesForm">
-    <input type="number" id="id" value="@courseId" name="id"/>
-    <input type="text" id="addedGrades" name="addedGrades" />
+    <input type="number" id="id" value="@courseId" name="id" hidden =""/>
+    <input type="text" id="addedGrades" name="addedGrades" hidden ="" />
 </form>
 
 

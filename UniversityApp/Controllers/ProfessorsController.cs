@@ -107,16 +107,44 @@ namespace UniversityApp.Controllers
 
             string[] lines = System.IO.File.ReadAllLines(_path);
 
+            List<string> nonexistingStudents = new List<string>();
+            List<string> invalidStudents = new List<string>();
+
             foreach (string line in lines)
             {
                 string[] args = line.Split(',');
-                Student selectedStudent = _context.Students.Where(s => s.RegistrationNumber == Int32.Parse(args[0])).Single();
-                CourseHasStudent courseHasStudent = _context.CourseHasStudents.Where(x => x.CourseId == CourseId && x.StudentId == selectedStudent.StudentId).Single();
-                courseHasStudent.Grade = Int32.Parse(args[1]);
 
+                if (!_context.Students.Any(s => s.RegistrationNumber == Int32.Parse(args[0])))
+                {
+                    nonexistingStudents.Add(args[0]);
+                    continue;
+                }
+
+                Student selectedStudent = _context.Students.Where(s => s.RegistrationNumber == Int32.Parse(args[0])).Single();
+                   
+                CourseHasStudent courseHasStudent = _context.CourseHasStudents.Where(x => x.CourseId == CourseId && x.StudentId == selectedStudent.StudentId).Single();
+
+                if (courseHasStudent.Grade != null)
+                {
+                    invalidStudents.Add(args[0]);
+                    continue;
+                }                   
+                courseHasStudent.Grade = Int32.Parse(args[1]);
                 _context.Update(courseHasStudent);
-                await _context.SaveChangesAsync();
+               
             }
+
+            await _context.SaveChangesAsync();
+
+            if (nonexistingStudents.Count > 0 || invalidStudents.Count > 0)
+            {
+                ViewData["nonexistingStudents"] = nonexistingStudents;
+                ViewData["invalidStudents"] = invalidStudents;
+                ViewData["CourseId"] = CourseId;
+                return View("ResultReport");
+            }
+
+            
             return RedirectToAction("RegisteredStudents", new { id = CourseId });
         }
 
