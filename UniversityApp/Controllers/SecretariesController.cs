@@ -156,6 +156,54 @@ namespace UniversityApp.Controllers
             return View(await UniversityDBContext.ToListAsync());
         }
 
+        // GET: Secretaries/CreateStudent
+        public IActionResult CreateStudent()
+        {           
+            return View();
+        }
+
+        // POST: Students/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateStudent([Bind("RegistrationNumber,Name,Surname,Department,Userid")] Student student)
+        {
+            int studentid = 1;
+            if (_context.Students.Count() > 0)
+            {
+                studentid = Int32.Parse(_context.Students.OrderByDescending(s => s.StudentId).FirstOrDefault().StudentId.ToString());
+                studentid += 1;
+            }
+
+            int userid = Int32.Parse(_context.Users.OrderByDescending(s => s.Userid).FirstOrDefault().Userid.ToString());
+            userid += 1;
+
+
+            if (ModelState.IsValid)
+            {
+                student.StudentId= studentid;
+                
+
+                User user = new User();
+                user.Userid = userid;
+                user.Username = "p" + student.RegistrationNumber.ToString();
+                user.Password = student.RegistrationNumber.ToString();
+                user.Role = "Students";
+
+
+                student.User = user;
+                _context.Users.Add(user);
+                _context.Add(student);
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(UniversityStudents));
+            }
+            
+            return View(student);
+        }
+
+
         // GET: Secretaries/StudentDetails/6
         public async Task<IActionResult> StudentDetails(int? id)
         {
