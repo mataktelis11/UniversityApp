@@ -120,6 +120,60 @@ namespace UniversityApp.Controllers
             return RedirectToAction("RegisteredStudents", new { id = CourseId });
         }
 
+        public async Task<IActionResult> EditGrades(int id)
+        {
+            if (HttpContext.Session.GetString("userid") == null)
+                return View("AuthorizationError");
+
+            if (!(HttpContext.Session.GetString("role").Equals("Professors")))
+                return View("NoRightsError");
+
+            // add NoRightsError
+
+            var userid = HttpContext.Session.GetString("userid");
+            var professor = await _context.Professors.Where(p => p.Userid.ToString().Equals(userid)).FirstOrDefaultAsync();
+
+            ViewData["courseId"] = id;
+
+            var unregisteredGrades = _context.CourseHasStudents.Where(chs => chs.CourseId == id && chs.Grade == null).Include(chs => chs.Student);
+
+            return View(unregisteredGrades);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditGrades(int id, string addedGrades)
+        {
+            if (HttpContext.Session.GetString("userid") == null)
+                return View("AuthorizationError");
+
+            if (!(HttpContext.Session.GetString("role").Equals("Professors")))
+                return View("NoRightsError");
+
+            // add NoRightsError
+            // check if addedGrades is empty
+
+            foreach (string element in addedGrades.Split(' '))
+            {
+                var data = element.Split('-');
+                int gradeId = int.Parse(data[0]);
+                int grade = int.Parse(data[1]);
+
+                var chs = await _context.CourseHasStudents.FindAsync(gradeId);
+
+                chs.Grade = grade;
+
+                _context.Update(chs);
+            }
+
+            await _context.SaveChangesAsync();
+
+/*            var userid = HttpContext.Session.GetString("userid");
+            var professor = await _context.Professors.Where(p => p.Userid.ToString().Equals(userid)).FirstOrDefaultAsync();*/
+
+            return RedirectToAction("RegisteredStudents", new { id = id });
+        }
+
+
         // GET: Professors/Details/5
         public async Task<IActionResult> Details(int? id)
         {

@@ -228,6 +228,7 @@ namespace UniversityApp.Controllers
             if(_context.CourseHasStudents.Count() > 0)
             {
                 gradeId = Int32.Parse(_context.CourseHasStudents.OrderByDescending(chs => chs.GradeId).FirstOrDefault().GradeId.ToString());
+                gradeId += 1;
             }
 
             var s = selectedCourses.Split(' ');
