@@ -323,6 +323,49 @@ namespace UniversityApp.Controllers
             return View(await UniversityDBContext.ToListAsync());
         }
 
+        // GET: Secretaries/CreateProfessor
+        public IActionResult CreateProfessor()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateProfessor([Bind("ProfessorId,Afm,Name,Surname,Department,Userid")] Professor professor)
+        {
+            int professorid = 1;
+            if (_context.Professors.Count() > 0)
+            {
+                professorid = Int32.Parse(_context.Professors.OrderByDescending(p => p.ProfessorId).FirstOrDefault().ProfessorId.ToString());
+                professorid += 1;
+            }
+
+            int userid = Int32.Parse(_context.Users.OrderByDescending(s => s.Userid).FirstOrDefault().Userid.ToString());
+            userid += 1;
+
+            if (ModelState.IsValid)
+            {
+                professor.ProfessorId= professorid;
+
+                User user = new User();
+                user.Userid = userid;
+                user.Username = "a" + professor.Afm.ToString();
+                user.Password = professor.Afm.ToString();
+                user.Role = "Professors";
+
+                professor.User = user;
+                _context.Users.Add(user);
+                _context.Add(professor);
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(UniversityProfessors));
+            }
+            ViewData["Userid"] = new SelectList(_context.Users, "Userid", "Userid", professor.Userid);
+            return View(professor);
+        }
+
+
+
         // GET: Secretaries/ProfessorDetails/6
         public async Task<IActionResult> ProfessorDetails(int? id)
         {
