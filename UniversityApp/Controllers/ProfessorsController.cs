@@ -180,6 +180,9 @@ namespace UniversityApp.Controllers
             // add NoRightsError
             // check if addedGrades is empty
 
+            if(addedGrades == null)
+                return RedirectToAction("RegisteredStudents", new { id = id });
+
             foreach (string element in addedGrades.Split(' '))
             {
                 var data = element.Split('-');

@@ -4,6 +4,8 @@
     ViewData["Title"] = "My Lessons";
 }
 
+<h2>My Courses</h2>
+
 <table class="table">
     <thead>
         <tr>
@@ -13,6 +15,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Semester)
             </th>
+            <th>Number of Registered Students</th>
             <th></th>
         </tr>
     </thead>
@@ -27,7 +30,7 @@
                     @Html.DisplayFor(modelItem => item.Semester)
                 </td>
                 <td>
-                    <a asp-action="RegisteredStudents" asp-route-id="@item.CourseId">Edit</a>
+                    <a asp-action="RegisteredStudents" asp-route-id="@item.CourseId">Show Students</a>
                 </td>
             </tr>
         }
