@@ -7,51 +7,32 @@
 
 @if (Context.Session.GetString("username") != null)
 {
-    float sum = 0;
-    int c=0;
-    <div class="container">
-        <div class="row">
-            <h1 class="display-1 text-center"> Grades </h1>
 
-            <h1>Registered lesssons: @ViewData["reglessons"]</h1>
-            <h1>Passed lessons: @ViewData["reglessons"]</h1>
-            <h1>etcs: @ViewData["etcs"]</h1>
-            <h1>average: @ViewData["average"]</h1>
-
+        <div class="container">
+            <div class="row">
+                <h1 class="display-1 text-center"> Total </h1>
+            </div>
+            <hr />
+            <br />
+            <div class="row">
+                <table class="table table-bordered table-responsive table-hover">
+                    <thead class="table-dark ">
+                        <tr>
+                            <td> Registered lesssons</td>
+                        <td style="color:forestgreen"> Passed lessons </td>
+                        <td style="color:deepskyblue"> ECTS </td>
+                            <td> Αverage </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@ViewData["reglessons"]</td>
+                            <td style="color:forestgreen">@ViewData["passedlessons"]</td>
+                            <td style="color:deepskyblue">@ViewData["etcs"]</td>
+                        <td style ="color:yellowgreen">@ViewData["average"]</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <hr />
-        <br />
-@*        <div class="row">
-            <table class="table table-bordered table-responsive table-hover">
-                <thead class="table-dark ">
-                    <tr>
-                        <td> Course Name </td>
-                        <td>Semester</td>
-                        <td> Grade </td>
-                        <td>Total</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                        @foreach (var grade in Model.CourseHasStudents)
-                        {
-                            if (grade.Grade != null)
-                            {
-                            sum += (int)grade.Grade;
-                            c++;
-                            <tr>
-                                    <td> @grade.Course.Title  </td>
-                                    <td> @grade.Course.Semester</td>
-                                    <td> @grade.Grade </td>
-                                </tr>
-                            }
-                        }
-                    @{
-                        sum = sum / c;
-                    }
-                    <tr bgcolor="#fcdda6"><td>Total</td><td></td><td></td><td>@sum</td></tr>
-                </tbody>
-            </table>
-        </div>*@
-    </div>
 }

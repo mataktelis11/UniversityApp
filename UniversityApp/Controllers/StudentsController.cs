@@ -61,7 +61,7 @@ namespace UniversityApp.Controllers
 
 
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-        public IActionResult Grades()
+        public IActionResult Grades(bool? asc=true)
         {
             if (HttpContext.Session.GetString("userid") == null)
                 return View("AuthorizationError");
@@ -70,8 +70,14 @@ namespace UniversityApp.Controllers
                 return View("NoRightsError");
 
             var student = StudentGetter();
-
-            return View(student);
+            
+            var courses = student.CourseHasStudents.OrderBy(s => s.Course.Title);
+            if (asc.Equals(false))
+            {
+                courses= student.CourseHasStudents.OrderByDescending(s => s.Course.Title);
+            }
+            ViewData["sorting"] = asc;
+            return View(courses);
         }
 
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
