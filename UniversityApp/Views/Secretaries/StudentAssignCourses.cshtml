@@ -3,10 +3,8 @@
 @{
     ViewData["Title"] = "Details";
     var availableCourses = ViewData["availableCourses"] as List<UniversityApp.Models.Course>;
-    var check = ViewData["check"].ToString();
 }
 
-<p>@check</p>
 
 <h1>Avaible Courses</h1>
 
@@ -39,9 +37,9 @@
 
 
 <form asp-action="StudentAssignCourses">
-    <input type="number" id="id" value="@Model.StudentId" name="id"/>
-    <input type="text" id="selectedCourses" name="selectedCourses"/>
-    <input type="submit" value="Submit" class="btn btn-primary" />
+    <input type="number" id="id" value="@Model.StudentId" name="id" hidden=""/>
+    <input type="text" id="selectedCourses" name="selectedCourses" hidden=""/>
+    <input type="submit" value="Submit the <b>checked</b> Courses" class="btn btn-primary" />
 </form>
 
 <script>

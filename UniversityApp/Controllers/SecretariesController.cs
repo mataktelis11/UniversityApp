@@ -300,17 +300,17 @@ namespace UniversityApp.Controllers
 
             await _context.SaveChangesAsync();
 
-            ViewData["check"] = selectedCourses;
+            //// get the courses that this Student has registered
+            //var registeredCourses = from c in _context.CourseHasStudents
+            //                        where c.StudentId == student.StudentId
+            //                        select c.Course;
+            //// get the courses that this Student hasnt registered
+            //var availableCourses = _context.Courses.Where(course => !registeredCourses.Contains(course));
 
-            // get the courses that this Student has registered
-            var registeredCourses = from c in _context.CourseHasStudents
-                                    where c.StudentId == student.StudentId
-                                    select c.Course;
-            // get the courses that this Student hasnt registered
-            var availableCourses = _context.Courses.Where(course => !registeredCourses.Contains(course));
+            //ViewData["availableCourses"] = availableCourses.ToList();
+            //return View(student);
 
-            ViewData["availableCourses"] = availableCourses.ToList();
-            return View(student);
+            return RedirectToAction("StudentDetails", new { id = id });
         }
 
 
@@ -392,6 +392,8 @@ namespace UniversityApp.Controllers
         [HttpPost]
         public async Task<IActionResult> AssignProfessorCourse(int courseid, int professorid)
         {
+
+            // check if there are no available lessons
 
             var professor = await _context.Professors
                 .Include(p => p.Courses)
