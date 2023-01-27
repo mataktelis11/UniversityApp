@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using UniversityApp.Models;
+using X.PagedList;
+using static NuGet.Packaging.PackagingConstants;
 
 namespace UniversityApp.Controllers
 {
@@ -166,7 +169,7 @@ namespace UniversityApp.Controllers
         // GET: Secretaries/UniversityStudents
         // obtain all the students
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-        public async Task<IActionResult> UniversityStudents()
+        public async Task<IActionResult> UniversityStudents(int? page)
         {
             if (HttpContext.Session.GetString("userid") == null)
                 return View("AuthorizationError");
@@ -174,8 +177,19 @@ namespace UniversityApp.Controllers
             if (!(HttpContext.Session.GetString("role").Equals("Secretaries")))
                 return View("NoRightsError");
 
-            var UniversityDBContext = _context.Students;
-            return View(await UniversityDBContext.ToListAsync());
+            var students = _context.Students;
+
+            // Pagination
+            if (page != null && page < 1)
+            {
+                page = 1;
+            }
+
+            int PageSize = 10;
+            var studentsData = students.ToPagedList(page ?? 1, PageSize);
+
+
+            return View(studentsData);
         }
 
         // GET: Secretaries/CreateStudent
