@@ -7,8 +7,45 @@
 
 @if (Context.Session.GetString("username") != null)
 {
+    <div class="row">
+        <h1 class="display-1 text-center"> Total </h1>
+    </div>
 
-        <div class="container">
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="col">
+            <div class="card border-info mb-3" style="max-width: 40rem;">
+                <div class="card-header">Registered lesssons</div>
+                <div class="card-body">
+                    <h3 class="card-title">@ViewData["reglessons"]</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card border-info mb-3" style="max-width: 40rem;">
+                <div class="card-header">Passed lessons</div>
+                <div class="card-body">
+                    <h3 class="card-title">@ViewData["passedlessons"]</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card border-info mb-3" style="max-width: 40rem;">
+                <div class="card-header">ECTS</div>
+                <div class="card-body">
+                    <h3 class="card-title">@ViewData["etcs"]</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card border-info mb-3" style="max-width: 40rem;">
+                <div class="card-header"> Αverage</div>
+                <div class="card-body">
+                    <h3 class="card-title">@ViewData["average"]</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+@*        <div class="container">
             <div class="row">
                 <h1 class="display-1 text-center"> Total </h1>
             </div>
@@ -34,5 +71,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div>*@
+
 }

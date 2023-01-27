@@ -8,7 +8,7 @@
 @if (Context.Session.GetString("username") != null)
 {
 
-    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" style="position:fixed;right:0">
       Settings
     </button>
 
@@ -24,16 +24,16 @@
         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                 <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked="" onclick="location.href='@Url.Action("Grades", "Students")'">
           <label class="btn btn-outline-primary" for="btnradio1">View Grades by title</label>
-                
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"  onclick="location.href='@Url.Action("Semesters", "Students")'">
                 
           <label class="btn btn-outline-primary" for="btnradio2">View Grades by Semester</label>
         </div>
         <div>
             <p>
-                    <div>Sort by</div>
+                    <div>Sort Course Name by</div>
                     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
             <input type="radio" class="btn-check" name="mybtnradio" id="btnradio11" autocomplete="off" checked="" onclick="location.href='@Url.Action("Grades", "Students")'">
-            <label class="btn btn-outline-primary" for="btnradio11">Asc</label>
+                        <label class="btn btn-outline-primary" for="btnradio11">Ascending</label>
             @if (ViewData["sorting"].Equals(true))
                 {
                    <input type="radio" class="btn-check" name="mybtnradio" id="btnradio21" autocomplete="off" onclick="location.href='@Url.Action("Grades", "Students",new {asc=false})'">
@@ -41,7 +41,7 @@
                    <input type="radio" class="btn-check" name="mybtnradio" id="btnradio21" autocomplete="off" checked="" onclick="location.href='@Url.Action("Grades", "Students",new {asc=false})'">
                 }
             
-            <label class="btn btn-outline-primary" for="btnradio21">Desc</label>
+            <label class="btn btn-outline-primary" for="btnradio21">Descending</label>
         </div>
             </p>
                
@@ -67,14 +67,17 @@
                     @foreach (var grade in Model)
                     {
                         <tr>
-                            @if(grade.Grade<=5){
+                            @if(grade.Grade<5){
                                 <td style="color:red"> @grade.Course.Title </td>
                                 <td style="color:red"> @grade.Grade </td>
                             }
-                            else
+                            else if(grade.Grade>=5)
                             {
                                 <td style="color:lawngreen"> @grade.Course.Title </td>
                                 <td style="color:lawngreen"> @grade.Grade </td>
+                            }else{
+                                <td> @grade.Course.Title </td>
+                                <td> - </td>
                             }
 
                             

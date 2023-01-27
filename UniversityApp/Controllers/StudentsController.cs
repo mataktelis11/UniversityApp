@@ -117,7 +117,6 @@ namespace UniversityApp.Controllers
 
             ViewData["average"] = sum / passedlessons.Count();
 
-            //var student = StudentGetter();
             return View();
         }
 
