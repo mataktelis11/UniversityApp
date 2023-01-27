@@ -23,10 +23,10 @@
                 <div class="collapse navbar-collapse" id="navbarColor01">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy"><i class="bi bi-newspaper"></i> News</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="News"><i class="bi bi-newspaper"></i> News</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy"><i class="bi bi-info-circle-fill"></i> About</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About"><i class="bi bi-info-circle-fill"></i> About</a>
                         </li>
                     </ul>
 
@@ -58,7 +58,7 @@
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="bi bi-person-circle"></i> @Context.Session.GetString("username")</a>
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <a class="dropdown-item" asp-area="" asp-controller="Professors" asp-action="Account">My Account</a>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Professors" asp-action="Lessons">My Lessons</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Professors" asp-action="ProfessorCourses">My Courses</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" asp-controller="Home" asp-action="Logout">Logout <i class="bi bi-box-arrow-in-right"></i></a>
                                 </div>

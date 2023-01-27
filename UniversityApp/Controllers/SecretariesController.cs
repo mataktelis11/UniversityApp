@@ -72,13 +72,24 @@ namespace UniversityApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCourse([Bind("CourseId,Title,Semester,ProfessorId")] Course course)
-        {          
-            if(course.ProfessorId== null)
+        {
+            int courseid = 1;
+            if (_context.Courses.Count() > 0)
+            {
+                courseid = Int32.Parse(_context.Courses.OrderByDescending(s => s.CourseId).FirstOrDefault().CourseId.ToString());
+                courseid += 1;
+            }
+
+
+            if (course.ProfessorId== null)
             {
                 ModelState.Remove("ProfessorId");
             }
+
             if (ModelState.IsValid)
             {
+                course.CourseId= courseid;
+
                 _context.Add(course);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(UniversityCourses));
