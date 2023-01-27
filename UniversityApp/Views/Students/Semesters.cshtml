@@ -3,93 +3,56 @@
 @{
     ViewData["Title"] = "Semesters";
 }
-@*<style>
-    nav {
-        border: 1px;
-        background-color: green;
-        color: white;
-        padding: 6px;
-    }
+@{ViewData["sorting"] = "false";}
 
-    a {
-        text-decoration: none;
-        color: white;
-        font-size: 20px;
-    }
-</style>*@
+<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" style="position:fixed;right:0">
+    Settings
+</button>
 
-
-    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-      Settings
-    </button>
-
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-      <div class="offcanvas-header">
+<h1 class="display-1 text-center"> Choose a semester </h1>
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Display setting</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-        <div>
-          Choose how you want to display your grades
-        </div>
-        <div class="btn-group" role="group" aria-label="Basic 243432">
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio11" autocomplete="off" onclick="location.href='@Url.Action("Grades", "Students")'">
-                <label class="btn btn-outline-primary" for="btnradio11">View Grades by title</label>
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio21" autocomplete="off" checked="" onclick="location.href='@Url.Action("Semesters", "Students")'">
-                <label class="btn btn-outline-primary" for="btnradio21">View Grades by Semester</label>
-        </div>
-      </div>
     </div>
-
-
-<div class="mx-auto">
-    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-
-        @{
-            for (int i = 1; i < 9; i++)
-            {
-                var btnid = "btnradio" + i.ToString();
-
-                if (Int32.Parse(ViewData["CurrentPage"].ToString()) == i)
-                {
-                    <input type="radio" class="btn-check" name="btnradio" id=@btnid autocomplete="off" checked="" onclick="location.href='@Url.Action("Semesters", "Students", new { page = @i})'">
-                }
-                else
-                {
-                    <input type="radio" class="btn-check" name="btnradio" id=@btnid autocomplete="off" onclick="location.href='@Url.Action("Semesters", "Students", new { page = @i})'" asp-route-page=@i>
-                }
-                <label class="btn btn-outline-primary" for=@btnid >Semester @i</label>
-            }
-        }
+    <div class="offcanvas-body">
+        <div>
+            Choose how you want to display your grades
+        </div>
+        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+            <input type="radio" class="btn-check" name="btnradio1" id="btnradio1" autocomplete="off"  onclick="location.href='@Url.Action("Grades", "Students")'">
+            <label class="btn btn-outline-primary" for="btnradio1">View Grades by title</label>
+            <input type="radio" class="btn-check" name="btnradio1" id="btnradio2" autocomplete="off" checked="" onclick="location.href='@Url.Action("Semesters", "Students")'">
+            <label class="btn btn-outline-primary" for="btnradio2">View Grades by Semester</label>
+        </div>
     </div>
 </div>
 
+<div class="mx-auto display-1 text-center">
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+        
+        @{
+            for (int i = 1; i < 9; i++)
+            {
+                var btnid = "btnradio" + (i+2).ToString();
 
-
-
-@*<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-white border-bottom box-shadow mb-3">
-    <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-            <ul class="navbar-nav flex-grow-1">
-                @if (Context.Session.GetString("role") == "Students")
+                if (Int32.Parse(ViewData["CurrentPage"].ToString()) == i)
                 {
-                    for (int i = 1; i < 9; i++)
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Students" asp-action="Semesters" asp-route-page=@i>@i</a>
-                        </li>
-                    }
+                    <input type="radio"  class="btn-check" name="btnradio" id=@btnid autocomplete="off" checked="" onclick="location.href='@Url.Action("Semesters", "Students", new { page = @i})'">
                 }
-            </ul>
-        </div>
+                else
+                {
+                    <input type="radio" class="btn-check"  name="btnradio" id=@btnid autocomplete="off" onclick="location.href='@Url.Action("Semesters", "Students", new { page = @i})'" asp-route-page=@i>
+                }
+                <label class="btn btn-outline-primary" for=@btnid>Semester @i</label>
+            }
+        }
+      
     </div>
-</nav>
-*@
-<table class="table">
+</div>
+<p>
+    <hr />
+    <table class="table table-bordered table-responsive table-hover">
     <thead>
         <tr>
             <th>
@@ -98,34 +61,34 @@
             <th>
                 Grade
             </th>
-            <th>
-                Semester
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var grade in Model)
         {
-            if (ViewData["CurrentPage"].ToString() == item.Course.Semester.ToString())
-            {
+            if (ViewData["CurrentPage"].ToString() == grade.Course.Semester.ToString())
+                {
+                    <tr>
+                        @if (grade.Grade < 5)
+                        {
+                            <td style="color:red"> @grade.Course.Title </td>
+                            <td style="color:red"> @grade.Grade </td>
+                        }
+                        else if (grade.Grade >= 5)
+                        {
+                            <td style="color:lawngreen"> @grade.Course.Title </td>
+                            <td style="color:lawngreen"> @grade.Grade </td>
+                        }
+                        else
+                        {
+                            <td> @grade.Course.Title </td>
+                            <td> - </td>
+                        }
 
 
-                <tr>
-                    <td>
-                    @Html.DisplayFor(modelItem => item.Course.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Grade)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Course.Semester)
-                    
-                </td>
-            </tr>
+                    </tr>
+                }
             }
-        }
     </tbody>
 </table>
-
-
+</p>
