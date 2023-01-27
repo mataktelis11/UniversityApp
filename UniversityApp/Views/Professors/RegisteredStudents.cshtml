@@ -6,39 +6,54 @@
 
 <a asp-action="EditGrades" asp-route-id="@Model.CourseId">EditGrades</a>
 
-<a asp-action="Lessons">Back to Courses List</a>
+<a asp-action="ProfessorCourses">Back to Courses List</a>
 
 <div>
     <h4>Registered Students:</h4>
-    <table class="table">
-    <thead>
-        <tr>
-            <th>Registration Number</th>
-            <th>Name</th>
-            <th>Surname</th>
-            <th>Grade</th>
-        </tr>
-    </thead>
-        <tbody>
-        @foreach (var item in Model.CourseHasStudents)
-        {
+
+    @if (Model.CourseHasStudents.Count == 0)
+    {
+        <div class="text-center">
+            <figure class="figure">
+                <img src="~/images/empty1.png" width="60%" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+                <figcaption class="figure-caption text-center">There are no Students registered to this Course currently.</figcaption>
+            </figure>
+        </div>
+    }
+    else
+    {
+        <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Student.RegistrationNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Student.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Student.Surname)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Grade)
-                </td>
+                <th>Registration Number</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Grade</th>
             </tr>
-        }
-        </tbody>
-    </table>
+        </thead>
+            <tbody>
+            @foreach (var item in Model.CourseHasStudents)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Student.RegistrationNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Student.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Student.Surname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Grade)
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+
+
         
 </div>
 

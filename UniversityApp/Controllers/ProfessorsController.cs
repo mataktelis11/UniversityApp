@@ -43,10 +43,10 @@ namespace UniversityApp.Controllers
             return View(professor);
         }
 
-        // GET: Professors/Lessons
+        // GET: Professors/ProfessorCourses
         // Retrieve the lessons of the logged in professor.
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-        public async Task<IActionResult> Lessons()
+        public async Task<IActionResult> ProfessorCourses()
         {
             if (HttpContext.Session.GetString("userid") == null)
                 return View("AuthorizationError");
