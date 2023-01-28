@@ -169,7 +169,7 @@ namespace UniversityApp.Controllers
         // GET: Secretaries/UniversityStudents
         // obtain all the students
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-        public async Task<IActionResult> UniversityStudents(int? page)
+        public async Task<IActionResult> UniversityStudents(int? page, string? search, string? searchParam, string? sortOrder)
         {
             if (HttpContext.Session.GetString("userid") == null)
                 return View("AuthorizationError");
@@ -177,7 +177,69 @@ namespace UniversityApp.Controllers
             if (!(HttpContext.Session.GetString("role").Equals("Secretaries")))
                 return View("NoRightsError");
 
-            var students = _context.Students;
+            ViewData["CurrentSortOrder"] = sortOrder;
+
+            ViewData["NameSortParm"] = sortOrder == "name" ? "name_desc" : "name";
+            ViewData["SurnameSortParm"] = sortOrder == "surname" ? "surname_desc" : "surname";
+
+            ViewData["CurrentFilter"] = search;
+            ViewData["searchParam"] = String.IsNullOrEmpty(searchParam) ? "name" : searchParam;
+
+            var students = from s in _context.Students select s;
+
+            // Search
+            if (!String.IsNullOrEmpty(search))
+            {
+                switch (searchParam)
+                {
+                    case "name":
+                        students = students.Where(e => e.Name.Contains(search));
+                        break;
+
+                    case "surname":
+                        students = students.Where(e => e.Surname.Contains(search));
+                        break;
+
+                    case "dept":
+                        students = students.Where(e => e.Department.Contains(search));
+                        break;
+
+                    case "reg":
+                        students = students.Where(e => e.RegistrationNumber.ToString().Contains(search));
+                        break;
+
+                    default:
+                        students = students.Where(e => e.Name.Contains(search));
+                        break;
+                }
+
+            }
+
+            // SortOrder
+            switch (sortOrder)
+            {
+
+                case "name_desc":
+                    students = students.OrderByDescending(s => s.Name);
+                    break;
+
+                case "name":
+                    students = students.OrderBy(s => s.Name);
+                    break;
+
+                case "surname_desc":
+                    students = students.OrderByDescending(s => s.Surname);
+                    break;
+
+                case "surname":
+                    students = students.OrderBy(s => s.Surname);
+                    break;
+
+                default:
+                    students = students.OrderBy(s => s.RegistrationNumber);
+                    break;
+            }
+
 
             // Pagination
             if (page != null && page < 1)
@@ -187,7 +249,7 @@ namespace UniversityApp.Controllers
 
             int PageSize = 10;
             var studentsData = students.ToPagedList(page ?? 1, PageSize);
-
+            ViewData["Page"] = page;
 
             return View(studentsData);
         }

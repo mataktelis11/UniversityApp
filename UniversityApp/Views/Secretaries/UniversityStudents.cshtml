@@ -4,11 +4,59 @@
 
 @{
     ViewData["Title"] = "University Students";
+
+    var btnText = "";
+
+    switch (ViewData["searchParam"])
+    {
+        case "name":
+            btnText = "Search by Name";
+            break;
+
+        case "surname":
+            btnText = "Search by Surname";
+            break;
+
+        case "dept":
+            btnText = "Search by Department";
+            break;
+
+        case "reg":
+            btnText = "Search by Registration Number";
+            break;
+
+        default:
+            btnText = "Search by Name";
+            break;
+    }
+
 }
 
 <h1><i class="bi bi-mortarboard"></i> University Students</h1>
 <p>Here you can see all the Students tha are registered to the Univerisity's Database. You can use the Register a new student by clicking the button 'Add a new Student'.</p>
 <p>Also, you can click a Studen's button to see his page and assign a Course for him/her. </p>
+
+<form asp-action="UniversityStudents" method="get">
+    <div class="form-actions">
+        <p>
+@*            Find by name: <input type="text" name="search" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="search" class="btn btn-primary" />*@
+            <div class="input-group mb-3">
+                <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="optionselect">@btnText</button>
+              <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" id="option_name">Search by Name</a></li>
+                    <li><a class="dropdown-item" id="option_surname">Search by Surame</a></li>
+                    <li><a class="dropdown-item" id="option_dept">Search by Department</a></li>
+                    <li><a class="dropdown-item" id="option_reg">Search by Registration Number</a></li>
+              </ul>
+                <input type="text" class="form-control" aria-label="Text input with dropdown button" value="@ViewData["CurrentFilter"]" name="search">
+              @*<button class="btn btn-info" type="button" id="inputGroupFileAddon04">Search</button>*@
+              <input type="submit" value="search" class="btn btn-primary" />
+            </div>
+            <input type="text" id="searchParamVar" value="@ViewData["searchParam"]" name="searchParam" hidden="">
+        </p>
+    </div>
+</form>
 
 <p>
     <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("CreateStudent", "Secretaries")'"><i class="bi bi-plus-circle-fill"></i> Add a new Student</button>
@@ -17,10 +65,13 @@
     <thead>
         <tr class="table-secondary">
             <th>
-                Name
+                Registration Number
             </th>
             <th>
-                Surname
+                <a asp-action="UniversityStudents" asp-route-page="@ViewData["Page"]" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-search="@ViewData["CurrentFilter"]" asp-route-searchParam="@ViewData["searchParam"]">Name</a>
+            </th>
+            <th>
+                <a asp-action="UniversityStudents" asp-route-page="@ViewData["Page"]" asp-route-sortOrder="@ViewData["SurnameSortParm"]" asp-route-search="@ViewData["CurrentFilter"]" asp-route-searchParam="@ViewData["searchParam"]">Surname</a>
             </th>
             <th>
                 Department
@@ -32,6 +83,9 @@
         @foreach (var item in Model)
         {
             <tr class="table-secondary">
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegistrationNumber)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
@@ -51,7 +105,7 @@
 
 <!-- output a paging control that lets the user navigation to the previous page, next page, etc -->
 <nav>
-@Html.PagedListPager(Model, page => Url.Action("UniversityStudents", new { page = page }), new PagedListRenderOptions()
+    @Html.PagedListPager(Model, page => Url.Action("UniversityStudents", new { page = page,  search=ViewData["CurrentFilter"], searchParam=ViewData["searchParam"], sortOrder=ViewData["CurrentSortOrder"] }), new PagedListRenderOptions()
 {
     ActiveLiElementClass = "active",
     PageClasses = new[]{ "page-link"},
@@ -65,3 +119,31 @@
     
 })
 </nav>
+
+
+@*                    <li><a class="dropdown-item" id="option_name">Search by Name</a></li>
+                    <li><a class="dropdown-item" id="option_surname">Search by Surame</a></li>
+                    <li><a class="dropdown-item" id="option_dept">Search by Department</a></li>
+                    <li><a class="dropdown-item" id="option_reg">Search by Registration Number</a></li>*@
+
+<script>
+
+    var optionselect = document.getElementById("optionselect");
+
+    var option_name = document.getElementById("option_name");
+    var option_surname = document.getElementById("option_surname");
+    var option_dept = document.getElementById("option_dept");
+    var option_reg = document.getElementById("option_reg");
+
+    var input_searchParamVar = document.getElementById("searchParamVar");
+
+    option_name.addEventListener("click", () => { myFunction("name", "Search By Name") });
+    option_surname.addEventListener("click", () => { myFunction("surname", "Search By Surame") });
+    option_dept.addEventListener("click", () => { myFunction("dept", "Search By Department") });
+    option_reg.addEventListener("click", () => { myFunction("reg", "Search By Registration Number") });
+
+    function myFunction(param, text) {
+        input_searchParamVar.value = param
+        optionselect.innerText = text
+    }
+</script>
