@@ -169,7 +169,7 @@ namespace UniversityApp.Controllers
         // GET: Secretaries/UniversityStudents
         // obtain all the students
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-        public async Task<IActionResult> UniversityStudents(int? page, string? search, string? searchParam, string? sortOrder)
+        public async Task<IActionResult> UniversityStudents(int? page, int? pageSize, string? search, string? searchParam, string? sortOrder)
         {
             if (HttpContext.Session.GetString("userid") == null)
                 return View("AuthorizationError");
@@ -177,13 +177,31 @@ namespace UniversityApp.Controllers
             if (!(HttpContext.Session.GetString("role").Equals("Secretaries")))
                 return View("NoRightsError");
 
-            ViewData["CurrentSortOrder"] = sortOrder;
+            ViewData["CurrentSortOrder"] = String.IsNullOrEmpty(sortOrder) ? "reg" : sortOrder;
 
+            ViewData["RegSortParm"] = String.IsNullOrEmpty(sortOrder) ? "reg_desc" : "";
             ViewData["NameSortParm"] = sortOrder == "name" ? "name_desc" : "name";
             ViewData["SurnameSortParm"] = sortOrder == "surname" ? "surname_desc" : "surname";
+            ViewData["DeptSortParm"] = sortOrder == "dept" ? "dept_desc" : "dept";
 
             ViewData["CurrentFilter"] = search;
             ViewData["searchParam"] = String.IsNullOrEmpty(searchParam) ? "name" : searchParam;
+
+            
+            if (pageSize != null && pageSize < 15)
+            {
+                pageSize = 15;
+            }
+            else if(pageSize > 15 && pageSize <= 25)
+            {
+                pageSize = 25;
+            }
+            else if(pageSize >= 35)
+            {
+                pageSize= 35;
+            }
+
+            ViewData["pageSize"] = pageSize ?? 15;
 
             var students = from s in _context.Students select s;
 
@@ -218,6 +236,9 @@ namespace UniversityApp.Controllers
             // SortOrder
             switch (sortOrder)
             {
+                case "reg_desc":
+                    students = students.OrderByDescending(s => s.RegistrationNumber);
+                    break;
 
                 case "name_desc":
                     students = students.OrderByDescending(s => s.Name);
@@ -235,6 +256,14 @@ namespace UniversityApp.Controllers
                     students = students.OrderBy(s => s.Surname);
                     break;
 
+                case "dept_desc":
+                    students = students.OrderByDescending(s => s.Department);
+                    break;
+
+                case "dept":
+                    students = students.OrderBy(s => s.Department);
+                    break;
+
                 default:
                     students = students.OrderBy(s => s.RegistrationNumber);
                     break;
@@ -247,8 +276,7 @@ namespace UniversityApp.Controllers
                 page = 1;
             }
 
-            int PageSize = 10;
-            var studentsData = students.ToPagedList(page ?? 1, PageSize);
+            var studentsData = students.ToPagedList(page ?? 1, pageSize ?? 15);
             ViewData["Page"] = page;
 
             return View(studentsData);

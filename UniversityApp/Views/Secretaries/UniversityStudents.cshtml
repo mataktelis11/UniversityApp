@@ -36,6 +36,22 @@
 <p>Here you can see all the Students tha are registered to the Univerisity's Database. You can use the Register a new student by clicking the button 'Add a new Student'.</p>
 <p>Also, you can click a Studen's button to see his page and assign a Course for him/her. </p>
 
+
+<div>
+    Page size:
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            @ViewData["pageSize"]
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" asp-action="UniversityStudents" asp-route-pageSize=15 asp-route-page="@ViewData["Page"]" asp-route-sortOrder="@ViewData["CurrentSortOrder"]" asp-route-search="@ViewData["CurrentFilter"]" asp-route-searchParam="@ViewData["searchParam"]">15</a></li>
+            <li><a class="dropdown-item" asp-action="UniversityStudents" asp-route-pageSize=25 asp-route-page="@ViewData["Page"]" asp-route-sortOrder="@ViewData["CurrentSortOrder"]" asp-route-search="@ViewData["CurrentFilter"]" asp-route-searchParam="@ViewData["searchParam"]">25</a></li>
+            <li><a class="dropdown-item" asp-action="UniversityStudents" asp-route-pageSize=35 asp-route-page="@ViewData["Page"]" asp-route-sortOrder="@ViewData["CurrentSortOrder"]" asp-route-search="@ViewData["CurrentFilter"]" asp-route-searchParam="@ViewData["searchParam"]">35</a></li>
+        </ul>
+    </div>
+</div>
+
+
 <form asp-action="UniversityStudents" method="get">
     <div class="form-actions">
         <p>
@@ -49,11 +65,12 @@
                     <li><a class="dropdown-item" id="option_dept">Search by Department</a></li>
                     <li><a class="dropdown-item" id="option_reg">Search by Registration Number</a></li>
               </ul>
-                <input type="text" class="form-control" aria-label="Text input with dropdown button" value="@ViewData["CurrentFilter"]" name="search">
-              @*<button class="btn btn-info" type="button" id="inputGroupFileAddon04">Search</button>*@
+              <input type="text" class="form-control" aria-label="Text input with dropdown button" value="@ViewData["CurrentFilter"]" name="search">
               <input type="submit" value="search" class="btn btn-primary" />
             </div>
             <input type="text" id="searchParamVar" value="@ViewData["searchParam"]" name="searchParam" hidden="">
+            <input type="text" value="@ViewData["CurrentSortOrder"]" name="sortOrder" hidden="">
+            <input type="text" value="@ViewData["pageSize"]" name="pageSize" hidden="">
         </p>
     </div>
 </form>
@@ -65,16 +82,72 @@
     <thead>
         <tr class="table-secondary">
             <th>
-                Registration Number
+                <button type="button" class="btn btn-warning" onclick="location.href='@Url.Action("UniversityStudents", "Secretaries", new RouteValueDictionary(new { page=@ViewData["Page"], pageSize=@ViewData["pageSize"], sortOrder=@ViewData["RegSortParm"], search=@ViewData["CurrentFilter"], searchParam=@ViewData["searchParam"]}))'">
+                    Registration Number 
+                    @if (@ViewData["CurrentSortOrder"].Equals("reg"))
+                    {
+                        <i class="bi bi-sort-down-alt"></i>
+                    }
+                    else if (@ViewData["CurrentSortOrder"].Equals("reg_desc"))
+                    {                       
+                        <i class="bi bi-sort-down"></i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-arrow-down-up"></i>
+                    }
+                </button>               
             </th>
             <th>
-                <a asp-action="UniversityStudents" asp-route-page="@ViewData["Page"]" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-search="@ViewData["CurrentFilter"]" asp-route-searchParam="@ViewData["searchParam"]">Name</a>
+                <button type="button" class="btn btn-warning" onclick="location.href='@Url.Action("UniversityStudents", "Secretaries", new RouteValueDictionary(new { page=@ViewData["Page"], pageSize=@ViewData["pageSize"], sortOrder=@ViewData["NameSortParm"], search=@ViewData["CurrentFilter"], searchParam=@ViewData["searchParam"]}))'">
+                    Name
+                    @if (@ViewData["CurrentSortOrder"].Equals("name"))
+                    {
+                        <i class="bi bi-sort-down-alt"></i>
+                    }
+                    else if (@ViewData["CurrentSortOrder"].Equals("name_desc"))
+                    {
+                        <i class="bi bi-sort-down"></i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-arrow-down-up"></i>
+                    }
+                </button>
             </th>
             <th>
-                <a asp-action="UniversityStudents" asp-route-page="@ViewData["Page"]" asp-route-sortOrder="@ViewData["SurnameSortParm"]" asp-route-search="@ViewData["CurrentFilter"]" asp-route-searchParam="@ViewData["searchParam"]">Surname</a>
+                <button type="button" class="btn btn-warning" onclick="location.href='@Url.Action("UniversityStudents", "Secretaries", new RouteValueDictionary(new { page=@ViewData["Page"], pageSize=@ViewData["pageSize"], sortOrder=@ViewData["SurnameSortParm"], search=@ViewData["CurrentFilter"], searchParam=@ViewData["searchParam"]}))'">
+                    Surname
+                    @if (@ViewData["CurrentSortOrder"].Equals("surname"))
+                    {
+                        <i class="bi bi-sort-down-alt"></i>
+                    }
+                    else if (@ViewData["CurrentSortOrder"].Equals("surname_desc"))
+                    {
+                        <i class="bi bi-sort-down"></i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-arrow-down-up"></i>
+                    }
+                </button>
             </th>
             <th>
-                Department
+                <button type="button" class="btn btn-warning" onclick="location.href='@Url.Action("UniversityStudents", "Secretaries", new RouteValueDictionary(new { page=@ViewData["Page"], pageSize=@ViewData["pageSize"], sortOrder=@ViewData["DeptSortParm"], search=@ViewData["CurrentFilter"], searchParam=@ViewData["searchParam"]}))'" ">
+                    Department 
+                    @if (@ViewData["CurrentSortOrder"].Equals("dept"))
+                    {
+                        <i class="bi bi-sort-down-alt"></i>
+                    }
+                    else if (@ViewData["CurrentSortOrder"].Equals("dept_desc"))
+                    {                       
+                        <i class="bi bi-sort-down"></i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-arrow-down-up"></i>
+                    }
+                </button>
             </th>
             <th></th>
         </tr>
@@ -105,7 +178,7 @@
 
 <!-- output a paging control that lets the user navigation to the previous page, next page, etc -->
 <nav>
-    @Html.PagedListPager(Model, page => Url.Action("UniversityStudents", new { page = page,  search=ViewData["CurrentFilter"], searchParam=ViewData["searchParam"], sortOrder=ViewData["CurrentSortOrder"] }), new PagedListRenderOptions()
+    @Html.PagedListPager(Model, page => Url.Action("UniversityStudents", new { page = page, pageSize=ViewData["pageSize"],  search=ViewData["CurrentFilter"], searchParam=ViewData["searchParam"], sortOrder=ViewData["CurrentSortOrder"] }), new PagedListRenderOptions()
 {
     ActiveLiElementClass = "active",
     PageClasses = new[]{ "page-link"},
@@ -137,10 +210,10 @@
 
     var input_searchParamVar = document.getElementById("searchParamVar");
 
-    option_name.addEventListener("click", () => { myFunction("name", "Search By Name") });
-    option_surname.addEventListener("click", () => { myFunction("surname", "Search By Surame") });
-    option_dept.addEventListener("click", () => { myFunction("dept", "Search By Department") });
-    option_reg.addEventListener("click", () => { myFunction("reg", "Search By Registration Number") });
+    option_name.addEventListener("click", () => { myFunction("name", "Search by Name") });
+    option_surname.addEventListener("click", () => { myFunction("surname", "Search by Surame") });
+    option_dept.addEventListener("click", () => { myFunction("dept", "Search by Department") });
+    option_reg.addEventListener("click", () => { myFunction("reg", "Search by Registration Number") });
 
     function myFunction(param, text) {
         input_searchParamVar.value = param
