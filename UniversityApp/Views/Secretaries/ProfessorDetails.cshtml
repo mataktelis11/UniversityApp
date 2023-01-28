@@ -7,45 +7,48 @@
 
 <h1>Details</h1>
 
-<div>
-    <h4>Professor</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Afm)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Afm)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Surname)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Surname)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Department)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Department)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Userid)
-        </dd>
-    </dl>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Personal Details</h5>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th scope="row">@Html.DisplayNameFor(model => model.Name)</th>
+                            <td>@Html.DisplayFor(model => model.Name)</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">@Html.DisplayNameFor(model => model.Surname)</th>
+                            <td>@Html.DisplayFor(model => model.Surname)</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">@Html.DisplayNameFor(model => model.Afm)</th>
+                            <td>@Html.DisplayFor(model => model.Afm)</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">@Html.DisplayNameFor(model => model.Department)</th>
+                            <td>@Html.DisplayFor(model => model.Department)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Number of Registered Courses</h5>
+                <h2>@ViewData["registeredCourses"]</h2>
+            </div>
+        </div>
+    </div>
 </div>
+
+<hr />
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.ProfessorId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="UniversityProfessors">Back to List</a>
 </div>
 
 <h1>Assigned Courses</h1>

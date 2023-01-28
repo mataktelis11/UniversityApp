@@ -362,6 +362,16 @@ namespace UniversityApp.Controllers
                 return NotFound();
             }
 
+            // number of registered lessons
+            int registeredlessons = _context.CourseHasStudents.Where(s => s.StudentId == student.StudentId).Count();
+
+            // number of passed lessons
+            var passedlessons = _context.CourseHasStudents.Where(s => s.StudentId == student.StudentId && s.Grade >= 5);
+
+            int etcs = passedlessons.Count() * 5;
+
+            ViewData["registered"] = registeredlessons;
+            ViewData["etcs"] = etcs;
 
             return View(student);
         }
@@ -546,6 +556,10 @@ namespace UniversityApp.Controllers
             }
 
             ViewData["availableCourses"] = new SelectList(_context.Courses.Where(c => c.Professor == null || c.ProfessorId == null), "CourseId", "CourseId");
+
+            int registeredCourses = _context.Courses.Where(c => c.ProfessorId == professor.ProfessorId).Count();
+
+            ViewData["registeredCourses"] = registeredCourses;
 
             return View(professor);
         }

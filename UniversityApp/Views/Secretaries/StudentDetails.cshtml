@@ -6,36 +6,53 @@
 
 <h1>Student Details</h1>
 
-<div>
-    <h4>Student</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Surname)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Surname)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.RegistrationNumber)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.RegistrationNumber)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Department)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Department)
-        </dd>
-    </dl>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Personal Details</h5>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th scope="row">@Html.DisplayNameFor(model => model.Name)</th>
+                            <td>@Html.DisplayFor(model => model.Name)</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">@Html.DisplayNameFor(model => model.Surname)</th>
+                            <td>@Html.DisplayFor(model => model.Surname)</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">@Html.DisplayNameFor(model => model.RegistrationNumber)</th>
+                            <td>@Html.DisplayFor(model => model.RegistrationNumber)</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">@Html.DisplayNameFor(model => model.Department)</th>
+                            <td>@Html.DisplayFor(model => model.Department)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total E.T.Cs</h5>
+                <h2>@ViewData["etcs"]</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Number of Registered Courses</h5>
+                <h2>@ViewData["registered"]</h2>
+            </div>
+        </div>
+    </div>
 </div>
+
+<hr />
 
 <h1>Registered Courses</h1>
 
