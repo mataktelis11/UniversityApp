@@ -339,7 +339,7 @@ namespace UniversityApp.Controllers
 
         // GET: Secretaries/StudentDetails/6
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-        public async Task<IActionResult> StudentDetails(int? id)
+        public async Task<IActionResult> StudentDetails(int? id, int? semester, string? sortOrder)
         {
             if (HttpContext.Session.GetString("userid") == null)
                 return View("AuthorizationError");
@@ -372,6 +372,18 @@ namespace UniversityApp.Controllers
 
             ViewData["registered"] = registeredlessons;
             ViewData["etcs"] = etcs;
+
+            // semester
+            if(semester == null || semester > 8 || semester < 0 )
+                semester= 1;
+            ViewData["CurrentSemester"] = semester;
+
+            // sorting
+            ViewData["CurrentSortOrder"] = String.IsNullOrEmpty(sortOrder) ? "title" : sortOrder;
+
+            ViewData["TitleSortParam"] = String.IsNullOrEmpty(sortOrder) || sortOrder.Equals("title") ? "title_desc" : "";
+            ViewData["SemesterSortParam"] = sortOrder == "semester" ? "semester_desc" : "semester";
+            ViewData["GradeSortParam"] = sortOrder == "grade" ? "grade_desc" : "grade";
 
             return View(student);
         }

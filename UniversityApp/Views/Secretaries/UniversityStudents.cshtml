@@ -55,8 +55,6 @@
 <form asp-action="UniversityStudents" method="get">
     <div class="form-actions">
         <p>
-@*            Find by name: <input type="text" name="search" value="@ViewData["CurrentFilter"]" />
-            <input type="submit" value="search" class="btn btn-primary" />*@
             <div class="input-group mb-3">
                 <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="optionselect">@btnText</button>
               <ul class="dropdown-menu">
@@ -192,12 +190,6 @@
     
 })
 </nav>
-
-
-@*                    <li><a class="dropdown-item" id="option_name">Search by Name</a></li>
-                    <li><a class="dropdown-item" id="option_surname">Search by Surame</a></li>
-                    <li><a class="dropdown-item" id="option_dept">Search by Department</a></li>
-                    <li><a class="dropdown-item" id="option_reg">Search by Registration Number</a></li>*@
 
 <script>
 
