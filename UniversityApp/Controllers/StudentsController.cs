@@ -114,8 +114,14 @@ namespace UniversityApp.Controllers
             ViewData["reglessons"] = reglessons;
             ViewData["passedlessons"] = passedlessons.Count();
             ViewData["etcs"] = etcs;
-
-            ViewData["average"] = sum / passedlessons.Count();
+            if (passedlessons.Count()>0){
+                ViewData["average"] = sum / passedlessons.Count();
+            }
+            else
+            {
+                ViewData["average"] = "-";
+            }
+            
 
             return View();
         }
