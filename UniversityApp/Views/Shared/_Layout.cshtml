@@ -67,8 +67,8 @@
                         else if (Context.Session.GetString("role").Equals("Secretaries"))
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="bi bi-shield-shaded"></i> @Context.Session.GetString("username")</a>
-                                <div class="dropdown-menu dropdown-menu-end">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdown" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="bi bi-shield-shaded"></i> @Context.Session.GetString("username")</a>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="Account">My Account</a>
                                     <a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="UniversityStudents">Univeristy Students</a>
                                     <a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="UniversityProfessors">Univeristy Professors</a>
