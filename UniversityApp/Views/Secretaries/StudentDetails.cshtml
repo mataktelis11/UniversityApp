@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Student Details</h1>
+<h1><button type="button" class="btn btn-success" onclick="location.href='@Url.Action("UniversityStudents", "Secretaries")'"><i class="bi bi-backspace-fill"></i> Go back to the list</button> Student @Html.DisplayFor(model => model.Name)</h1>
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
     <div class="col">

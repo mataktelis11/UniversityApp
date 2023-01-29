@@ -533,7 +533,7 @@ namespace UniversityApp.Controllers
 
         // GET: Secretaries/ProfessorDetails/6
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-        public async Task<IActionResult> ProfessorDetails(int? id)
+        public async Task<IActionResult> ProfessorDetails(int? id, string? sortOrder)
         {
             if (HttpContext.Session.GetString("userid") == null)
                 return View("AuthorizationError");
@@ -560,6 +560,13 @@ namespace UniversityApp.Controllers
             int registeredCourses = _context.Courses.Where(c => c.ProfessorId == professor.ProfessorId).Count();
 
             ViewData["registeredCourses"] = registeredCourses;
+
+            // Sorting
+            ViewData["CurrentSortOrder"] = String.IsNullOrEmpty(sortOrder) ? "semester" : sortOrder;
+
+            ViewData["TitleSortParam"] = sortOrder == "title" ? "title_desc" : "title";
+            ViewData["SemesterSortParam"] = String.IsNullOrEmpty(sortOrder) ? "semester_desc" : "";
+
 
             return View(professor);
         }

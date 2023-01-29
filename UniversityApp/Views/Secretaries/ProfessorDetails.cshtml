@@ -2,10 +2,32 @@
 
 @{
     ViewData["Title"] = "Professor Details";
-    //var availableCourses = ViewData["availableCourses"] as List<UniversityApp.Models.Course>;
+
+    var currentSortOrder = ViewData["CurrentSortOrder"].ToString();
+
+    var currentCourses = Model.Courses;
+
+    switch (currentSortOrder)
+    {
+        case "title":
+            currentCourses = currentCourses.OrderBy(c => c.Title).ToList();
+            break;
+
+        case "title_desc":
+            currentCourses = currentCourses.OrderByDescending(c => c.Title).ToList();
+            break;
+
+        case "semester":
+            currentCourses = currentCourses.OrderBy(c => c.Semester).ToList();
+            break;
+
+        case "semester_desc":
+            currentCourses = currentCourses.OrderByDescending(c => c.Semester).ToList();
+            break;
+    }
 }
 
-<h1>Details</h1>
+<h1><button type="button" class="btn btn-success" onclick="location.href='@Url.Action("UniversityProfessors", "Secretaries")'"><i class="bi bi-backspace-fill"></i> Go back to the list</button> Professor @Html.DisplayFor(model => model.Name)</h1>
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
     <div class="col">
@@ -47,21 +69,50 @@
 
 <hr />
 
-<div>
-    <a asp-action="UniversityProfessors">Back to List</a>
-</div>
+<h1>Assigned Courses    <button type="button" class="btn btn-primary" id="btnopen"><i class="bi bi-plus-circle-fill"></i> Assign a new Course to this Professor</button></h1>
 
-<h1>Assigned Courses</h1>
 
 <table class="table">
     <thead>
         <tr>
-            <th>Title</th>
-            <th>Semester</th>
+            <th>
+                <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("ProfessorDetails", "Secretaries", new RouteValueDictionary(new { id=Model.ProfessorId, sortOrder=@ViewData["TitleSortParam"]}))'">
+                    Title
+                    @if (@ViewData["CurrentSortOrder"].Equals("title"))
+                    {
+                        <i class="bi bi-sort-down-alt"></i>
+                    }
+                    else if (@ViewData["CurrentSortOrder"].Equals("title_desc"))
+                    {                       
+                        <i class="bi bi-sort-down"></i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-arrow-down-up"></i>
+                    }
+                </button>                
+            </th>
+            <th>
+                <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("ProfessorDetails", "Secretaries", new RouteValueDictionary(new { id=Model.ProfessorId, sortOrder=@ViewData["SemesterSortParam"]}))'">
+                    Semester
+                    @if (@ViewData["CurrentSortOrder"].Equals("semester"))
+                    {
+                        <i class="bi bi-sort-down-alt"></i>
+                    }
+                    else if (@ViewData["CurrentSortOrder"].Equals("semester_desc"))
+                    {
+                        <i class="bi bi-sort-down"></i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-arrow-down-up"></i>
+                    }
+                </button>
+            </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Courses)
+        @foreach (var item in currentCourses)
         {
             <tr>
                 <td>
@@ -75,41 +126,7 @@
     </tbody>
 </table>
 
-@*<h1>Avaible Courses</h1>*@
 
-@*<table class="table">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Semester</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in availableCourses)
-        {
-                <tr>
-                    <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    <td>
-                    @Html.DisplayFor(modelItem => item.Semester)
-                    </td>
-                    <td>
-                        <a asp-action="RegisteredStudents" asp-route-id="@item.CourseId">Edit</a>
-                    </td>
-                </tr>
-        }
-    </tbody>
-</table>
-*@
-
-
-<h2>Assign a new Course to this Professor</h2>
-
-
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" id="btnopen">Assign a new Course to this Professor</button>
 
 <!-- Modal -->
 <div class="modal fade" id="formModalCenter" tabindex="-1" role="dialog" aria-labelledby="formModalCenterTitle" aria-hidden="true">
@@ -140,12 +157,6 @@
     </div>
   </div>
 </div>
-
-
-
-
-
-
 
 <script>
     var btnopen = document.getElementById("btnopen");
