@@ -46,7 +46,7 @@ namespace UniversityApp.Controllers
         // GET: Professors/ProfessorCourses
         // Retrieve the lessons of the logged in professor.
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-        public async Task<IActionResult> ProfessorCourses()
+        public async Task<IActionResult> ProfessorCourses(string? sortOrder)
         {
             if (HttpContext.Session.GetString("userid") == null)
                 return View("AuthorizationError");
@@ -57,7 +57,42 @@ namespace UniversityApp.Controllers
             var userid = HttpContext.Session.GetString("userid");
             var professor = _context.Professors.Where(p => p.Userid.ToString().Equals(userid)).FirstOrDefault();
 
-            var lessons = await _context.Courses.Where(c => c.ProfessorId == professor.ProfessorId).ToListAsync();
+            var lessons = await _context.Courses.Where(c => c.ProfessorId == professor.ProfessorId).Include(c => c.CourseHasStudents).ToListAsync();
+
+            ViewData["CurrentSortOrder"] = String.IsNullOrEmpty(sortOrder) ? "title" : sortOrder;
+
+            ViewData["TitleSortParam"] = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
+            ViewData["SemesterSortParam"] = sortOrder == "semester" ? "semester_desc" : "semester";
+            ViewData["StudentsSortParam"] = sortOrder == "students" ? "students_desc" : "students";
+
+            switch (sortOrder)
+            {
+                case "title_desc":
+                    lessons = lessons.OrderByDescending(c => c.Title).ToList();
+                    break;
+
+                case "semester":
+                    lessons = lessons.OrderBy(c => c.Semester).ToList();
+                    break;
+
+                case "semester_desc":
+                    lessons = lessons.OrderByDescending(c => c.Semester).ToList();
+                    break;
+
+                case "students":
+                    lessons = lessons.OrderBy(c => c.CourseHasStudents.Where(c => c.Grade == null).Count()).ToList();
+                    break;
+
+                case "students_desc":
+                    lessons = lessons.OrderByDescending(c => c.CourseHasStudents.Where(c => c.Grade == null).Count()).ToList();
+                    break;
+
+                default:
+                    lessons = lessons.OrderBy(c => c.Title).ToList();
+                    break;
+            }
+
+
 
             return View(lessons);
         }
