@@ -72,59 +72,74 @@
 <h1>Assigned Courses    <button type="button" class="btn btn-primary" id="btnopen"><i class="bi bi-plus-circle-fill"></i> Assign a new Course to this Professor</button></h1>
 
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("ProfessorDetails", "Secretaries", new RouteValueDictionary(new { id=Model.ProfessorId, sortOrder=@ViewData["TitleSortParam"]}))'">
-                    Title
-                    @if (@ViewData["CurrentSortOrder"].Equals("title"))
-                    {
-                        <i class="bi bi-sort-down-alt"></i>
-                    }
-                    else if (@ViewData["CurrentSortOrder"].Equals("title_desc"))
-                    {                       
-                        <i class="bi bi-sort-down"></i>
-                    }
-                    else
-                    {
-                        <i class="bi bi-arrow-down-up"></i>
-                    }
-                </button>                
-            </th>
-            <th>
-                <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("ProfessorDetails", "Secretaries", new RouteValueDictionary(new { id=Model.ProfessorId, sortOrder=@ViewData["SemesterSortParam"]}))'">
-                    Semester
-                    @if (@ViewData["CurrentSortOrder"].Equals("semester"))
-                    {
-                        <i class="bi bi-sort-down-alt"></i>
-                    }
-                    else if (@ViewData["CurrentSortOrder"].Equals("semester_desc"))
-                    {
-                        <i class="bi bi-sort-down"></i>
-                    }
-                    else
-                    {
-                        <i class="bi bi-arrow-down-up"></i>
-                    }
-                </button>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in currentCourses)
-        {
+@if (currentCourses.Count == 0)
+{
+    <div class="text-center">
+        <figure class="figure">
+            <img src="~/images/empty3.png" width="60%" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+            <figcaption class="figure-caption text-center">There are no Courses registered to this Professor currently.</figcaption>
+        </figure>
+    </div>
+}
+else
+{
+
+
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Semester)
-                </td>
+                <th>
+                    <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("ProfessorDetails", "Secretaries", new RouteValueDictionary(new { id=Model.ProfessorId, sortOrder=@ViewData["TitleSortParam"]}))'">
+                        Title
+                        @if (@ViewData["CurrentSortOrder"].Equals("title"))
+                        {
+                            <i class="bi bi-sort-down-alt"></i>
+                        }
+                        else if (@ViewData["CurrentSortOrder"].Equals("title_desc"))
+                        {
+                            <i class="bi bi-sort-down"></i>
+                        }
+                        else
+                        {
+                            <i class="bi bi-arrow-down-up"></i>
+                        }
+                    </button>
+                </th>
+                <th>
+                    <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("ProfessorDetails", "Secretaries", new RouteValueDictionary(new { id=Model.ProfessorId, sortOrder=@ViewData["SemesterSortParam"]}))'">
+                        Semester
+                        @if (@ViewData["CurrentSortOrder"].Equals("semester"))
+                        {
+                            <i class="bi bi-sort-down-alt"></i>
+                        }
+                        else if (@ViewData["CurrentSortOrder"].Equals("semester_desc"))
+                        {
+                            <i class="bi bi-sort-down"></i>
+                        }
+                        else
+                        {
+                            <i class="bi bi-arrow-down-up"></i>
+                        }
+                    </button>
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in currentCourses)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Semester)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
 
 
 

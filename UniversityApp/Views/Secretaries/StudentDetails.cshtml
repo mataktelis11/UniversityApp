@@ -109,95 +109,123 @@
     </button>
 </h1>
 
-<div>
-    Choose semester:
-    <div class="btn-group">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-            @semesterTag
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><a class="dropdown-item" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=0, sortOrder=@ViewData["CurrentSortOrder"]}))'">All semesters</a></li>
-            <li><a class="dropdown-item" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=1, sortOrder=@ViewData["CurrentSortOrder"]}))'">Semester 1</a></li>
-            <li><a class="dropdown-item" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=2, sortOrder=@ViewData["CurrentSortOrder"]}))'">Semester 2</a></li>
-            <li><a class="dropdown-item" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=3, sortOrder=@ViewData["CurrentSortOrder"]}))'">Semester 3</a></li>
-            <li><a class="dropdown-item" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=4, sortOrder=@ViewData["CurrentSortOrder"]}))'">Semester 4</a></li>
-            <li><a class="dropdown-item" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=5, sortOrder=@ViewData["CurrentSortOrder"]}))'">Semester 5</a></li>
-            <li><a class="dropdown-item" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=6, sortOrder=@ViewData["CurrentSortOrder"]}))'">Semester 6</a></li>
-            <li><a class="dropdown-item" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=7, sortOrder=@ViewData["CurrentSortOrder"]}))'">Semester 7</a></li>
-            <li><a class="dropdown-item" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=8, sortOrder=@ViewData["CurrentSortOrder"]}))'">Semester 8</a></li>
-      </ul>
+@if (Model.CourseHasStudents.Count == 0)
+{
+    <div class="text-center">
+        <figure class="figure">
+            <img src="~/images/empty3.png" width="60%" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+            <figcaption class="figure-caption text-center">There are no Courses registered for this Student...</figcaption>
+        </figure>
     </div>
-</div>
+}
+else
+{
 
-<table class="table">
-    <tr>
-        <th>
-            <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=@ViewData["CurrentSemester"], sortOrder=@ViewData["TitleSortParam"]}))'">
-                Course Title
-                @if (@ViewData["CurrentSortOrder"].Equals("title"))
-                {
-                    <i class="bi bi-sort-down-alt"></i>
-                }
-                else if (@ViewData["CurrentSortOrder"].Equals("title_desc"))
-                {                       
-                    <i class="bi bi-sort-down"></i>
-                }
-                else
-                {
-                    <i class="bi bi-arrow-down-up"></i>
-                }
-                
-            </button>        
-        </th>
-        <th>
-            <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=@ViewData["CurrentSemester"], sortOrder=@ViewData["SemesterSortParam"]}))'">
-                Semester
-                @if (@ViewData["CurrentSortOrder"].Equals("semester"))
-                {
-                    <i class="bi bi-sort-down-alt"></i>
-                }
-                else if (@ViewData["CurrentSortOrder"].Equals("semester_desc"))
-                {
-                    <i class="bi bi-sort-down"></i>
-                }
-                else
-                {
-                    <i class="bi bi-arrow-down-up"></i>
-                }                
+    <div>
+        Choose semester:
+        <div class="btn-group">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                @semesterTag
             </button>
-        </th>
-        <th>
-            <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=@ViewData["CurrentSemester"], sortOrder=@ViewData["GradeSortParam"]}))'">
-                Grade
-               @if (@ViewData["CurrentSortOrder"].Equals("grade"))
-                {
-                    <i class="bi bi-sort-down-alt"></i>
-                }
-                else if (@ViewData["CurrentSortOrder"].Equals("grade_desc"))
-                {                       
-                    <i class="bi bi-sort-down"></i>
-                }
-                else
-                {
-                    <i class="bi bi-arrow-down-up"></i>
-                }                
-            </button>    
-        </th>
-    </tr>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=0, sortOrder=@ViewData["CurrentSortOrder"]}))'">All semesters</a></li>
+                <li><a class="dropdown-item" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=1, sortOrder=@ViewData["CurrentSortOrder"]}))'">Semester 1</a></li>
+                <li><a class="dropdown-item" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=2, sortOrder=@ViewData["CurrentSortOrder"]}))'">Semester 2</a></li>
+                <li><a class="dropdown-item" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=3, sortOrder=@ViewData["CurrentSortOrder"]}))'">Semester 3</a></li>
+                <li><a class="dropdown-item" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=4, sortOrder=@ViewData["CurrentSortOrder"]}))'">Semester 4</a></li>
+                <li><a class="dropdown-item" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=5, sortOrder=@ViewData["CurrentSortOrder"]}))'">Semester 5</a></li>
+                <li><a class="dropdown-item" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=6, sortOrder=@ViewData["CurrentSortOrder"]}))'">Semester 6</a></li>
+                <li><a class="dropdown-item" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=7, sortOrder=@ViewData["CurrentSortOrder"]}))'">Semester 7</a></li>
+                <li><a class="dropdown-item" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=8, sortOrder=@ViewData["CurrentSortOrder"]}))'">Semester 8</a></li>
+            </ul>
+        </div>
+    </div>
 
-    @foreach (var item in courses)
+    @if (courses.Count == 0)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Course.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Course.Semester)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Grade)
-            </td>
-        </tr>
+        <div class="text-center">
+            <figure class="figure">
+                <img src="~/images/empty3.png" width="60%" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+                <figcaption class="figure-caption text-center">There are no Courses registered for this Semester...</figcaption>
+            </figure>
+        </div>
     }
-</table>
+    else
+    {
+
+        <table class="table">
+            <tr>
+                <th>
+                    <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=@ViewData["CurrentSemester"], sortOrder=@ViewData["TitleSortParam"]}))'">
+                        Course Title
+                        @if (@ViewData["CurrentSortOrder"].Equals("title"))
+                        {
+                            <i class="bi bi-sort-down-alt"></i>
+                        }
+                        else if (@ViewData["CurrentSortOrder"].Equals("title_desc"))
+                        {
+                            <i class="bi bi-sort-down"></i>
+                        }
+                        else
+                        {
+                            <i class="bi bi-arrow-down-up"></i>
+                        }
+
+                    </button>
+                </th>
+                <th>
+                    <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=@ViewData["CurrentSemester"], sortOrder=@ViewData["SemesterSortParam"]}))'">
+                        Semester
+                        @if (@ViewData["CurrentSortOrder"].Equals("semester"))
+                        {
+                            <i class="bi bi-sort-down-alt"></i>
+                        }
+                        else if (@ViewData["CurrentSortOrder"].Equals("semester_desc"))
+                        {
+                            <i class="bi bi-sort-down"></i>
+                        }
+                        else
+                        {
+                            <i class="bi bi-arrow-down-up"></i>
+                        }
+                    </button>
+                </th>
+                <th>
+                    <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("StudentDetails", "Secretaries", new RouteValueDictionary(new { id=Model.StudentId, semester=@ViewData["CurrentSemester"], sortOrder=@ViewData["GradeSortParam"]}))'">
+                        Grade
+                        @if (@ViewData["CurrentSortOrder"].Equals("grade"))
+                        {
+                            <i class="bi bi-sort-down-alt"></i>
+                        }
+                        else if (@ViewData["CurrentSortOrder"].Equals("grade_desc"))
+                        {
+                            <i class="bi bi-sort-down"></i>
+                        }
+                        else
+                        {
+                            <i class="bi bi-arrow-down-up"></i>
+                        }
+                    </button>
+                </th>
+            </tr>
+
+            @foreach (var item in courses)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Course.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Course.Semester)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Grade)
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+
+}
+
 

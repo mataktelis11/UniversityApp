@@ -6,33 +6,47 @@
 
 <h2>My Courses</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Semester)
-            </th>
-            <th>Number of Registered Students</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+@if (Model.Count() == 0)
+{
+    <div class="text-center">
+        <figure class="figure">
+            <img src="~/images/empty3.png" width="60%" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+            <figcaption class="figure-caption text-center">There are no Courses registered to your Account...</figcaption>
+        </figure>
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Semester)
-                </td>
-                <td>
-                    <a asp-action="RegisteredStudents" asp-route-id="@item.CourseId">Show Students</a>
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Semester)
+                </th>
+                <th>Number of Registered Students</th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                    <tr>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.Semester)
+                        </td>
+                        <td>
+                            <a asp-action="RegisteredStudents" asp-route-id="@item.CourseId">Show Students</a>
+                        </td>
+                    </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
