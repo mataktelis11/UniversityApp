@@ -1,4 +1,6 @@
-﻿@model IEnumerable<UniversityApp.Models.Professor>
+﻿@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+@model X.PagedList.IPagedList<UniversityApp.Models.Professor>
 
 @{
     ViewData["Title"] = "University Professors";
@@ -8,20 +10,62 @@
 <p>Here you can see all the Professors tha are registered to the Univerisity's Database. You can use the Register a new Professor by clicking the button 'Add a new Professor'.</p>
 <p>Also, you can click a Professor's button to see his page and assign a Course for him/her. </p>
 
+
+<form asp-action="UniversityProfessors" method="get">
+    <div class="form-actions">
+        <p>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">Search by Full Name</span>
+                <input type="text" class="form-control" aria-label="Text input with dropdown button" value="@ViewData["CurrentFilter"]" name="search">
+                <input type="submit" value="search" class="btn btn-primary" />
+            </div>
+            <input type="text" value="@ViewData["CurrentSortOrder"]" name="sortOrder" hidden="">
+            @*
+            <input type="text" value="@ViewData["pageSize"]" name="pageSize" hidden="">*@
+        </p>
+    </div>
+</form>
+
+
 <p>
     <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("CreateProfessor", "Secretaries")'"><i class="bi bi-plus-circle-fill"></i> Add a new Professor</button>
 </p>
 <table class="table">
     <thead>
         <tr class="table-secondary">
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
+            <th>               
+                <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("UniversityProfessors", "Secretaries", new RouteValueDictionary(new { page=ViewData["Page"],  sortOrder=@ViewData["FullnameSortParam"], search=ViewData["CurrentFilter"]}))'">
+                    Full Name
+                    @if (@ViewData["CurrentSortOrder"].Equals("fullname"))
+                    {
+                        <i class="bi bi-sort-down-alt"></i>
+                    }
+                    else if (@ViewData["CurrentSortOrder"].Equals("fullname_desc"))
+                    {
+                        <i class="bi bi-sort-down"></i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-arrow-down-up"></i>
+                    }
+                </button>
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Surname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Department)
+            <th>               
+                <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("UniversityProfessors", "Secretaries", new RouteValueDictionary(new { page=ViewData["Page"],  sortOrder=@ViewData["DepartmentSortParam"], search=ViewData["CurrentFilter"]}))'">
+                    Department
+                    @if (@ViewData["CurrentSortOrder"].Equals("department"))
+                    {
+                        <i class="bi bi-sort-down-alt"></i>
+                    }
+                    else if (@ViewData["CurrentSortOrder"].Equals("department_desc"))
+                    {
+                        <i class="bi bi-sort-down"></i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-arrow-down-up"></i>
+                    }
+                </button>
             </th>
             <th></th>
         </tr>
@@ -31,10 +75,7 @@
         {
             <tr class="table-secondary">
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Surname)
+                    @Html.DisplayFor(modelItem => item.Fullname)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Department)
@@ -46,3 +87,21 @@
         }
     </tbody>
 </table>
+
+
+<!-- output a paging control that lets the user navigation to the previous page, next page, etc -->
+<nav>
+    @Html.PagedListPager(Model, page => Url.Action("UniversityProfessors", new { page = page, sortOrder=ViewData["CurrentSortOrder"], search=ViewData["CurrentFilter"] }), new PagedListRenderOptions()
+{
+    ActiveLiElementClass = "active",
+    PageClasses = new[]{ "page-link"},
+    LiElementClasses=new[] { "page-item" },
+    UlElementClasses = new[] { "pagination","justify-content-center", "mt-3" },
+    LinkToNextPageFormat = "Next",
+    LinkToPreviousPageFormat = "Previous",
+    MaximumPageNumbersToDisplay = 5,
+    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+    DisplayLinkToNextPage = PagedListDisplayMode.Always,
+    
+})
+</nav>

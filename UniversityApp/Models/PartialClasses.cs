@@ -13,6 +13,7 @@ namespace UniversityApp.Models
     [ModelMetadataType(typeof(ProfessorMetadata))]
     public partial class Professor
     {
+        [Display(Name = "Full Name")]
         public string Fullname
         {
             get

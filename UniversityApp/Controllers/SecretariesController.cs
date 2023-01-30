@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Threading.Tasks;
 using Azure;
@@ -543,7 +544,7 @@ namespace UniversityApp.Controllers
         // GET: Secretaries/UniversityProfessors
         // obtain all the Professors
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-        public async Task<IActionResult> UniversityProfessors()
+        public async Task<IActionResult> UniversityProfessors(int? page, string? sortOrder, string? search)
         {
             if (HttpContext.Session.GetString("userid") == null)
                 return View("AuthorizationError");
@@ -551,8 +552,51 @@ namespace UniversityApp.Controllers
             if (!(HttpContext.Session.GetString("role").Equals("Secretaries")))
                 return View("NoRightsError");
 
-            var UniversityDBContext = _context.Professors;
-            return View(await UniversityDBContext.ToListAsync());
+            var professors = _context.Professors.ToList(); //.OrderBy(p => p.Name).ThenBy(p => p.Surname).ToList();
+
+            ViewData["CurrentSortOrder"] = String.IsNullOrEmpty(sortOrder) ? "fullname" : sortOrder;
+
+            ViewData["FullnameSortParam"] = String.IsNullOrEmpty(sortOrder) ? "fullname_desc" : "";
+            ViewData["DepartmentSortParam"] = sortOrder == "department" ? "department_desc" : "department";
+
+            ViewData["CurrentFilter"] = search;
+
+            // Search
+            if (!String.IsNullOrEmpty(search))
+            {
+                professors = professors.Where(c => c.Name.ToLower().Contains(search.ToLower()) || c.Surname.ToLower().Contains(search.ToLower())).Distinct().ToList();
+            }
+
+            // Sorting
+            switch (sortOrder)
+            {
+                case "department_desc":
+                    professors = professors.OrderByDescending(c => c.Department).ToList();
+                    break;
+
+                case "department":
+                    professors = professors.OrderBy(c => c.Department).ToList();
+                    break;
+
+                case "fullname_desc":
+                    professors = professors.OrderByDescending(p => p.Name).ThenByDescending(p => p.Surname).ToList();
+                    break;
+
+                default:
+                    professors = professors.OrderBy(p => p.Name).ThenBy(p => p.Surname).ToList();
+                    break;
+            }
+
+            // Pagination
+            if (page != null && page < 1)
+            {
+                page = 1;
+            }
+            int pageSize = 10;
+            var professorsData = professors.ToPagedList(page ?? 1, pageSize);
+            ViewData["Page"] = page;
+
+            return View(professorsData);
         }
 
         // GET: Secretaries/CreateProfessor
