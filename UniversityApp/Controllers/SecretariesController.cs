@@ -475,7 +475,7 @@ namespace UniversityApp.Controllers
             // get the courses that this Student hasnt registered
             var availableCourses = _context.Courses.Where(course => !registeredCourses.Contains(course));
 
-            ViewData["availableCourses"] = availableCourses.ToList();
+            ViewData["availableCourses"] = availableCourses.OrderBy(c => c.Semester).ToList();
 
             ViewData["check"] = "nones";
 
