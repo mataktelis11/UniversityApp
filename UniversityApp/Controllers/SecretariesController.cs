@@ -49,7 +49,7 @@ namespace UniversityApp.Controllers
         // GET: Secretaries/UniversityCourses
         // Retrieve all the courses
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-        public async Task<IActionResult> UniversityCourses()
+        public async Task<IActionResult> UniversityCourses(int? page, string? sortOrder, string? search)
         {
             if (HttpContext.Session.GetString("userid") == null)
                 return View("AuthorizationError");
@@ -57,8 +57,64 @@ namespace UniversityApp.Controllers
             if (!(HttpContext.Session.GetString("role").Equals("Secretaries")))
                 return View("NoRightsError");
 
-            var universityDBcontext = _context.Courses.Include(c => c.Professor).OrderBy( c => c.Semester);
-            return View(await universityDBcontext.ToListAsync());
+            var courses = _context.Courses.Include(c => c.Professor).Include(c => c.CourseHasStudents).ToList();
+
+
+            ViewData["CurrentSortOrder"] = String.IsNullOrEmpty(sortOrder) ? "semester" : sortOrder;
+
+            ViewData["TitleSortParam"] = sortOrder == "title" ? "title_desc" : "title";
+            ViewData["SemesterSortParam"] = String.IsNullOrEmpty(sortOrder) ? "semester_desc" : "";
+            ViewData["StatusSortParam"] = sortOrder == "status" ? "status_desc" : "status";
+
+            ViewData["CurrentFilter"] = search;
+
+            // Search
+            if (!String.IsNullOrEmpty(search))
+            {
+                courses = courses.Where(c => c.Title.ToLower().Contains(search.ToLower())).ToList();
+            }
+
+            // Sorting
+            switch (sortOrder)
+            {
+                case "title_desc":
+                    courses = courses.OrderByDescending(c => c.Title).ToList();
+                    break;
+
+                case "title":
+                    courses = courses.OrderBy(c => c.Title).ToList();
+                    break;
+
+                case "semester_desc":
+                    courses = courses.OrderByDescending(c => c.Semester).ToList();
+                    break;
+
+                case "status":
+                    courses = courses.OrderBy(c => c.ProfessorId).ToList();
+                    break;
+
+                case "status_desc":
+                    courses = courses.OrderByDescending(c => c.ProfessorId).ToList();
+                    break;
+
+                default:
+                    courses = courses.OrderBy(c => c.Semester).ToList();
+                    break;
+            }
+
+
+            // Pagination
+            if (page != null && page < 1)
+            {
+                page = 1;
+            }
+            ViewData["Page"] = page;
+            int pageSize = 10;
+
+            var coursesData = courses.ToPagedList(page ?? 1, pageSize);
+
+
+            return View(coursesData);
         }
 
         // GET: Secretaries/CreateCourse

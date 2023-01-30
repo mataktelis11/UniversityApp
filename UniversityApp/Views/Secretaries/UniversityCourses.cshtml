@@ -1,4 +1,6 @@
-﻿@model IEnumerable<UniversityApp.Models.Course>
+﻿@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+@model X.PagedList.IPagedList<UniversityApp.Models.Course>
 
 @{
     ViewData["Title"] = "University Courses";
@@ -7,6 +9,22 @@
 <h1><i class="bi bi-book"></i> University Courses</h1>
 <p>Here you can view all the registered Courses of the University.</p>
 
+<form asp-action="UniversityCourses" method="get">
+    <div class="form-actions">
+        <p>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon3">Search by Course Title</span>
+              <input type="text" class="form-control" aria-label="Text input with dropdown button" value="@ViewData["CurrentFilter"]" name="search">
+              <input type="submit" value="search" class="btn btn-primary" />
+            </div>
+            <input type="text" value="@ViewData["CurrentSortOrder"]" name="sortOrder" hidden="">
+@*                        
+            <input type="text" value="@ViewData["pageSize"]" name="pageSize" hidden="">*@
+        </p>
+    </div>
+</form>
+
+
 <p>
     @*<a asp-action="Create">Create New</a>*@
     <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("CreateCourse", "Secretaries")'"><i class="bi bi-plus-circle-fill"></i> Add a new Course</button>
@@ -14,18 +32,58 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
+            <th>              
+                <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("UniversityCourses", "Secretaries", new RouteValueDictionary(new { page=ViewData["Page"],  sortOrder=@ViewData["TitleSortParam"], search=ViewData["CurrentFilter"]}))'">
+                    Title
+                    @if (@ViewData["CurrentSortOrder"].Equals("title"))
+                    {
+                        <i class="bi bi-sort-down-alt"></i>
+                    }
+                    else if (@ViewData["CurrentSortOrder"].Equals("title_desc"))
+                    {
+                        <i class="bi bi-sort-down"></i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-arrow-down-up"></i>
+                    }
+                </button>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Semester)
+                <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("UniversityCourses", "Secretaries", new RouteValueDictionary(new { page=ViewData["Page"],  sortOrder=@ViewData["SemesterSortParam"], search=ViewData["CurrentFilter"]}))'">
+                    Semester
+                    @if (@ViewData["CurrentSortOrder"].Equals("semester"))
+                    {
+                        <i class="bi bi-sort-down-alt"></i>
+                    }
+                    else if (@ViewData["CurrentSortOrder"].Equals("semester_desc"))
+                    {
+                        <i class="bi bi-sort-down"></i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-arrow-down-up"></i>
+                    }
+                </button>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Professor)
+                <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("UniversityCourses", "Secretaries", new RouteValueDictionary(new { page=ViewData["Page"],  sortOrder=@ViewData["StatusSortParam"], search=ViewData["CurrentFilter"]}))'">
+                    Status
+                    @if (@ViewData["CurrentSortOrder"].Equals("status"))
+                    {
+                        <i class="bi bi-sort-down-alt"></i>
+                    }
+                    else if (@ViewData["CurrentSortOrder"].Equals("status_desc"))
+                    {
+                        <i class="bi bi-sort-down"></i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-arrow-down-up"></i>
+                    }
+                </button>
             </th>
-            <th>
-                Action
-            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -46,11 +104,11 @@
                 <td>
                         @if (@item.Professor != null)
                         {
-                            @Html.DisplayFor(modelItem => item.Professor.ProfessorId)
+                            @Html.Raw("Assigned ")<i class="bi bi-check"></i>
                         }
                         else
                         {
-                           @Html.Raw("No Professor assigned...")
+                           @Html.Raw("No Professor assigned ")<i class="bi bi-x-circle"></i>
                         }
 
                 </td>
@@ -59,7 +117,7 @@
 
                 @if(@item.Professor != null){
                     //<a asp-action="Details" asp-route-id="@item.CourseId">View Details</a>
-                            <button type="button" class="btn btn-success">View Details  <i class="bi bi-card-text"></i></button>
+                            <button type="button" class="btn btn-success" onclick="openModal('@item.Title',@item.Semester,'@item.Professor.Name','@item.Professor.Surname', @item.Professor.Afm, @item.CourseHasStudents.Where(c => c.Grade == null).Count())">View Details  <i class="bi bi-card-text"></i></button>
                 }
                 else{
                     //<a asp-action="Details" asp-route-id="@item.CourseId">Assign a Professor</a>
@@ -74,3 +132,87 @@
 
     </tbody>
 </table>
+
+<!-- output a paging control that lets the user navigation to the previous page, next page, etc -->
+<nav>
+    @Html.PagedListPager(Model, page => Url.Action("UniversityCourses", new { page = page, sortOrder=ViewData["CurrentSortOrder"], search=ViewData["CurrentFilter"] }), new PagedListRenderOptions()
+{
+    ActiveLiElementClass = "active",
+    PageClasses = new[]{ "page-link"},
+    LiElementClasses=new[] { "page-item" },
+    UlElementClasses = new[] { "pagination","justify-content-center", "mt-3" },
+    LinkToNextPageFormat = "Next",
+    LinkToPreviousPageFormat = "Previous",
+    MaximumPageNumbersToDisplay = 5,
+    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+    DisplayLinkToNextPage = PagedListDisplayMode.Always,
+    
+})
+</nav>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="formModalCenter" tabindex="-1" role="dialog" aria-labelledby="formModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Assign a new Course</h5>
+                <button type="button" class="btn-close" aria-label="Close" id="btnclose">
+        </button>
+      </div>
+      <div class="modal-body">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Course's Semester</th>
+                            <td id="semester"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Professor FullName</th>
+                            <td id="profFullname"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Professor AFM</th>
+                            <td id="profafm"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Non graded Students</th>
+                            <td id="students"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="btnclose2">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    var btnclose = document.getElementById("btnclose");
+    var btnclose2 = document.getElementById("btnclose2");
+
+
+    function openModal(courseName, semester, professorName, professorSurname, professorAFM, students) {
+        document.getElementById("exampleModalLongTitle").innerHTML = "Details about course '" + courseName + "'";
+
+        document.getElementById("semester").innerHTML = semester;
+        document.getElementById("profFullname").innerHTML = professorName + " " + professorSurname;
+        document.getElementById("profafm").innerHTML = professorAFM;
+        document.getElementById("students").innerHTML = students;
+
+        $('#formModalCenter').modal('show');
+    }
+
+    btnclose.onclick = function () {
+        $('#formModalCenter').modal('hide');
+    }
+
+    btnclose2.onclick = function () {
+        $('#formModalCenter').modal('hide');
+    }
+
+</script>
