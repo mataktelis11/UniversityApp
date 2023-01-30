@@ -122,7 +122,7 @@ namespace UniversityApp.Controllers
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public IActionResult CreateCourse()
         {
-            List<SelectListItem> professors = new SelectList(_context.Professors, "ProfessorId", "ProfessorId").ToList();
+            List<SelectListItem> professors = new SelectList(_context.Professors, "ProfessorId", "FullnameAFM").ToList();
             professors.Insert(0, (new SelectListItem { Text = "[None]" }));
             ViewData["ProfessorId"] = professors;
             return View();
@@ -176,7 +176,7 @@ namespace UniversityApp.Controllers
 
             var course = await _context.Courses.FindAsync(id);
 
-            ViewData["Professorid"] = new SelectList(_context.Professors, "ProfessorId", "ProfessorId");
+            ViewData["Professorid"] = new SelectList(_context.Professors, "ProfessorId", "FullnameAFM");
 
             return View(course);
         }
@@ -623,7 +623,7 @@ namespace UniversityApp.Controllers
                 return NotFound();
             }
 
-            ViewData["availableCourses"] = new SelectList(_context.Courses.Where(c => c.Professor == null || c.ProfessorId == null), "CourseId", "CourseId");
+            ViewData["availableCourses"] = new SelectList(_context.Courses.Where(c => c.Professor == null || c.ProfessorId == null), "CourseId", "TitleSemester");
 
             int registeredCourses = _context.Courses.Where(c => c.ProfessorId == professor.ProfessorId).Count();
 
