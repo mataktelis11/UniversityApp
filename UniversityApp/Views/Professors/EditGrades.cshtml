@@ -11,8 +11,6 @@
         <thead>
             <tr>
                 <th>Registration Number</th>
-                <th>Name</th>
-                <th>Surname</th>
                 <th>Grade</th>
             </tr>
         </thead>
@@ -22,12 +20,6 @@
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.Student.RegistrationNumber)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Student.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Student.Surname)
                     </td>
                     <td>
                         <input type="number" name="common-number" id="@item.GradeId" min="1" max="10">
@@ -41,11 +33,11 @@
 
 
 
-<button class="btn btn-lg btn-primary" type="button" onclick="getGrades()">Block button</button>
+<button class="btn btn-lg btn-primary" type="button" onclick="getGrades()">Submit Grades</button>
 
 <form asp-action="EditGrades" id="gradesForm">
     <input type="number" id="id" value="@courseId" name="id" hidden =""/>
-    <input type="text" id="addedGrades" name="addedGrades" hidden ="" />
+    <input type="text" id="addedGrades" name="addedGrades" hidden="" />
 </form>
 
 

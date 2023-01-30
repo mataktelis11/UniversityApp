@@ -202,7 +202,10 @@ namespace UniversityApp.Controllers
 
             ViewData["courseId"] = id;
 
-            var unregisteredGrades = _context.CourseHasStudents.Where(chs => chs.CourseId == id && chs.Grade == null).Include(chs => chs.Student);
+            var unregisteredGrades = _context.CourseHasStudents
+                .Where(chs => chs.CourseId == id && chs.Grade == null)
+                .Include(chs => chs.Student)
+                .OrderBy(chs => chs.Student.RegistrationNumber);
 
             return View(unregisteredGrades);
         }
@@ -221,6 +224,8 @@ namespace UniversityApp.Controllers
 
             if(addedGrades == null)
                 return RedirectToAction("RegisteredStudents", new { id = id });
+
+            addedGrades = addedGrades.Trim();
 
             foreach (string element in addedGrades.Split(' '))
             {
