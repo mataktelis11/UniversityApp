@@ -36,7 +36,7 @@ namespace UniversityApp.Controllers
 
 
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-        public IActionResult Semesters(int? page)
+        public IActionResult Semesters(int? semester)
         {
             if(HttpContext.Session.GetString("userid")==null)
                 return View("AuthorizationError");
@@ -44,18 +44,24 @@ namespace UniversityApp.Controllers
             if (!(HttpContext.Session.GetString("role").Equals("Students")))
                 return View("NoRightsError");
 
-
             var student = StudentGetter();
 
-            ViewData["CurrentPage"] = page;
-            
-            if (page == null)
+            // semester must be >=1 and <=8
+            if (semester == null || semester < 1)
             {
-                ViewData["CurrentPage"] = 1;
+                semester = 1;
             }
-            var courses = student.CourseHasStudents.Where(c => c.Course.Semester.ToString() == ViewData["CurrentPage"].ToString());
-           
+            else if(semester > 8)
+            {
+                semester = 8;
+            }
 
+            ViewData["CurrentSemester"] = semester;
+
+            var courses = student.CourseHasStudents
+                .Where(c => c.Course.Semester == semester)
+                .OrderBy(c => c.Course.Title);
+           
             return View(courses);
         }
 
@@ -106,11 +112,6 @@ namespace UniversityApp.Controllers
                 sum += (int)item.Grade;
             }
 
-            
-
-
-
-
             ViewData["reglessons"] = reglessons;
             ViewData["passedlessons"] = passedlessons.Count();
             ViewData["etcs"] = etcs;
@@ -122,7 +123,6 @@ namespace UniversityApp.Controllers
                 ViewData["average"] = "-";
             }
             
-
             return View();
         }
 

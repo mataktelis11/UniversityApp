@@ -1,15 +1,19 @@
 ﻿@model IEnumerable<UniversityApp.Models.CourseHasStudent>
 
 @{
-    ViewData["Title"] = "Semesters";
+    ViewData["Title"] = "Grades by Semester";
 }
-@{ViewData["sorting"] = "false";}
 
 <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" style="position:fixed;right:0">
     Settings
 </button>
 
-<h1 class="display-1 text-center"> Choose a semester </h1>
+<h1 class="display-4 text-center"> Your grades for Semester @ViewData["CurrentSemester"].ToString() </h1>
+
+<br />
+<br />
+<br />
+
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Display setting</h5>
@@ -28,7 +32,8 @@
     </div>
 </div>
 
-<div class="mx-auto display-1 text-center">
+<div class="mx-auto text-center">
+    Choose a semester: &nbsp;
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
         
         @{
@@ -36,13 +41,13 @@
             {
                 var btnid = "btnradio" + (i+2).ToString();
 
-                if (Int32.Parse(ViewData["CurrentPage"].ToString()) == i)
+                if (Int32.Parse(ViewData["CurrentSemester"].ToString()) == i)
                 {
-                    <input type="radio"  class="btn-check" name="btnradio" id=@btnid autocomplete="off" checked="" onclick="location.href='@Url.Action("Semesters", "Students", new { page = @i})'">
+                    <input type="radio"  class="btn-check" name="btnradio" id=@btnid autocomplete="off" checked="" onclick="location.href='@Url.Action("Semesters", "Students", new { semester = @i})'">
                 }
                 else
                 {
-                    <input type="radio" class="btn-check"  name="btnradio" id=@btnid autocomplete="off" onclick="location.href='@Url.Action("Semesters", "Students", new { page = @i})'" asp-route-page=@i>
+                    <input type="radio" class="btn-check" name="btnradio" id=@btnid autocomplete="off" onclick="location.href='@Url.Action("Semesters", "Students", new { semester = @i})'">
                 }
                 <label class="btn btn-outline-primary" for=@btnid>Semester @i</label>
             }
@@ -52,43 +57,56 @@
 </div>
 <p>
     <hr />
-    <table class="table table-bordered table-responsive table-hover">
-    <thead>
-        <tr>
-            <th>
-                Course
-            </th>
-            <th>
-                Grade
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var grade in Model)
-        {
-            if (ViewData["CurrentPage"].ToString() == grade.Course.Semester.ToString())
+
+    @if (Model.Count() == 0)
+    {
+        <div class="text-center">
+            <figure class="figure">
+                <img src="~/images/empty3.png" width="60%" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+                <figcaption class="figure-caption text-center">There are no Courses registered to your Account for this semester...</figcaption>
+            </figure>
+        </div>
+    }
+    else
+    {
+        <table class="table table-bordered table-responsive table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Course Title
+                    </th>
+                    <th>
+                        Grade
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var grade in Model)
                 {
-                    <tr>
-                        @if (grade.Grade < 5)
-                        {
-                            <td style="color:red"> @grade.Course.Title </td>
-                            <td style="color:red"> @grade.Grade </td>
-                        }
-                        else if (grade.Grade >= 5)
-                        {
-                            <td style="color:lawngreen"> @grade.Course.Title </td>
-                            <td style="color:lawngreen"> @grade.Grade </td>
-                        }
-                        else
-                        {
-                            <td> @grade.Course.Title </td>
-                            <td> - </td>
-                        }
+                    if (ViewData["CurrentSemester"].ToString() == grade.Course.Semester.ToString())
+                    {
+                        <tr>
+                            @if (grade.Grade < 5)
+                            {
+                                <td style="color:red"> @grade.Course.Title </td>
+                                <td style="color:red"> @grade.Grade </td>
+                            }
+                            else if (grade.Grade >= 5)
+                            {
+                                <td style="color:lawngreen"> @grade.Course.Title </td>
+                                <td style="color:lawngreen"> @grade.Grade </td>
+                            }
+                            else
+                            {
+                                <td> @grade.Course.Title </td>
+                                <td> - </td>
+                            }
 
 
-                    </tr>
+                        </tr>
+                    }
                 }
-            }
-    </tbody>
-</table>
+            </tbody>
+        </table>
+    }
 </p>
