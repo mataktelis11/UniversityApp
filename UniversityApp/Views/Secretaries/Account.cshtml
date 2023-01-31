@@ -4,4 +4,59 @@
     ViewData["Title"] = "My Account";
 }
 
-<h1>Hello @Model.Name</h1>
+<h1>Welcome @Model.Name</h1>
+
+<div class="row row-cols-1 row-cols-md-2 g-4">
+    <div class="col">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-header">You are a Secretary! &nbsp; <i class="bi bi-shield-shaded"></i></div>
+            <div class="card-body">
+                <p class="card-text">As a Secretary you have access to most of the Univeristy's Database. This means that it is your job to register new Students, Professors and even Courses!.</p>
+            </div>
+        </div>
+    </div>
+
+    @if (Int32.Parse(ViewData["coursesNumberEmpty"].ToString()) > 0)
+    {
+        <div class="col">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-header">Courses &nbsp; <i class="bi bi-exclamation-diamond-fill"></i></div>
+                <div class="card-body">
+                    <p class="card-text">There are currently @ViewData["coursesNumber"].ToString() Courses registered in the University's Database, however @ViewData["coursesNumberEmpty"].ToString() of those Courses han't got a Professor assigned!</p>
+                    <a asp-controller="Secretaries" asp-action="UniversityCourses" class="btn btn-secondary">Go to the Courses list &nbsp; <i class="bi bi-arrow-right-circle-fill"></i></a>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="col">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-header">Courses &nbsp; <i class="bi bi-book"></i></div>
+                <div class="card-body">
+                    <p class="card-text">There are currently @ViewData["coursesNumber"].ToString() Courses registered in the University's Database.</p>
+                    <a asp-controller="Secretaries" asp-action="UniversityCourses" class="btn btn-secondary">Go to the Courses list &nbsp; <i class="bi bi-arrow-right-circle-fill"></i></a>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="col">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header">Students &nbsp; <i class="bi bi-mortarboard"></i></div>
+            <div class="card-body">
+                <p class="card-text">There are currently @ViewData["studentsNumber"].ToString() Students registered in the University's Database.</p>
+                <a asp-controller="Secretaries" asp-action="UniversityStudents" class="btn btn-secondary">Go to the Students list &nbsp; <i class="bi bi-arrow-right-circle-fill"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header">Professors &nbsp; <i class="bi bi-person-circle"></i></div>
+            <div class="card-body">
+                <p class="card-text">There are currently @ViewData["professorsNumber"].ToString() Professors registered in the University's Database.</p>
+                <a asp-controller="Secretaries" asp-action="UniversityProfessors" class="btn btn-secondary">Go to the Professors list &nbsp; <i class="bi bi-arrow-right-circle-fill"></i></a>
+            </div>
+        </div>
+    </div>
+</div>

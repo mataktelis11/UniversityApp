@@ -43,6 +43,11 @@ namespace UniversityApp.Controllers
 
             var userid = HttpContext.Session.GetString("userid");
             var secretary = await _context.Secretaries.Where(s => s.Userid.ToString().Equals(userid)).FirstOrDefaultAsync();
+       
+            ViewData["coursesNumber"] = _context.Courses.Count().ToString();
+            ViewData["studentsNumber"] = _context.Students.Count().ToString();
+            ViewData["professorsNumber"] = _context.Professors.Count().ToString();
+            ViewData["coursesNumberEmpty"] = _context.Courses.Where(c => c.ProfessorId == null).Count().ToString();
 
             return View(secretary);
         }
