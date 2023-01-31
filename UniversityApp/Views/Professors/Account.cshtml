@@ -2,6 +2,78 @@
 
 @{
     ViewData["Title"] = "My Account";
+    int numberCourses = Int32.Parse(ViewData["numberCourses"].ToString());
+    int numberCoursesReq = Int32.Parse(ViewData["numberCoursesReq"].ToString());
+    int numberOfNonEmptyCourses = Int32.Parse(ViewData["numberOfNonEmptyCourses"].ToString());
 }
 
-<h1>Hello @Model.Name</h1>
+<h1>Welcome @Model.Name</h1>
+
+<div class="row row-cols-1 row-cols-md-2 g-4">
+
+    @if (numberCourses > 0)
+    {
+        <div class="col">
+            <div class="card text-white bg-info mb-3">
+            <div class="card-header">You are a Professor! &nbsp; <i class="bi bi-person-circle"></i></div>
+                    <div class="card-body">
+                    <p class="card-text">As a Professor you only have access the Courses that assigned to you. You  can pass grades to Students that have been registerd to your Courses.</p>
+                    @if (numberCourses == 1)
+                    {
+                        <p class="card-text">Currently there is 1 Course assigned to you.</p>
+                    }
+                    else
+                    {
+                        <p class="card-text">Currently there are @numberCourses Courses assigned to you.</p>
+                    }                   
+                    <a asp-controller="Professors" asp-action="ProfessorCourses" class="btn btn-secondary">Go to my Courses &nbsp; <i class="bi bi-arrow-right-circle-fill"></i></a>
+                    </div>
+                </div>
+        </div>
+    }
+    else
+    {
+        <div class="col">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-header">You are a Professor! &nbsp; <i class="bi bi-person-circle"></i></div>
+                <div class="card-body">
+                    <p class="card-text">As a Professor you only have access the Courses that assigned to you. You  can pass grades to Students that have been registerd to your Courses.</p>
+                    <p class="card-text">Currently there are NO Courses assigned to you! Contact with the Secretaries to Assign a Course to you</p>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (numberCourses > 0 && numberCoursesReq == 0 && numberOfNonEmptyCourses > 0)
+    {
+        <div class="col">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-header">Your Students &nbsp; <i class="bi bi-mortarboard"></i></div>
+                <div class="card-body">
+                    <p class="card-text">All the Students registered to your Courses have received their grade!</p>
+                </div>
+            </div>
+        </div>
+    }
+    else if (numberCourses > 0 && numberCoursesReq > 0 && numberOfNonEmptyCourses > 0)
+    {
+        <div class="col">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-header">Your Students &nbsp; <i class="bi bi-mortarboard"></i></div>
+                <div class="card-body">
+
+                    @if (numberCoursesReq == 1)
+                    {
+                        <p class="card-text">There is 1 Course with Students that haven't receive their grade!</p>
+                    }
+                    else
+                    {
+                        <p class="card-text">There are @numberCoursesReq.ToString() Courses with Students that haven't receive their grade!</p>
+                    }  
+                </div>
+            </div>
+        </div>
+    }
+    
+</div>
+

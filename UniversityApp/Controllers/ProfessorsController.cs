@@ -40,6 +40,19 @@ namespace UniversityApp.Controllers
             var userid = HttpContext.Session.GetString("userid");
             var professor = await _context.Professors.Where(p => p.Userid.ToString().Equals(userid)).FirstOrDefaultAsync();
 
+            var courses = _context.Courses.Where(c => c.ProfessorId == professor.ProfessorId);
+
+            ViewData["numberCourses"] = courses.Count().ToString();
+
+            ViewData["numberOfNonEmptyCourses"] = courses
+                .Where(c => c.CourseHasStudents.Count() > 0)
+                .Count().ToString();
+
+            ViewData["numberCoursesReq"] = courses
+                .Where(c => c.CourseHasStudents.Count() > 0)
+                .Where(c => c.CourseHasStudents.Where(chs => chs.Grade ==null).Count() > 0)
+                .Count().ToString();
+
             return View(professor);
         }
 
