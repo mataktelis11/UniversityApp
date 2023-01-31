@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Professor Details";
 
+    int availableCoursesCount = Int32.Parse(ViewData["availableCoursesCount"].ToString());
+
     var currentSortOrder = ViewData["CurrentSortOrder"].ToString();
 
     var currentCourses = Model.Courses;
@@ -31,10 +33,10 @@
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
     <div class="col">
-        <div class="card">
+        <div class="card text-white bg-secondary mb-3">
             <div class="card-body">
                 <h5 class="card-title">Personal Details</h5>
-                <table class="table">
+                <table class="table border-white">
                     <tbody>
                         <tr>
                             <th scope="row">@Html.DisplayNameFor(model => model.Name)</th>
@@ -58,7 +60,7 @@
         </div>
     </div>
     <div class="col">
-        <div class="card">
+        <div class="card text-white bg-secondary mb-3">
             <div class="card-body">
                 <h5 class="card-title">Number of Registered Courses</h5>
                 <h2>@ViewData["registeredCourses"]</h2>
@@ -69,7 +71,7 @@
 
 <hr />
 
-<h1>Assigned Courses    <button type="button" class="btn btn-primary" id="btnopen"><i class="bi bi-plus-circle-fill"></i> Assign a new Course to this Professor</button></h1>
+<h1>Assigned Courses    <button type="button" class="btn btn-success" id="btnopen"><i class="bi bi-plus-circle-fill"></i> Assign a Course to this Professor</button></h1>
 
 
 @if (currentCourses.Count == 0)
@@ -84,13 +86,16 @@
 else
 {
 
+    <br />
 
-    <table class="table">
-        <thead>
+    <div class="row justify-content-center">
+
+    <table class="table table-striped table-hover table-bordered table-dark w-75">
+            <thead class="table-secondary">
             <tr>
                 <th>
-                    <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("ProfessorDetails", "Secretaries", new RouteValueDictionary(new { id=Model.ProfessorId, sortOrder=@ViewData["TitleSortParam"]}))'">
-                        Title
+                    <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("ProfessorDetails", "Secretaries", new RouteValueDictionary(new { id=Model.ProfessorId, sortOrder=@ViewData["TitleSortParam"]}))'">
+                        Course Title
                         @if (@ViewData["CurrentSortOrder"].Equals("title"))
                         {
                             <i class="bi bi-sort-down-alt"></i>
@@ -106,7 +111,7 @@ else
                     </button>
                 </th>
                 <th>
-                    <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("ProfessorDetails", "Secretaries", new RouteValueDictionary(new { id=Model.ProfessorId, sortOrder=@ViewData["SemesterSortParam"]}))'">
+                    <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("ProfessorDetails", "Secretaries", new RouteValueDictionary(new { id=Model.ProfessorId, sortOrder=@ViewData["SemesterSortParam"]}))'">
                         Semester
                         @if (@ViewData["CurrentSortOrder"].Equals("semester"))
                         {
@@ -138,6 +143,7 @@ else
             }
         </tbody>
     </table>
+    </div>
 }
 
 
@@ -148,22 +154,31 @@ else
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Assign a new Course</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Assign a Course</h5>
                 <button type="button" class="btn-close" aria-label="Close" id="btnclose">
         </button>
       </div>
       <div class="modal-body">
-          <div class="row">
-        <div class="col-md-4">
-            <form asp-action="AssignProfessorCourse" id="fromAssignProf">
-                <div class="form-group">
-                    <select class="form-control" asp-items="ViewBag.availableCourses" name="courseid"></select>
-                </div>
-                <input type="number" name="professorid" value="@Model.ProfessorId" hidden="">
-            </form>
-        </div>
-    </div>
-
+            @if (availableCoursesCount > 0)
+            {
+                <p>Choose a Course to assign for this Professor. The list contains the available Courses in the following format:</p>
+                <p>&#60;Course Title&#62; - &#60;Course Semester&#62;</p>
+                <form asp-action="AssignProfessorCourse" id="fromAssignProf">
+                    <div class="form-group">
+                        <select class="form-control" asp-items="ViewBag.availableCourses" name="courseid"></select>
+                    </div>
+                    <input type="number" name="professorid" value="@Model.ProfessorId" hidden="">
+                </form>
+            }
+            else
+            {
+                <div class="text-center">
+                    <figure class="figure">
+                        <img src="~/images/empty44.png" width="20%" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure."/>   
+                        <p>There are no availabe courses to assign...</p>
+                    </figure>
+                </div> 
+            }
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" id="btnclose2">Close</button>

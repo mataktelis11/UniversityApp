@@ -673,6 +673,7 @@ namespace UniversityApp.Controllers
             }
 
             ViewData["availableCourses"] = new SelectList(_context.Courses.Where(c => c.Professor == null || c.ProfessorId == null), "CourseId", "TitleSemester");
+            ViewData["availableCoursesCount"] = _context.Courses.Where(c => c.Professor == null || c.ProfessorId == null).Count();
 
             int registeredCourses = _context.Courses.Where(c => c.ProfessorId == professor.ProfessorId).Count();
 
