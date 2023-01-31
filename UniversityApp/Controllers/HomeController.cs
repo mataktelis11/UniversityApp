@@ -22,7 +22,7 @@ namespace UniversityApp.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult License()
         {
             return View();
         }
@@ -48,19 +48,17 @@ namespace UniversityApp.Controllers
         [HttpPost]
         public ActionResult Login(User user)
         {
-            //if (ModelState.IsValid)
-            //{
-                _context = new UniversityDBContext();
-                var obj = _context.Users.Where(a => a.Username.Equals(user.Username) && a.Password.Equals(user.Password)).FirstOrDefault();
-                if (obj != null)
-                {
-                    HttpContext.Session.SetString("username", obj.Username.ToString());
-                    HttpContext.Session.SetString("userid", obj.Userid.ToString());
-                    HttpContext.Session.SetString("role",obj.Role.ToString());
+            _context = new UniversityDBContext();
+            var obj = _context.Users.Where(a => a.Username.Equals(user.Username) && a.Password.Equals(user.Password)).FirstOrDefault();
+            if (obj != null)
+            {
+                HttpContext.Session.SetString("username", obj.Username.ToString());
+                HttpContext.Session.SetString("userid", obj.Userid.ToString());
+                HttpContext.Session.SetString("role",obj.Role.ToString());
                 
-                return RedirectToAction("Index", obj.Role);
-                }
-            //}
+            return RedirectToAction("Index", obj.Role);
+            }
+            
             return RedirectToAction("Login");
         }
 
