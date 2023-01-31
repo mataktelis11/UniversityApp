@@ -502,6 +502,11 @@ namespace UniversityApp.Controllers
             {
                 return NotFound();
             }
+
+            if (String.IsNullOrEmpty(selectedCourses))
+            {
+                return RedirectToAction("StudentDetails", new { id = id });
+            }
            
             int gradeId = 1;
             if(_context.CourseHasStudents.Count() > 0)
@@ -509,8 +514,6 @@ namespace UniversityApp.Controllers
                 gradeId = Int32.Parse(_context.CourseHasStudents.OrderByDescending(chs => chs.GradeId).FirstOrDefault().GradeId.ToString());
                 gradeId += 1;
             }
-
-            var s = selectedCourses.Split(' ');
 
             foreach (string course in selectedCourses.Split(' '))
             {

@@ -1,17 +1,22 @@
 ﻿@model UniversityApp.Models.Student
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Assign Courses";
     var availableCourses = ViewData["availableCourses"] as List<UniversityApp.Models.Course>;
 }
 
 
-<h1>Avaible Courses</h1>
+<h1>
+    <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("StudentDetails", "Secretaries",  new RouteValueDictionary(new { id=Model.StudentId}))'"><i class="bi bi-backspace-fill"></i> Go back</button> &nbsp; Assign Courses for @Model.Name</h1>
 
-<table class="table">
-    <thead>
+<p>Check the Courses you want to assign for this Student.</p>
+
+<br />
+
+<table class="table table-striped table-hover table-bordered table-dark w-100">
+    <thead class="table-secondary">
         <tr>
-            <th>Title</th>
+            <th>Course Title</th>
             <th>Semester</th>
             <th>Select</th>
         </tr>
