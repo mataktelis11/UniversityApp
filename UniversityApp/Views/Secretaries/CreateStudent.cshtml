@@ -1,7 +1,7 @@
 ﻿@model UniversityApp.Models.Student
 
 @{
-    ViewData["Title"] = "Create a new Student";
+    ViewData["Title"] = "Register a new Student";
 }
 
 
@@ -39,8 +39,9 @@
                         <input asp-for="Department" class="form-control" />
                         <span asp-validation-for="Department" class="text-danger"></span>
                     </div>
+                    <hr />
                     <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-primary" />
+                        <input type="submit" value="Register" class="btn btn-primary" />
                     </div>
                 </form>
             </div>

@@ -6,5 +6,8 @@ namespace UniversityApp.Models.Metadata
     {
         [Display(Name = "Course Title - Semester")]
         public int CourseId { get; set; }
+
+        [Display(Name = "Professor FullName - Professor AFM")]
+        public int? ProfessorId { get; set; }
     }
 }

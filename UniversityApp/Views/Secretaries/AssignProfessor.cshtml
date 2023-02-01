@@ -4,39 +4,71 @@
     ViewData["Title"] = "Assign Professor";
 }
 
-<h1>Edit</h1>
 
-<h4>Secretary</h4>
+<h1>
+    <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("UniversityCourses", "Secretaries")'">
+        <i class="bi bi-backspace-fill"></i> Go back to the list
+    </button> Assign a Professor for '@Model.Title'
+</h1>
+
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="AssignProfessor">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="CourseId" />
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" type="text" readonly="" class="form-control-plaintext" value="@Model.Title" />
 
+<div class="row row-cols-1 row-cols-md-2 g-4">
+
+    <div class="col">
+        <div class="card">
+            <div class="card-header">Course '@Model.Title'</div>
+            <div class="card-body">
+
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th scope="row">Course's Title</th>
+                        <td>@Model.Title</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Course's Semester</th>
+                        <td>@Model.Semester</td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+            <form asp-action="AssignProfessor">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="CourseId" />
+                <div class="form-group">
+                    <input asp-for="Title" type="text" readonly="" class="form-control-plaintext" value="@Model.Title" hidden=""/>
+                </div>
+                <div class="form-group">
+                    <input asp-for="Semester" type="number" readonly="" class="form-control" value="@Model.Semester" hidden="" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProfessorId" class="control-label"></label>
+                    <select asp-for="ProfessorId" class="form-control" asp-items="ViewBag.ProfessorId"></select>
+                    <span asp-validation-for="ProfessorId" class="text-danger"></span>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <input type="submit" value="Assign" class="btn btn-primary" />
+                </div>
+            </form>
             </div>
-            <div class="form-group">
-                <label asp-for="Semester" class="control-label"></label>
-                <input asp-for="Semester" type="number" readonly="" class="form-control" value="@Model.Semester" />
-            </div>
-            <div class="form-group">
-                <label asp-for="ProfessorId" class="control-label"></label>
-                <select asp-for="ProfessorId" class="form-control" asp-items="ViewBag.ProfessorId"></select>
-                <span asp-validation-for="ProfessorId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
+
+    <div class="col">
+        <div class="card text-white bg-info mb-3" style="max-width: 20rem;">
+            <div class="card-header">Assigning a Professor</div>
+            <div class="card-body">
+                <p class="card-text">You can choose the Professor you want to assign via the form's list. The format of the list is as follows:</p>
+                <p>a&#60;Professor's FullName&#62; - a&#60;Professor's AFM&#62;</p>
+            </div>
+        </div>
+    </div>
+
 </div>
 
-<div>
-    <a asp-action="Index">Go back to Course List</a>
-</div>
 
 @section Scripts {
     @{

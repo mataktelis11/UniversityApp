@@ -18,15 +18,12 @@
               <input type="submit" value="search" class="btn btn-primary" />
             </div>
             <input type="text" value="@ViewData["CurrentSortOrder"]" name="sortOrder" hidden="">
-@*                        
-            <input type="text" value="@ViewData["pageSize"]" name="pageSize" hidden="">*@
         </p>
     </div>
 </form>
 
 
 <p>
-    @*<a asp-action="Create">Create New</a>*@
     <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("CreateCourse", "Secretaries")'"><i class="bi bi-plus-circle-fill"></i> Add a new Course</button>
 </p>
 <table class="table">

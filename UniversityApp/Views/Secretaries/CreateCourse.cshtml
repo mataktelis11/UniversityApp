@@ -4,38 +4,56 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1><button type="button" class="btn btn-success" onclick="location.href='@Url.Action("UniversityCourses", "Secretaries")'"><i class="bi bi-backspace-fill"></i> Go back to the list</button> Register a new Course</h1>
 
-<h4>Course</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="CreateCourse">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+
+<div class="row row-cols-1 row-cols-md-2 g-4">
+
+    <div class="col">
+        <div class="card">
+            <div class="card-header">Register a new Course</div>
+            <div class="card-body">
+                <h5 class="card-title">Please fill in th following fields</h5>
+                <form asp-action="CreateCourse">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Title" class="control-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Semester" class="control-label"></label>
+                        <input asp-for="Semester" class="form-control" />
+                        <span asp-validation-for="Semester" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ProfessorId" class="control-label"></label>
+                        <select asp-for="ProfessorId" class="form-control" asp-items="ViewBag.ProfessorId"></select>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="Semester" class="control-label"></label>
-                <input asp-for="Semester" class="form-control" />
-                <span asp-validation-for="Semester" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProfessorId" class="control-label"></label>
-                <select asp-for="ProfessorId" class="form-control" asp-items="ViewBag.ProfessorId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
+
+    <div class="col">
+        <div class="card text-white bg-info mb-3" style="max-width: 20rem;">
+            <div class="card-header">New Course Registration</div>
+            <div class="card-body">
+                <p class="card-text">You can assign a Professor when you register a new Course or select <b>None</b> and assign a Professor later via the <b>Courses list</b> or the <b>Professors list</b>.</p>
+            </div>
+        </div>
+    </div>
+
 </div>
 
-<div>
-    <a asp-action="UniversityCourses">Back to List</a>
-</div>
+
+
+
 
 @section Scripts {
     @{
