@@ -5,22 +5,70 @@
 
     var nonexistingStudents = ViewData["nonexistingStudents"] as List<string>;
     var invalidStudents = ViewData["invalidStudents"] as List<string>;
+    var invalidGrades = ViewData["invalidGrades"] as List<string>;
     var courseId = (int)ViewData["CourseId"];
 }
 
-<h3>Students that already have a grade:</h3>
+<br />
 
-@foreach (string s in @invalidStudents)
-{
-    <p>@s</p>
-}
+<h3> One or more lines in your .csv where incorrect and were ignored.</h3>
 
-<h3>Students that do not exist:</h3>
+<hr />
 
-@foreach (string s in @nonexistingStudents)
-{
-        <p>@s</p>
-}
+<div class="row row-cols-1 row-cols-md-1 g-4">
+
+    @if (invalidStudents.Count > 0)
+    {
+          <div class="col">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-header"><i class="bi bi-exclamation-circle-fill"></i> &nbsp; The following students already have a grade:</div>
+                    <div class="card-body">
+                        @foreach (string s in @invalidStudents)
+                        {
+                            <p class="card-text">@s</p>
+                        }
+
+                </div>
+            </div>
+          </div>
+    }
+
+    @if (nonexistingStudents.Count > 0)
+    {
+        <div class="col">
+            <div class="card text-white bg-danger mb-3">
+                <div class="card-header"><i class="bi bi-dash-circle-fill"></i> &nbsp; The following students do not exist:</div>
+                <div class="card-body">
+                    @foreach (string s in @nonexistingStudents)
+                    {
+                        <p class="card-text">@s</p>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (invalidGrades.Count > 0)
+    {
+        <div class="col">
+            <div class="card text-white bg-danger mb-3">
+                <div class="card-header"><i class="bi bi-dash-circle-fill"></i> &nbsp; The following students received an invalid grade:</div>
+                <div class="card-body">
+
+                    @foreach (string s in @invalidGrades)
+                    {
+                            <p class="card-text">@s</p>
+                    }
+                </div>
+            </div>
+        </div>
+    }
 
 
-<a asp-area="" asp-controller="Professors" asp-action="RegisteredStudents" asp-route-id=@courseId>Back to registed students</a>
+</div>
+
+
+<button type="button" class="btn btn-success" onclick="location.href='@Url.Action("RegisteredStudents", "Professors",  new RouteValueDictionary(new { id=courseId}))'">
+    <i class="bi bi-backspace-fill"></i> Go back
+</button>
+

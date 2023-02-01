@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using UniversityApp.Models;
+using X.PagedList;
 
 namespace UniversityApp.Controllers
 {
@@ -113,7 +114,7 @@ namespace UniversityApp.Controllers
         // GET: Professors/RegisteredStudents/6
         // Retrieve Registered Students of a Course.
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-        public async Task<IActionResult> RegisteredStudents(int? id)
+        public async Task<IActionResult> RegisteredStudents(int? id, int? page, int? pageSize, string? search, string? searchParam, string? sortOrder)
         {
             if (HttpContext.Session.GetString("userid") == null)
                 return View("AuthorizationError");
@@ -129,12 +130,120 @@ namespace UniversityApp.Controllers
             if (course == null)
                 return View("NoRightsError");
 
-            var registered_students = await _context.Courses
-                .Include(cs => cs.CourseHasStudents)
-                .ThenInclude(cs => cs.Student)
-                .FirstOrDefaultAsync(c => c.CourseId == id);
 
-            return View(registered_students);
+            ViewData["totalStudents"] = _context.CourseHasStudents.Where(chs => chs.CourseId == id).Count().ToString();
+
+            ViewData["CurrentSortOrder"] = String.IsNullOrEmpty(sortOrder) ? "reg" : sortOrder;
+
+            ViewData["RegSortParm"] = String.IsNullOrEmpty(sortOrder) ? "reg_desc" : "";
+            ViewData["NameSortParm"] = sortOrder == "name" ? "name_desc" : "name";
+            ViewData["SurnameSortParm"] = sortOrder == "surname" ? "surname_desc" : "surname";
+            ViewData["GradeSortParm"] = sortOrder == "grade" ? "grade_desc" : "grade";
+
+            ViewData["CurrentFilter"] = search;
+            ViewData["searchParam"] = String.IsNullOrEmpty(searchParam) ? "name" : searchParam;
+
+            //var registered_students = await _context.Courses
+            //    .Include(cs => cs.CourseHasStudents)
+            //    .ThenInclude(cs => cs.Student)
+            //    .FirstOrDefaultAsync(c => c.CourseId == id);
+
+            var registered_students =  _context.CourseHasStudents
+                .Where(chs => chs.CourseId == id)
+                .Include(chs => chs.Student)
+                .ToList();
+
+            ViewData["courseid"] = id;
+            ViewData["courseTitle"] = _context.Courses.FirstOrDefault(c => c.CourseId == id).Title;
+
+            // page size
+            if (pageSize != null && pageSize < 15)
+            {
+                pageSize = 15;
+            }
+            else if (pageSize > 15 && pageSize <= 25)
+            {
+                pageSize = 25;
+            }
+            else if (pageSize >= 35)
+            {
+                pageSize = 35;
+            }
+
+            ViewData["pageSize"] = pageSize ?? 15;
+
+            // Search
+            if (!String.IsNullOrEmpty(search))
+            {
+                switch (searchParam)
+                {
+                    case "name":
+                        registered_students = registered_students.Where(e => e.Student.Name.ToLower().Contains(search.ToLower())).ToList();
+                        break;
+
+                    case "surname":
+                        registered_students = registered_students.Where(e => e.Student.Surname.ToLower().Contains(search.ToLower())).ToList();
+                        break;
+
+                    case "reg":
+                        registered_students = registered_students.Where(e => e.Student.RegistrationNumber.ToString().Contains(search)).ToList();
+                        break;
+
+                    default:
+                        registered_students = registered_students.Where(e => e.Student.Name.ToLower().Contains(search.ToLower())).ToList();
+                        break;
+                }
+
+            }
+
+            // SortOrder
+            switch (sortOrder)
+            {
+                case "reg_desc":
+                    registered_students = registered_students.OrderByDescending(s => s.Student.RegistrationNumber).ToList();
+                    break;
+
+                case "name_desc":
+                    registered_students = registered_students.OrderByDescending(s => s.Student.Name).ToList();
+                    break;
+
+                case "name":
+                    registered_students = registered_students.OrderBy(s => s.Student.Name).ToList();
+                    break;
+
+                case "surname_desc":
+                    registered_students = registered_students.OrderByDescending(s => s.Student.Surname).ToList();
+                    break;
+
+                case "surname":
+                    registered_students = registered_students.OrderBy(s => s.Student.Surname).ToList();
+                    break;
+
+                case "grade":
+                    registered_students = registered_students.OrderBy(s => s.Grade).ToList();
+                    break;
+
+                case "grade_desc":
+                    registered_students = registered_students.OrderByDescending(s => s.Grade).ToList();
+                    break;
+
+                default:
+                    registered_students = registered_students.OrderBy(s => s.Student.RegistrationNumber).ToList();
+                    break;
+            }
+
+
+            // Pagination
+            if (page != null && page < 1)
+            {
+                page = 1;
+            }
+            ViewData["Page"] = page;
+            
+
+            var registered_studentsData = registered_students.ToPagedList(page ?? 1, pageSize ?? 15);
+
+            return View(registered_studentsData);
         }
 
         // POST: Professors/UploadGrades/CourseId/6
@@ -143,7 +252,16 @@ namespace UniversityApp.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadGrades(int CourseId, IFormFile usercsv)
         {
-            // add checks auth
+            if (HttpContext.Session.GetString("userid") == null)
+                return View("AuthorizationError");
+
+            if (!(HttpContext.Session.GetString("role").Equals("Professors")))
+                return View("NoRightsError");
+
+            if (usercsv == null)
+            {
+                return RedirectToAction("RegisteredStudents", new { id = CourseId });
+            }
 
             string filename = usercsv.FileName;
             filename = Path.GetFileName(filename);
@@ -160,12 +278,19 @@ namespace UniversityApp.Controllers
 
             List<string> nonexistingStudents = new List<string>();
             List<string> invalidStudents = new List<string>();
+            List<string> invalidGrades = new List<string>();
 
             foreach (string line in lines)
             {
                 string[] args = line.Split(',');
 
                 if (!_context.Students.Any(s => s.RegistrationNumber == Int32.Parse(args[0])))
+                {
+                    nonexistingStudents.Add(args[0]);
+                    continue;
+                }
+
+                if (!_context.CourseHasStudents.Where(chs => chs.CourseId == CourseId).Any(chs => chs.Student.RegistrationNumber == Int32.Parse(args[0])))
                 {
                     nonexistingStudents.Add(args[0]);
                     continue;
@@ -179,8 +304,17 @@ namespace UniversityApp.Controllers
                 {
                     invalidStudents.Add(args[0]);
                     continue;
-                }                   
-                courseHasStudent.Grade = Int32.Parse(args[1]);
+                }
+
+                int grade = Int32.Parse(args[1]);
+
+                if(grade < 0 || grade > 10)
+                {
+                    invalidGrades.Add(args[0]);
+                    continue;
+                }
+
+                courseHasStudent.Grade = grade;
                 _context.Update(courseHasStudent);
                
             }
@@ -190,7 +324,8 @@ namespace UniversityApp.Controllers
             if (nonexistingStudents.Count > 0 || invalidStudents.Count > 0)
             {
                 ViewData["nonexistingStudents"] = nonexistingStudents;
-                ViewData["invalidStudents"] = invalidStudents;
+                ViewData["invalidStudents"] = invalidStudents;                
+                ViewData["invalidGrades"] = invalidGrades;
                 ViewData["CourseId"] = CourseId;
                 return View("ResultReport");
             }

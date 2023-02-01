@@ -1,67 +1,261 @@
-﻿@model UniversityApp.Models.Course
+﻿@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+@model X.PagedList.IPagedList<UniversityApp.Models.CourseHasStudent>
 
 @{
     ViewData["Title"] = "Registered Students";
+
+    var totalStudents = Int32.Parse(ViewData["totalStudents"].ToString());
+
+    var btnText = "";
+
+    switch (ViewData["searchParam"])
+    {
+        case "name":
+            btnText = "Search by Name";
+            break;
+
+        case "surname":
+            btnText = "Search by Surname";
+            break;
+
+        case "reg":
+            btnText = "Search by Registration Number";
+            break;
+
+        default:
+            btnText = "Search by Name";
+            break;
+    }
 }
 
-<a asp-action="EditGrades" asp-route-id="@Model.CourseId">EditGrades</a>
 
-<a asp-action="ProfessorCourses">Back to Courses List</a>
+<br />
 
-<div>
-    <h4>Registered Students:</h4>
+<h3>
+    <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("ProfessorCourses", "Professors")'">
+        <i class="bi bi-backspace-fill"></i> Go back to the list
+    </button> Registered Students for Course: '@ViewData["courseTitle"]'
+</h3>
 
-    @if (Model.CourseHasStudents.Count == 0)
-    {
-        <div class="text-center">
-            <figure class="figure">
-                <img src="~/images/empty3.png" width="60%" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
-                <figcaption class="figure-caption text-center">There are no Students registered to this Course currently.</figcaption>
-            </figure>
+<hr />
+
+@if(totalStudents == 0)
+{
+    <div class="text-center">
+        <figure class="figure">
+            <img src="~/images/empty3.png" width="60%" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+            <figcaption class="figure-caption text-center">No Students are currently registered to this Course.</figcaption>
+        </figure>
+    </div>
+}
+else
+{
+    <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("EditGrades", "Professors", new RouteValueDictionary(new {id=ViewData["courseid"]}))'">
+    Submit grades from the website
+    </button> 
+
+    <form asp-action="UploadGrades" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="formFile" class="form-label mt-4">Upload Grades with a .csv file</label>
+            <input class="form-control" type="file" name="usercsv" id="formFile">
+            <input type="number" value="@ViewData["courseid"]" name="CourseId" hidden="">
+            <input type="submit" value="Upload File" class="btn btn-success" />
         </div>
-    }
-    else
-    {
-        <table class="table">
-        <thead>
-            <tr>
-                <th>Registration Number</th>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Grade</th>
-            </tr>
-        </thead>
-            <tbody>
-            @foreach (var item in Model.CourseHasStudents)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Student.RegistrationNumber)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Student.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Student.Surname)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Grade)
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
-    }
+    </form>
+
+
+    <hr />
+
+    <div>
+        Page size:
+        <div class="dropdown">
+            <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                @ViewData["pageSize"]
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" asp-action="RegisteredStudents" asp-route-id="@ViewData["courseid"]" asp-route-pageSize=15 asp-route-page="@ViewData["Page"]" asp-route-sortOrder="@ViewData["CurrentSortOrder"]" asp-route-search="@ViewData["CurrentFilter"]" asp-route-searchParam="@ViewData["searchParam"]">15</a></li>
+                <li><a class="dropdown-item" asp-action="RegisteredStudents" asp-route-id="@ViewData["courseid"]" asp-route-pageSize=25 asp-route-page="@ViewData["Page"]" asp-route-sortOrder="@ViewData["CurrentSortOrder"]" asp-route-search="@ViewData["CurrentFilter"]" asp-route-searchParam="@ViewData["searchParam"]">25</a></li>
+                <li><a class="dropdown-item" asp-action="RegisteredStudents" asp-route-id="@ViewData["courseid"]" asp-route-pageSize=35 asp-route-page="@ViewData["Page"]" asp-route-sortOrder="@ViewData["CurrentSortOrder"]" asp-route-search="@ViewData["CurrentFilter"]" asp-route-searchParam="@ViewData["searchParam"]">35</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+    <form asp-action="RegisteredStudents" method="get">
+        <div class="form-actions">
+            <p>
+                <div class="input-group mb-3">
+                    <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="optionselect">@btnText</button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" id="option_name">Search by Name</a></li>
+                        <li><a class="dropdown-item" id="option_surname">Search by Surame</a></li>
+                        <li><a class="dropdown-item" id="option_reg">Search by Registration Number</a></li>
+                    </ul>
+                    <input type="text" class="form-control" aria-label="Text input with dropdown button" value="@ViewData["CurrentFilter"]" name="search">
+                    <input type="submit" value="search" class="btn btn-info" />
+                </div>
+                <input type="text" id="searchParamVar" value="@ViewData["searchParam"]" name="searchParam" hidden="">
+                <input type="text" value="@ViewData["CurrentSortOrder"]" name="sortOrder" hidden="">
+                <input type="text" value="@ViewData["pageSize"]" name="pageSize" hidden="">
+                <input type="number" value="@ViewData["courseid"]" name="id" hidden="">
+            </p>
+        </div>
+    </form>
+
+
+
+
+    <div>
+   
+        @if (Model.Count == 0)
+        {
+            <div class="text-center">
+                <figure class="figure">
+                    <img src="~/images/empty3.png" width="60%" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+                    <figcaption class="figure-caption text-center">No Students founds...</figcaption>
+                </figure>
+            </div>
+        }
+        else
+        {
+            <table class="table table-striped table-hover table-bordered table-dark">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>
+                            <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("RegisteredStudents", "Professors", new RouteValueDictionary(new { page=@ViewData["Page"], pageSize=@ViewData["pageSize"], sortOrder=@ViewData["RegSortParm"], search=@ViewData["CurrentFilter"], searchParam=@ViewData["searchParam"]}))'">
+                                Registration Number
+                                @if (@ViewData["CurrentSortOrder"].Equals("reg"))
+                                {
+                                    <i class="bi bi-sort-down-alt"></i>
+                                }
+                                else if (@ViewData["CurrentSortOrder"].Equals("reg_desc"))
+                                {
+                                    <i class="bi bi-sort-down"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-arrow-down-up"></i>
+                                }
+                            </button>
+                        </th>
+                        <th>
+                            <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("RegisteredStudents", "Professors", new RouteValueDictionary(new { page=@ViewData["Page"], pageSize=@ViewData["pageSize"], sortOrder=@ViewData["NameSortParm"], search=@ViewData["CurrentFilter"], searchParam=@ViewData["searchParam"]}))'">
+                                Name
+                                @if (@ViewData["CurrentSortOrder"].Equals("name"))
+                                {
+                                    <i class="bi bi-sort-down-alt"></i>
+                                }
+                                else if (@ViewData["CurrentSortOrder"].Equals("name_desc"))
+                                {
+                                    <i class="bi bi-sort-down"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-arrow-down-up"></i>
+                                }
+                            </button>
+                        </th>
+                        <th>
+                            <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("RegisteredStudents", "Professors", new RouteValueDictionary(new { page=@ViewData["Page"], pageSize=@ViewData["pageSize"], sortOrder=@ViewData["SurnameSortParm"], search=@ViewData["CurrentFilter"], searchParam=@ViewData["searchParam"]}))'">
+                                Surname
+                                @if (@ViewData["CurrentSortOrder"].Equals("surname"))
+                                {
+                                    <i class="bi bi-sort-down-alt"></i>
+                                }
+                                else if (@ViewData["CurrentSortOrder"].Equals("surname_desc"))
+                                {
+                                    <i class="bi bi-sort-down"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-arrow-down-up"></i>
+                                }
+                            </button>
+                        </th>
+                        <th>
+                            <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("RegisteredStudents", "Professors", new RouteValueDictionary(new { page=@ViewData["Page"], pageSize=@ViewData["pageSize"], sortOrder=@ViewData["GradeSortParm"], search=@ViewData["CurrentFilter"], searchParam=@ViewData["searchParam"]}))'">
+                                Grade
+                                @if (@ViewData["CurrentSortOrder"].Equals("grade"))
+                                {
+                                    <i class="bi bi-sort-down-alt"></i>
+                                }
+                                else if (@ViewData["CurrentSortOrder"].Equals("grade_desc"))
+                                {
+                                    <i class="bi bi-sort-down"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-arrow-down-up"></i>
+                                }
+                            </button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Student.RegistrationNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Student.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Student.Surname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Grade)
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
 
 
         
-</div>
+    </div>
 
-@using (Html.BeginForm("UploadGrades", "Professors", FormMethod.Post, new { @enctype = "multipart/form-data" }))
-{
-    <span><b>Upload a .csv file</b></span>
-    @Html.HiddenFor(model=>model.CourseId)
-    <input type="file" name="usercsv" onchange="form.submit()" />
-    <br />
-    @*<input type="submit" value="Upload" />*@
+
+    <!-- output a paging control that lets the user navigation to the previous page, next page, etc -->
+    <nav>
+        @Html.PagedListPager(Model, page => Url.Action("UniversityStudents", new { page = page }), new PagedListRenderOptions()
+    {
+        ActiveLiElementClass = "active",
+        PageClasses = new[]{ "page-link"},
+        LiElementClasses=new[] { "page-item" },
+        UlElementClasses = new[] { "pagination","justify-content-center", "mt-3" },
+        LinkToNextPageFormat = "Next",
+        LinkToPreviousPageFormat = "Previous",
+        MaximumPageNumbersToDisplay = 5,
+        DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+        DisplayLinkToNextPage = PagedListDisplayMode.Always,
+    
+    })
+    </nav>
+
+    <script>
+
+        var optionselect = document.getElementById("optionselect");
+        var option_name = document.getElementById("option_name");
+        var option_surname = document.getElementById("option_surname");
+        var option_reg = document.getElementById("option_reg");
+
+        var input_searchParamVar = document.getElementById("searchParamVar");
+
+        option_name.addEventListener("click", () => { myFunction("name", "Search by Name") });
+        option_surname.addEventListener("click", () => { myFunction("surname", "Search by Surame") });
+        option_reg.addEventListener("click", () => { myFunction("reg", "Search by Registration Number") });
+
+        function myFunction(param, text) {
+            input_searchParamVar.value = param
+            optionselect.innerText = text
+        }
+    </script>
+
 }
+
+
+
