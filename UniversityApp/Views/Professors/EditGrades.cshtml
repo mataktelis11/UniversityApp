@@ -1,14 +1,25 @@
 ﻿@model IEnumerable<UniversityApp.Models.CourseHasStudent>
 
 @{
-    ViewData["Title"] = "Edit grades";
+    ViewData["Title"] = "Submit grades";
     var courseId = Int32.Parse(ViewData["courseId"].ToString());
 }
 
+<h2>
+    <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("RegisteredStudents", "Professors",  new RouteValueDictionary(new { id=ViewData["courseId"]}))'">
+        <i class="bi bi-backspace-fill"></i> Go back
+    </button> &nbsp; Edit grades of Course : @ViewData["courseTitle"]
+</h2>
+
+<br />
+<br />
+
 <div>
-    <h4>Edit grades:</h4>
-    <table class="table">
-        <thead>
+
+    <div class="row justify-content-center">
+    
+    <table class="table table-striped table-hover table-bordered table-dark w-50">
+        <thead class="table-secondary">
             <tr>
                 <th>Registration Number</th>
                 <th>Grade</th>
@@ -22,18 +33,21 @@
                         @Html.DisplayFor(modelItem => item.Student.RegistrationNumber)
                     </td>
                     <td>
-                        <input type="number" name="common-number" id="@item.GradeId" min="1" max="10">
+                        <input type="number" name="common-number" id="@item.GradeId" min="1" max="10" onchange="checkGrades(this.id, this.value)">
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+        <button class="btn btn-lg btn-primary" type="button" onclick="getGrades()">Submit Grades</button>
+    </div>
+
 
 </div>
 
 
 
-<button class="btn btn-lg btn-primary" type="button" onclick="getGrades()">Submit Grades</button>
+
 
 <form asp-action="EditGrades" id="gradesForm">
     <input type="number" id="id" value="@courseId" name="id" hidden =""/>
@@ -42,6 +56,16 @@
 
 
 <script>
+
+    function checkGrades(id, grade){
+        if(grade <0 || grade > 10){
+            alert("A grade must be a number between 0 and 10!")
+            var box = document.getElementById(id);
+            box.value="";
+            box.focus();
+        }
+    }
+
     function getGrades() {
 
         var arrFields = document.querySelectorAll('input[name=common-number]');

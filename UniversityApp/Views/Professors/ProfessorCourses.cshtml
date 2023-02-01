@@ -17,11 +17,14 @@
 }
 else
 {
-    <table class="table">
-        <thead>
+    <br />
+    <div class="row justify-content-center">
+
+    <table class="table table-striped table-hover table-bordered table-dark w-auto">
+        <thead class="table-secondary">
             <tr>
                 <th>
-                    <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("ProfessorCourses", "Professors", new RouteValueDictionary(new { sortOrder=@ViewData["TitleSortParam"]}))'">
+                    <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("ProfessorCourses", "Professors", new RouteValueDictionary(new { sortOrder=@ViewData["TitleSortParam"]}))'">
                         @Html.DisplayNameFor(model => model.Title)
                         @if (@ViewData["CurrentSortOrder"].Equals("title"))
                         {
@@ -37,8 +40,8 @@ else
                         }
                     </button>
                 </th>
-                <th>                    
-                    <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("ProfessorCourses", "Professors", new RouteValueDictionary(new { sortOrder=@ViewData["SemesterSortParam"]}))'">
+                <th>
+                    <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("ProfessorCourses", "Professors", new RouteValueDictionary(new { sortOrder=@ViewData["SemesterSortParam"]}))'">
                         @Html.DisplayNameFor(model => model.Semester)
                         @if (@ViewData["CurrentSortOrder"].Equals("semester"))
                         {
@@ -55,7 +58,7 @@ else
                     </button>
                 </th>
                 <th>
-                    <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("ProfessorCourses", "Professors", new RouteValueDictionary(new { sortOrder=@ViewData["StudentsSortParam"]}))'">
+                    <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("ProfessorCourses", "Professors", new RouteValueDictionary(new { sortOrder=@ViewData["StudentsSortParam"]}))'">
                         Number of Non-Graded Students
                         @if (@ViewData["CurrentSortOrder"].Equals("students"))
                         {
@@ -88,12 +91,16 @@ else
                             @item.CourseHasStudents.Where(c => c.Grade == null).Count()
                         </td>
                         <td>
-                            <a asp-action="RegisteredStudents" asp-route-id="@item.CourseId">Show Students</a>
+                            <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("RegisteredStudents", "Professors",  new RouteValueDictionary(new { id=item.CourseId }))'">
+                                Show Students &nbsp; <i class="bi bi-arrow-right-square-fill"></i>
+                            </button>
                         </td>
                     </tr>
             }
         </tbody>
     </table>
+
+    </div>
 }
 
 

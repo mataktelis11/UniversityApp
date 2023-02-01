@@ -214,6 +214,7 @@ namespace UniversityApp.Controllers
             var professor = await _context.Professors.Where(p => p.Userid.ToString().Equals(userid)).FirstOrDefaultAsync();
 
             ViewData["courseId"] = id;
+            ViewData["courseTitle"] = _context.Courses.Where(c => c.CourseId == id).FirstOrDefault().Title;
 
             var unregisteredGrades = _context.CourseHasStudents
                 .Where(chs => chs.CourseId == id && chs.Grade == null)
@@ -245,6 +246,11 @@ namespace UniversityApp.Controllers
                 var data = element.Split('-');
                 int gradeId = int.Parse(data[0]);
                 int grade = int.Parse(data[1]);
+
+                if (grade < 0)
+                    grade = 0;
+                if (grade > 10)
+                    grade = 10;
 
                 var chs = await _context.CourseHasStudents.FindAsync(gradeId);
 
