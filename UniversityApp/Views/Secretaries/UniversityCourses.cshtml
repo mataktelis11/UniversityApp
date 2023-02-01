@@ -15,7 +15,7 @@
             <div class="input-group mb-3">
               <span class="input-group-text" id="basic-addon3">Search by Course Title</span>
               <input type="text" class="form-control" aria-label="Text input with dropdown button" value="@ViewData["CurrentFilter"]" name="search">
-              <input type="submit" value="search" class="btn btn-primary" />
+              <input type="submit" value="search" class="btn btn-info" />
             </div>
             <input type="text" value="@ViewData["CurrentSortOrder"]" name="sortOrder" hidden="">
         </p>
@@ -26,11 +26,11 @@
 <p>
     <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("CreateCourse", "Secretaries")'"><i class="bi bi-plus-circle-fill"></i> Add a new Course</button>
 </p>
-<table class="table">
-    <thead>
+<table class="table table-striped table-hover table-bordered table-dark">
+    <thead class="table-secondary">
         <tr>
             <th>              
-                <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("UniversityCourses", "Secretaries", new RouteValueDictionary(new { page=ViewData["Page"],  sortOrder=@ViewData["TitleSortParam"], search=ViewData["CurrentFilter"]}))'">
+                <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("UniversityCourses", "Secretaries", new RouteValueDictionary(new { page=ViewData["Page"],  sortOrder=@ViewData["TitleSortParam"], search=ViewData["CurrentFilter"]}))'">
                     Title
                     @if (@ViewData["CurrentSortOrder"].Equals("title"))
                     {
@@ -47,7 +47,7 @@
                 </button>
             </th>
             <th>
-                <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("UniversityCourses", "Secretaries", new RouteValueDictionary(new { page=ViewData["Page"],  sortOrder=@ViewData["SemesterSortParam"], search=ViewData["CurrentFilter"]}))'">
+                <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("UniversityCourses", "Secretaries", new RouteValueDictionary(new { page=ViewData["Page"],  sortOrder=@ViewData["SemesterSortParam"], search=ViewData["CurrentFilter"]}))'">
                     Semester
                     @if (@ViewData["CurrentSortOrder"].Equals("semester"))
                     {
@@ -64,7 +64,7 @@
                 </button>
             </th>
             <th>
-                <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("UniversityCourses", "Secretaries", new RouteValueDictionary(new { page=ViewData["Page"],  sortOrder=@ViewData["StatusSortParam"], search=ViewData["CurrentFilter"]}))'">
+                <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("UniversityCourses", "Secretaries", new RouteValueDictionary(new { page=ViewData["Page"],  sortOrder=@ViewData["StatusSortParam"], search=ViewData["CurrentFilter"]}))'">
                     Status
                     @if (@ViewData["CurrentSortOrder"].Equals("status"))
                     {
@@ -89,7 +89,7 @@
             foreach (var item in Model)
             {
 
-                var trclass = (item.Professor != null) ? "table-primary" : "table-warning";
+                var trclass = (item.Professor != null) ? "table-striped" : "table-warning";
 
                 <tr class="@trclass">
                 <td>
@@ -114,11 +114,11 @@
 
                 @if(@item.Professor != null){
                     //<a asp-action="Details" asp-route-id="@item.CourseId">View Details</a>
-                            <button type="button" class="btn btn-success" onclick="openModal('@item.Title',@item.Semester,'@item.Professor.Name','@item.Professor.Surname', @item.Professor.Afm, @item.CourseHasStudents.Where(c => c.Grade == null).Count())">View Details  <i class="bi bi-card-text"></i></button>
+                            <button type="button" class="btn btn-info" onclick="openModal('@item.Title',@item.Semester,'@item.Professor.Name','@item.Professor.Surname', @item.Professor.Afm, @item.CourseHasStudents.Where(c => c.Grade == null).Count())">View Details  <i class="bi bi-card-text"></i></button>
                 }
                 else{
                     //<a asp-action="Details" asp-route-id="@item.CourseId">Assign a Professor</a>
-                            <button type="button" onclick="location.href='@Url.Action("AssignProfessor", "Secretaries", new { @id = item.CourseId })'" class="btn btn-secondary">Assign a Professor  <i class="bi bi-person-plus-fill"></i></button>
+                            <button type="button" onclick="location.href='@Url.Action("AssignProfessor", "Secretaries", new { @id = item.CourseId })'" class="btn btn-info">Assign a Professor  <i class="bi bi-person-plus-fill"></i></button>
                 }
 
                 </td>

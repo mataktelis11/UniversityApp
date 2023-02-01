@@ -40,7 +40,7 @@
 <div>
     Page size:
     <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
             @ViewData["pageSize"]
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -64,7 +64,7 @@
                     <li><a class="dropdown-item" id="option_reg">Search by Registration Number</a></li>
               </ul>
               <input type="text" class="form-control" aria-label="Text input with dropdown button" value="@ViewData["CurrentFilter"]" name="search">
-              <input type="submit" value="search" class="btn btn-primary" />
+              <input type="submit" value="search" class="btn btn-info" />
             </div>
             <input type="text" id="searchParamVar" value="@ViewData["searchParam"]" name="searchParam" hidden="">
             <input type="text" value="@ViewData["CurrentSortOrder"]" name="sortOrder" hidden="">
@@ -76,11 +76,11 @@
 <p>
     <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("CreateStudent", "Secretaries")'"><i class="bi bi-plus-circle-fill"></i> Add a new Student</button>
 </p>
-<table class="table">
+<table class="table table-striped table-hover table-bordered table-dark">
     <thead>
         <tr class="table-secondary">
             <th>
-                <button type="button" class="btn btn-warning" onclick="location.href='@Url.Action("UniversityStudents", "Secretaries", new RouteValueDictionary(new { page=@ViewData["Page"], pageSize=@ViewData["pageSize"], sortOrder=@ViewData["RegSortParm"], search=@ViewData["CurrentFilter"], searchParam=@ViewData["searchParam"]}))'">
+                <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("UniversityStudents", "Secretaries", new RouteValueDictionary(new { page=@ViewData["Page"], pageSize=@ViewData["pageSize"], sortOrder=@ViewData["RegSortParm"], search=@ViewData["CurrentFilter"], searchParam=@ViewData["searchParam"]}))'">
                     Registration Number 
                     @if (@ViewData["CurrentSortOrder"].Equals("reg"))
                     {
@@ -97,7 +97,7 @@
                 </button>               
             </th>
             <th>
-                <button type="button" class="btn btn-warning" onclick="location.href='@Url.Action("UniversityStudents", "Secretaries", new RouteValueDictionary(new { page=@ViewData["Page"], pageSize=@ViewData["pageSize"], sortOrder=@ViewData["NameSortParm"], search=@ViewData["CurrentFilter"], searchParam=@ViewData["searchParam"]}))'">
+                <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("UniversityStudents", "Secretaries", new RouteValueDictionary(new { page=@ViewData["Page"], pageSize=@ViewData["pageSize"], sortOrder=@ViewData["NameSortParm"], search=@ViewData["CurrentFilter"], searchParam=@ViewData["searchParam"]}))'">
                     Name
                     @if (@ViewData["CurrentSortOrder"].Equals("name"))
                     {
@@ -114,7 +114,7 @@
                 </button>
             </th>
             <th>
-                <button type="button" class="btn btn-warning" onclick="location.href='@Url.Action("UniversityStudents", "Secretaries", new RouteValueDictionary(new { page=@ViewData["Page"], pageSize=@ViewData["pageSize"], sortOrder=@ViewData["SurnameSortParm"], search=@ViewData["CurrentFilter"], searchParam=@ViewData["searchParam"]}))'">
+                <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("UniversityStudents", "Secretaries", new RouteValueDictionary(new { page=@ViewData["Page"], pageSize=@ViewData["pageSize"], sortOrder=@ViewData["SurnameSortParm"], search=@ViewData["CurrentFilter"], searchParam=@ViewData["searchParam"]}))'">
                     Surname
                     @if (@ViewData["CurrentSortOrder"].Equals("surname"))
                     {
@@ -131,7 +131,7 @@
                 </button>
             </th>
             <th>
-                <button type="button" class="btn btn-warning" onclick="location.href='@Url.Action("UniversityStudents", "Secretaries", new RouteValueDictionary(new { page=@ViewData["Page"], pageSize=@ViewData["pageSize"], sortOrder=@ViewData["DeptSortParm"], search=@ViewData["CurrentFilter"], searchParam=@ViewData["searchParam"]}))'" ">
+                <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("UniversityStudents", "Secretaries", new RouteValueDictionary(new { page=@ViewData["Page"], pageSize=@ViewData["pageSize"], sortOrder=@ViewData["DeptSortParm"], search=@ViewData["CurrentFilter"], searchParam=@ViewData["searchParam"]}))'" ">
                     Department 
                     @if (@ViewData["CurrentSortOrder"].Equals("dept"))
                     {

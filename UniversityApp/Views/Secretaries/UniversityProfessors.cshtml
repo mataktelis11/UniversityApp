@@ -17,11 +17,9 @@
             <div class="input-group mb-3">
                 <span class="input-group-text" id="basic-addon3">Search by Full Name</span>
                 <input type="text" class="form-control" aria-label="Text input with dropdown button" value="@ViewData["CurrentFilter"]" name="search">
-                <input type="submit" value="search" class="btn btn-primary" />
+                <input type="submit" value="search" class="btn btn-info" />
             </div>
             <input type="text" value="@ViewData["CurrentSortOrder"]" name="sortOrder" hidden="">
-            @*
-            <input type="text" value="@ViewData["pageSize"]" name="pageSize" hidden="">*@
         </p>
     </div>
 </form>
@@ -30,11 +28,11 @@
 <p>
     <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("CreateProfessor", "Secretaries")'"><i class="bi bi-plus-circle-fill"></i> Add a new Professor</button>
 </p>
-<table class="table">
+<table class="table table-striped table-hover table-bordered table-dark">
     <thead>
         <tr class="table-secondary">
             <th>               
-                <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("UniversityProfessors", "Secretaries", new RouteValueDictionary(new { page=ViewData["Page"],  sortOrder=@ViewData["FullnameSortParam"], search=ViewData["CurrentFilter"]}))'">
+                <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("UniversityProfessors", "Secretaries", new RouteValueDictionary(new { page=ViewData["Page"],  sortOrder=@ViewData["FullnameSortParam"], search=ViewData["CurrentFilter"]}))'">
                     Full Name
                     @if (@ViewData["CurrentSortOrder"].Equals("fullname"))
                     {
@@ -51,7 +49,7 @@
                 </button>
             </th>
             <th>               
-                <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("UniversityProfessors", "Secretaries", new RouteValueDictionary(new { page=ViewData["Page"],  sortOrder=@ViewData["DepartmentSortParam"], search=ViewData["CurrentFilter"]}))'">
+                <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("UniversityProfessors", "Secretaries", new RouteValueDictionary(new { page=ViewData["Page"],  sortOrder=@ViewData["DepartmentSortParam"], search=ViewData["CurrentFilter"]}))'">
                     Department
                     @if (@ViewData["CurrentSortOrder"].Equals("department"))
                     {
