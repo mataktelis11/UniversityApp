@@ -1,0 +1,18 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{o}{[}HttpPost\PYG{o}{]}
+public ActionResult Login\PYG{o}{(}User user\PYG{o}{)}
+\PYG{o}{\PYGZob{}}
+	\PYG{n+nv}{\PYGZus{}context} \PYG{o}{=} new UniversityDBContext\PYG{o}{()}\PYG{p}{;}
+	var \PYG{n+nv}{obj} \PYG{o}{=} \PYGZus{}context.Users.Where\PYG{o}{(}\PYG{n+nv}{a} \PYG{o}{=}\PYGZgt{} a.Username.Equals\PYG{o}{(}user.Username\PYG{o}{)}
+		\PYGZam{}\PYGZam{} a.Password.Equals\PYG{o}{(}user.Password\PYG{o}{))}.FirstOrDefault\PYG{o}{()}\PYG{p}{;}
+	\PYG{k}{if} \PYG{o}{(}obj !\PYG{o}{=} null\PYG{o}{)}
+	\PYG{o}{\PYGZob{}}
+		HttpContext.Session.SetString\PYG{o}{(}\PYG{l+s+s2}{\PYGZdq{}username\PYGZdq{}}, obj.Username.ToString\PYG{o}{())}\PYG{p}{;}
+		HttpContext.Session.SetString\PYG{o}{(}\PYG{l+s+s2}{\PYGZdq{}userid\PYGZdq{}}, obj.Userid.ToString\PYG{o}{())}\PYG{p}{;}
+		HttpContext.Session.SetString\PYG{o}{(}\PYG{l+s+s2}{\PYGZdq{}role\PYGZdq{}},obj.Role.ToString\PYG{o}{())}\PYG{p}{;}
+		
+		return RedirectToAction\PYG{o}{(}\PYG{l+s+s2}{\PYGZdq{}Index\PYGZdq{}}, obj.Role\PYG{o}{)}\PYG{p}{;}
+	\PYG{o}{\PYGZcb{}}	
+	return RedirectToAction\PYG{o}{(}\PYG{l+s+s2}{\PYGZdq{}Login\PYGZdq{}}\PYG{o}{)}\PYG{p}{;}
+\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

@@ -1,31 +1,13 @@
 \babel@toc {english}{}
-\contentsline {section}{\numberline {1}Εισαγωγή}{2}{section.1}%
-\contentsline {section}{\numberline {2}Ζητούμενα}{3}{section.2}%
-\contentsline {section}{\numberline {3}Επίπεδο Model}{3}{section.3}%
-\contentsline {section}{\numberline {4}Επίπεδο View και Controller}{3}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Session Management}{3}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Students Controller}{3}{subsection.4.2}%
-\contentsline {subsubsection}{\numberline {4.2.1}Περιγραφή των μεθόδων}{3}{subsubsection.4.2.1}%
-\contentsline {subsubsection}{\numberline {4.2.2}Μέθοδος IActionResult Grades(bool? asc=true)}{3}{subsubsection.4.2.2}%
-\contentsline {subsubsection}{\numberline {4.2.3}Μέθοδος IActionResult Total()}{3}{subsubsection.4.2.3}%
-\contentsline {subsubsection}{\numberline {4.2.4}Μέθοδος IActionResult Account()}{3}{subsubsection.4.2.4}%
-\contentsline {subsubsection}{\numberline {4.2.5}Μέθοδος IActionResult Index()}{3}{subsubsection.4.2.5}%
-\contentsline {subsubsection}{\numberline {4.2.6}Μέθοδος IActionResult Semesters(int? page)}{4}{subsubsection.4.2.6}%
-\contentsline {subsubsection}{\numberline {4.2.7}Σενάριο Εκτέλεσης}{4}{subsubsection.4.2.7}%
-\contentsline {subsection}{\numberline {4.3}Professors Controller}{4}{subsection.4.3}%
-\contentsline {subsubsection}{\numberline {4.3.1}Μέθοδος Task<IActionResult> Index()}{4}{subsubsection.4.3.1}%
-\contentsline {subsubsection}{\numberline {4.3.2}Μέθοδος Task<IActionResult> Account()}{4}{subsubsection.4.3.2}%
-\contentsline {subsubsection}{\numberline {4.3.3}Μέθοδος Task<IActionResult> ProfessorCourses()}{4}{subsubsection.4.3.3}%
-\contentsline {subsubsection}{\numberline {4.3.4}Μέθοδος Task<IActionResult> RegisteredStudents(int? id)}{4}{subsubsection.4.3.4}%
-\contentsline {subsubsection}{\numberline {4.3.5}Μέθοδος Task<IActionResult> UploadGrades(int CourseId, IFormFile usercsv)}{4}{subsubsection.4.3.5}%
-\contentsline {subsubsection}{\numberline {4.3.6}Μέθοδος Task<IActionResult> EditGrades(int id)}{5}{subsubsection.4.3.6}%
-\contentsline {subsubsection}{\numberline {4.3.7}Μέθοδος Task<IActionResult> EditGrades(int id, string addedGrades)}{5}{subsubsection.4.3.7}%
-\contentsline {subsubsection}{\numberline {4.3.8}Σενάριο Εκτέλεσης}{5}{subsubsection.4.3.8}%
-\contentsline {subsection}{\numberline {4.4}Secretaries Controller}{5}{subsection.4.4}%
-\contentsline {subsubsection}{\numberline {4.4.1}Μέθοδος }{5}{subsubsection.4.4.1}%
-\contentsline {subsubsection}{\numberline {4.4.2}Μέθοδος Task<IActionResult> Index() }{5}{subsubsection.4.4.2}%
-\contentsline {subsubsection}{\numberline {4.4.3}Μέθοδος Task<IActionResult> Account()}{5}{subsubsection.4.4.3}%
-\contentsline {subsubsection}{\numberline {4.4.4}Μέθοδος Task<IActionResult> UniversityCourses()}{5}{subsubsection.4.4.4}%
-\contentsline {subsubsection}{\numberline {4.4.5}Μέθοδος IActionResult CreateCourse()}{6}{subsubsection.4.4.5}%
-\contentsline {subsubsection}{\numberline {4.4.6}Σενάριο Εκτέλεσης}{7}{subsubsection.4.4.6}%
-\contentsline {section}{\numberline {5}Πηγές}{8}{section.5}%
+\contentsline {section}{\numberline {1}Ζητούμενα}{2}{section.1}%
+\contentsline {section}{\numberline {2}Επίπεδο Model}{2}{section.2}%
+\contentsline {section}{\numberline {3}Επίπεδο View και Controller}{2}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Session Management}{2}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Students Controller}{4}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Περιγραφή των μεθόδων}{4}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2}Σενάριο Εκτέλεσης}{5}{subsubsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.3}Professors Controller}{5}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}Σενάριο Εκτέλεσης}{6}{subsubsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.4}Secretaries Controller}{7}{subsection.3.4}%
+\contentsline {subsubsection}{\numberline {3.4.1}Περιγραφή των μεθόδων}{7}{subsubsection.3.4.1}%
+\contentsline {subsubsection}{\numberline {3.4.2}Σενάριο Εκτέλεσης}{9}{subsubsection.3.4.2}%

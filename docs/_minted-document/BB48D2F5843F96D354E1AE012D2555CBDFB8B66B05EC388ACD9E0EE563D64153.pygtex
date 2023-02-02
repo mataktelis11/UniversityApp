@@ -1,0 +1,14 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{o}{[}ResponseCache\PYG{o}{(}\PYG{n+nv}{NoStore} \PYG{o}{=} true, \PYG{n+nv}{Location} \PYG{o}{=} ResponseCacheLocation.None\PYG{o}{)]}
+public IActionResult Grades\PYG{o}{(}string? sortOrder\PYG{o}{)}
+\PYG{o}{\PYGZob{}}
+	\PYG{k}{if} \PYG{o}{(}HttpContext.Session.GetString\PYG{o}{(}\PYG{l+s+s2}{\PYGZdq{}userid\PYGZdq{}}\PYG{o}{)} \PYG{o}{==} null\PYG{o}{)}
+	return View\PYG{o}{(}\PYG{l+s+s2}{\PYGZdq{}AuthorizationError\PYGZdq{}}\PYG{o}{)}\PYG{p}{;}
+	
+	\PYG{k}{if} \PYG{o}{(}!\PYG{o}{(}HttpContext.Session.GetString\PYG{o}{(}\PYG{l+s+s2}{\PYGZdq{}role\PYGZdq{}}\PYG{o}{)}.Equals\PYG{o}{(}\PYG{l+s+s2}{\PYGZdq{}Students\PYGZdq{}}\PYG{o}{)))}
+	return View\PYG{o}{(}\PYG{l+s+s2}{\PYGZdq{}NoRightsError\PYGZdq{}}\PYG{o}{)}\PYG{p}{;}
+	
+	var \PYG{n+nv}{student} \PYG{o}{=} StudentGetter\PYG{o}{()}\PYG{p}{;}
+	
+	// rest of the code ...
+\end{Verbatim}

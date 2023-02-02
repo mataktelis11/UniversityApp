@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+HttpContext.Session.SetString\PYG{o}{(}\PYG{l+s+s2}{\PYGZdq{}username\PYGZdq{}}, \PYG{l+s+s2}{\PYGZdq{}user1\PYGZdq{}}\PYG{o}{)}\PYG{p}{;}
+\end{Verbatim}
