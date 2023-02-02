@@ -28,7 +28,9 @@ namespace UniversityApp.Controllers
 
             var current_student = _context.Students.Where(a => a.Userid.ToString().Equals(id)).FirstOrDefault();
 
-            var student = _context.Students.Include(x => x.CourseHasStudents).ThenInclude(x => x.Course)
+            var student = _context.Students
+                .Include(x => x.CourseHasStudents)
+                .ThenInclude(x => x.Course)
                 .FirstOrDefault(m => m.StudentId == current_student.StudentId);
 
             return student;
@@ -67,7 +69,7 @@ namespace UniversityApp.Controllers
 
 
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-        public IActionResult Grades(bool? asc=true)
+        public IActionResult Grades(string? sortOrder)
         {
             if (HttpContext.Session.GetString("userid") == null)
                 return View("AuthorizationError");
@@ -77,12 +79,59 @@ namespace UniversityApp.Controllers
 
             var student = StudentGetter();
             
-            var courses = student.CourseHasStudents.OrderBy(s => s.Course.Title);
-            if (asc.Equals(false))
+            var courses = student.CourseHasStudents.OrderBy(s => s.Course.Semester);
+
+
+            ViewData["CurrentSortOrder"] = String.IsNullOrEmpty(sortOrder) ? "title" : sortOrder;
+            ViewData["TitleSortOrder"] = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
+            ViewData["GradesSortOrder"] = sortOrder == "grades" ? "grades_desc" : "grades";
+
+            // Sorting
+            switch (sortOrder)
             {
-                courses= student.CourseHasStudents.OrderByDescending(s => s.Course.Title);
+                case "title_desc":
+                    courses = courses.ThenByDescending(c => c.Course.Title);
+                    break;
+
+                case "grades":
+                    courses = courses.ThenBy(c => c.Grade);
+                    break;
+
+                case "grades_desc":
+                    courses = courses.ThenByDescending(c => c.Grade);
+                    break;
+
+                default:
+                    courses = courses.ThenBy(c => c.Course.Title);
+                    break;
             }
-            ViewData["sorting"] = asc;
+
+            // number of registered lessons
+            int reglessons = _context.CourseHasStudents.Where(s => s.StudentId == student.StudentId).Count();
+
+            // number of passed lessons
+            var passedlessons = _context.CourseHasStudents.Where(s => s.StudentId == student.StudentId && s.Grade >= 5);
+
+            int ects = passedlessons.Count() * 5;
+
+            int sum = 0;
+
+            foreach (var item in passedlessons)
+            {
+                sum += (int)item.Grade;
+            }
+
+            if (passedlessons.Count() > 0)
+            {
+                ViewData["average"] = sum / passedlessons.Count();
+            }
+            else
+            {
+                ViewData["average"] = "-";
+            }
+
+            ViewData["ects"] = ects;
+
             return View(courses);
         }
 
@@ -103,7 +152,7 @@ namespace UniversityApp.Controllers
             // number of passed lessons
             var passedlessons = _context.CourseHasStudents.Where(s => s.StudentId == student.StudentId && s.Grade >= 5);
 
-            int etcs = passedlessons.Count() * 5;
+            int ects = passedlessons.Count() * 5;
 
             int sum = 0;
 
@@ -114,7 +163,7 @@ namespace UniversityApp.Controllers
 
             ViewData["reglessons"] = reglessons;
             ViewData["passedlessons"] = passedlessons.Count();
-            ViewData["etcs"] = etcs;
+            ViewData["ects"] = ects;
             if (passedlessons.Count()>0){
                 ViewData["average"] = sum / passedlessons.Count();
             }
@@ -150,9 +199,20 @@ namespace UniversityApp.Controllers
 
             var student = StudentGetter();
             student = _context.Students.Include(x => x.User).Where(a => a.Userid == student.Userid).FirstOrDefault();
+
+            // number of registered lessons
+            int reglessons = _context.CourseHasStudents.Where(s => s.StudentId == student.StudentId).Count();
+
+            // number of passed lessons
+            var passedlessons = _context.CourseHasStudents.Where(s => s.StudentId == student.StudentId && s.Grade >= 5);
+
+            int ects = passedlessons.Count() * 5;
+
+            ViewData["reglessons"] = reglessons;
+            ViewData["ects"] = ects;
+
+
             return View(student);
-
-
         }
 
         private bool StudentExists(int id)

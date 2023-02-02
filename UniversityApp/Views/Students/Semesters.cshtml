@@ -4,10 +4,6 @@
     ViewData["Title"] = "Grades by Semester";
 }
 
-<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" style="position:fixed;right:0">
-    Settings
-</button>
-
 <h1 class="display-4 text-center"> Your grades for Semester @ViewData["CurrentSemester"].ToString() </h1>
 
 <br />
@@ -31,6 +27,14 @@
         </div>
     </div>
 </div>
+
+<p class="text-center">Here you can see the Courses that are registered to you for each semester, as well as the grades you have received.</p>
+<p class="text-center">
+    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+        Choose how you want to display your grades
+    </button>
+</p>
+
 
 <div class="mx-auto text-center">
     Choose a semester: &nbsp;

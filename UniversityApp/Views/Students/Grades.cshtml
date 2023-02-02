@@ -2,91 +2,185 @@
 
 
 @{
-    ViewData["Title"] = "Grades";
+ViewData["Title"] = "Grades";
 }
 
-@if (Context.Session.GetString("username") != null)
-{
 
-    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" style="position:fixed;right:0">
-      Settings
-    </button>
 
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Display setting</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-        <div>
-          Choose how you want to display your grades
-        </div>
-        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked="" onclick="location.href='@Url.Action("Grades", "Students")'">
-          <label class="btn btn-outline-primary" for="btnradio1">View Grades by title</label>
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"  onclick="location.href='@Url.Action("Semesters", "Students")'">
-                
-          <label class="btn btn-outline-primary" for="btnradio2">View Grades by Semester</label>
-        </div>
-        <div>
-            <p>
-                    <div>Sort Course Name by</div>
-                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-            <input type="radio" class="btn-check" name="mybtnradio" id="btnradio11" autocomplete="off" checked="" onclick="location.href='@Url.Action("Grades", "Students")'">
-                        <label class="btn btn-outline-primary" for="btnradio11">Ascending</label>
-            @if (ViewData["sorting"].Equals(true))
-                {
-                   <input type="radio" class="btn-check" name="mybtnradio" id="btnradio21" autocomplete="off" onclick="location.href='@Url.Action("Grades", "Students",new {asc=false})'">
-                }else{
-                   <input type="radio" class="btn-check" name="mybtnradio" id="btnradio21" autocomplete="off" checked="" onclick="location.href='@Url.Action("Grades", "Students",new {asc=false})'">
-                }
-            
-            <label class="btn btn-outline-primary" for="btnradio21">Descending</label>
-        </div>
-            </p>
-               
-        </div>
-      </div>
+
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Display setting</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
+    <div class="offcanvas-body">
+    <div>
+        Choose how you want to display your grades
+    </div>
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked="" onclick="location.href='@Url.Action("Grades", "Students")'">
+        <label class="btn btn-outline-primary" for="btnradio1">View Grades by title</label>
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"  onclick="location.href='@Url.Action("Semesters", "Students")'">
+                
+        <label class="btn btn-outline-primary" for="btnradio2">View Grades by Semester</label>
+    </div>
+    </div>
+</div>
 
-    <div class="container">
-        <div class="row">
-            <h1 class="display-1 text-center"> Grades </h1>
-        </div>
-        <hr />
-        <br />
-        <div class="row">
-            <table class="table table-bordered table-responsive table-hover">
-                <thead class="table-dark ">
-                    <tr>
-                        <td> Course Name </td>
-                        <td> Grade </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var grade in Model)
+<div class="container">
+    <div class="row">
+        <h1 class="display-4 text-center"> My Grades </h1>
+    </div>
+    <p class="text-center">Here you can see all the Courses that are registered to you, as well as the grades you have received and your E.C.T.s</p>
+    <p class="text-center">
+        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+            Choose how you want to display your grades
+        </button>
+    </p>
+
+    <hr />
+    <br />
+    <div class="row">
+        <table class="table table-bordered table-responsive table-hover table-dark">
+            <thead class="table-secondary">
+                <tr>
+                    <th>
+                        <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("Grades", "Students", new RouteValueDictionary(new { sortOrder=@ViewData["TitleSortOrder"] }))'">
+                            Course Title
+                            @if (@ViewData["CurrentSortOrder"].Equals("title"))
+                            {
+                                <i class="bi bi-sort-down-alt"></i>
+                            }
+                            else if (@ViewData["CurrentSortOrder"].Equals("title_desc"))
+                            {
+                                <i class="bi bi-sort-down"></i>
+                            }
+                            else
+                            {
+                                <i class="bi bi-arrow-down-up"></i>
+                            }
+                        </button>
+                    </th>
+                    <th>
+                        <button type="button" class="btn btn-dark" onclick="location.href='@Url.Action("Grades", "Students", new RouteValueDictionary(new { sortOrder=@ViewData["GradesSortOrder"] }))'">
+                            Grades
+                            @if (@ViewData["CurrentSortOrder"].Equals("grades"))
+                            {
+                                <i class="bi bi-sort-down-alt"></i>
+                            }
+                            else if (@ViewData["CurrentSortOrder"].Equals("grades_desc"))
+                            {
+                                <i class="bi bi-sort-down"></i>
+                            }
+                            else
+                            {
+                                <i class="bi bi-arrow-down-up"></i>
+                            }
+                        </button>
+                    </th>
+                    <td> E.C.T.s </td>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int ects = 0;
+                    int average = 0;
+                    int count = 0;
+
+                    int semester = 0;
+                    for (int i=0; i < Model.Count(); i++)
                     {
+                        CourseHasStudent grade = Model.ElementAt(i);
+
+
+                        if (semester < grade.Course.Semester)
+                        {
+                            semester = grade.Course.Semester;
+                            <tr>
+                                <td colspan="3" class="divider table-primary">
+                                    Semester @semester
+                                </td>
+                            </tr>
+                                
+                        }
+
                         <tr>
                             @if(grade.Grade<5){
                                 <td style="color:red"> @grade.Course.Title </td>
                                 <td style="color:red"> @grade.Grade </td>
+                                <td style="color:red"> - </td>
                             }
                             else if(grade.Grade>=5)
                             {
                                 <td style="color:lawngreen"> @grade.Course.Title </td>
                                 <td style="color:lawngreen"> @grade.Grade </td>
+                                <td style="color:lawngreen"> 5 </td>
+                                ects += 5;
+                                average += (int)grade.Grade;
+                                count += 1;
                             }else{
                                 <td> @grade.Course.Title </td>
                                 <td> - </td>
-                            }
-
-                            
+                                <td> - </td>
+                            }                         
                         </tr>
+
+                        if (i == Model.Count() - 1)
+                        {
+                            <tr>
+                                <td></td>
+                                <td class="divider table-dark">
+                                    @if(count > 0)
+                                    {
+                                        @Html.Raw("Average of Semester " + semester + " : " + average/count);
+                                    }
+                                    else {
+                                        @Html.Raw("Average of Semester " + semester + " : --");
+                                    }                                     
+                                </td>
+                                <td class="divider table-dark">
+                                    E.C.T.s of Semester @semester : @ects
+                                </td>
+                            </tr>
+                        }
+                        else if(Model.ElementAt(i + 1).Course.Semester > semester){
+                            <tr>
+                                <td class="divider table-dark"></td>
+                                <td class="divider table-dark">
+                                    @if(count > 0)
+                                    {
+                                        @Html.Raw("Average of Semester " + semester + " : " + average/count);
+                                    }
+                                    else {
+                                        @Html.Raw("Average of Semester " + semester + " : --");
+                                    }    
+                                </td>
+                                <td class="divider table-dark">
+                                    E.C.T.s of Semester @semester : @ects
+                                </td>
+                            </tr>           
+                                
+                            ects = 0;
+                            average = 0;
+                            count = 0;
+                        }
                     }
+                }
+                        
+                <tr>
+                    <td class="divider table-success"></td>
+                    <td class="divider table-success">
+                        Total Average : @ViewData["average"]
+                    </td>
+
+                    <td class="divider table-success">
+                        Total E.C.T.s : @ViewData["ects"]
+                    </td>
+                </tr>
                     
 
-                </tbody>
-            </table>
-        </div>
+            </tbody>
+        </table>
     </div>
-}
+</div>

@@ -7,13 +7,20 @@ namespace UniversityApp.Models
     [ModelMetadataType(typeof(StudentMetadata))]
     public partial class Student
     {
-
+        [Display(Name = "FullName")]
+        public string Fullname
+        {
+            get
+            {
+                return Name + " " + Surname;
+            }
+        }
     }
 
     [ModelMetadataType(typeof(ProfessorMetadata))]
     public partial class Professor
     {
-        [Display(Name = "Full Name")]
+        [Display(Name = "FullName")]
         public string Fullname
         {
             get

@@ -5,72 +5,51 @@
     ViewData["Title"] = "Total";
 }
 
-@if (Context.Session.GetString("username") != null)
-{
-    <div class="row">
-        <h1 class="display-1 text-center"> Total </h1>
-    </div>
+<br />
 
-    <div class="row row-cols-1 row-cols-md-2 g-4">
-        <div class="col">
-            <div class="card border-info mb-3" style="max-width: 40rem;">
-                <div class="card-header">Registered lesssons</div>
-                <div class="card-body">
-                    <h3 class="card-title">@ViewData["reglessons"]</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card border-info mb-3" style="max-width: 40rem;">
-                <div class="card-header">Passed lessons</div>
-                <div class="card-body">
-                    <h3 class="card-title">@ViewData["passedlessons"]</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card border-info mb-3" style="max-width: 40rem;">
-                <div class="card-header">ECTS</div>
-                <div class="card-body">
-                    <h3 class="card-title">@ViewData["etcs"]</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card border-info mb-3" style="max-width: 40rem;">
-                <div class="card-header"> Αverage</div>
-                <div class="card-body">
-                    <h3 class="card-title">@ViewData["average"]</h3>
-                </div>
+<div class="row">
+    <h1 class="display-5 text-center">My Total grades</h1>
+</div>
+
+<br />
+
+<p class="text-center">Here you can see a brief presentation of your overall grades and performance in your Courses.</p>
+
+<hr />
+
+<div class="row row-cols-1 row-cols-md-2 g-4">
+    <div class="col">
+        <div class="card text-white bg-primary mb-3" style="max-width: 40rem;">
+            <div class="card-header">Registered Courses</div>
+            <div class="card-body">
+                <h3 class="card-title">@ViewData["reglessons"]</h3>
             </div>
         </div>
     </div>
-@*        <div class="container">
-            <div class="row">
-                <h1 class="display-1 text-center"> Total </h1>
+    <div class="col">
+        <div class="card text-white bg-primary mb-3" style="max-width: 40rem;">
+            <div class="card-header">Passed Courses</div>
+            <div class="card-body">
+                <h3 class="card-title">@ViewData["passedlessons"]</h3>
             </div>
-            <hr />
-            <br />
-            <div class="row">
-                <table class="table table-bordered table-responsive table-hover">
-                    <thead class="table-dark ">
-                        <tr>
-                            <td> Registered lesssons</td>
-                        <td style="color:forestgreen"> Passed lessons </td>
-                        <td style="color:deepskyblue"> ECTS </td>
-                            <td> Αverage </td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>@ViewData["reglessons"]</td>
-                            <td style="color:forestgreen">@ViewData["passedlessons"]</td>
-                            <td style="color:deepskyblue">@ViewData["etcs"]</td>
-                        <td style ="color:yellowgreen">@ViewData["average"]</td>
-                        </tr>
-                    </tbody>
-                </table>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-white bg-success mb-3" style="max-width: 40rem;">
+            <div class="card-header">Total E.C.T.s</div>
+            <div class="card-body">
+                <h3 class="card-title">@ViewData["ects"]</h3>
+                <p class="card-text">You get 5 E.C.T.s for each Course that you have passed.</p>
             </div>
-        </div>*@
-
-}
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-white bg-success mb-3" style="max-width: 40rem;">
+            <div class="card-header">Αverage grade</div>
+            <div class="card-body">
+                <h3 class="card-title">@ViewData["average"]</h3>
+                <p class="card-text">This is only calculated based on the Courses which you have passed.</p>
+            </div>
+        </div>
+    </div>
+</div>
