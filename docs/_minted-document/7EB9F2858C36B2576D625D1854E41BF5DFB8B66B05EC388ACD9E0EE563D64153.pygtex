@@ -3,10 +3,10 @@
 public IActionResult Grades\PYG{o}{(}string? sortOrder\PYG{o}{)}
 \PYG{o}{\PYGZob{}}
 	\PYG{k}{if} \PYG{o}{(}HttpContext.Session.GetString\PYG{o}{(}\PYG{l+s+s2}{\PYGZdq{}userid\PYGZdq{}}\PYG{o}{)} \PYG{o}{==} null\PYG{o}{)}
-	return View\PYG{o}{(}\PYG{l+s+s2}{\PYGZdq{}AuthorizationError\PYGZdq{}}\PYG{o}{)}\PYG{p}{;}
+		return View\PYG{o}{(}\PYG{l+s+s2}{\PYGZdq{}AuthorizationError\PYGZdq{}}\PYG{o}{)}\PYG{p}{;}
 	
 	\PYG{k}{if} \PYG{o}{(}!\PYG{o}{(}HttpContext.Session.GetString\PYG{o}{(}\PYG{l+s+s2}{\PYGZdq{}role\PYGZdq{}}\PYG{o}{)}.Equals\PYG{o}{(}\PYG{l+s+s2}{\PYGZdq{}Students\PYGZdq{}}\PYG{o}{)))}
-	return View\PYG{o}{(}\PYG{l+s+s2}{\PYGZdq{}NoRightsError\PYGZdq{}}\PYG{o}{)}\PYG{p}{;}
+		return View\PYG{o}{(}\PYG{l+s+s2}{\PYGZdq{}NoRightsError\PYGZdq{}}\PYG{o}{)}\PYG{p}{;}
 	
 	var \PYG{n+nv}{student} \PYG{o}{=} StudentGetter\PYG{o}{()}\PYG{p}{;}
 	

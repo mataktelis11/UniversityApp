@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{o}{[}ResponseCache\PYG{o}{(}\PYG{n+nv}{NoStore} \PYG{o}{=} true, \PYG{n+nv}{Location} \PYG{o}{=} ResponseCacheLocation.None\PYG{o}{)]}
+\end{Verbatim}

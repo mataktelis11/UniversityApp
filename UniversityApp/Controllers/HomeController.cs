@@ -42,9 +42,6 @@ namespace UniversityApp.Controllers
             return View();
         }
 
-
-
-
         [HttpPost]
         public ActionResult Login(User user)
         {
@@ -68,7 +65,7 @@ namespace UniversityApp.Controllers
             HttpContext.Session.Remove("username");
             HttpContext.Session.Remove("userid");
             HttpContext.Session.Remove("role");
-            return RedirectToAction("Login");
+            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

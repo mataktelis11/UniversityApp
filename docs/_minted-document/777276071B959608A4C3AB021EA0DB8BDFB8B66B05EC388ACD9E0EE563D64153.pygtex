@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+public ActionResult Logout\PYG{o}{()}
+\PYG{o}{\PYGZob{}}
+	HttpContext.Session.Clear\PYG{o}{()}\PYG{p}{;}
+	HttpContext.Session.Remove\PYG{o}{(}\PYG{l+s+s2}{\PYGZdq{}username\PYGZdq{}}\PYG{o}{)}\PYG{p}{;}
+	HttpContext.Session.Remove\PYG{o}{(}\PYG{l+s+s2}{\PYGZdq{}userid\PYGZdq{}}\PYG{o}{)}\PYG{p}{;}
+	HttpContext.Session.Remove\PYG{o}{(}\PYG{l+s+s2}{\PYGZdq{}role\PYGZdq{}}\PYG{o}{)}\PYG{p}{;}
+	return RedirectToAction\PYG{o}{(}\PYG{l+s+s2}{\PYGZdq{}Index\PYGZdq{}}\PYG{o}{)}\PYG{p}{;}
+\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

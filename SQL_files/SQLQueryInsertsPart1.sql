@@ -1,4 +1,8 @@
 
+-- please run 'Tables' first!
+-- adding 'Users' , 'Students', 'Secretaries' and 'Professors'
+
+
 insert into dbo.Users (userid, Username, Password, Role) values(1,'aboyda0','Jgx8bp1zRC', 'Secretaries');
 insert into dbo.Users (userid, Username, Password, Role) values(2,'ddukesbury1','vYrgAk', 'Secretaries');
 insert into dbo.Users (userid, Username, Password, Role) values(3,'ifreeman2','QFfq5FYoPQe', 'Secretaries');

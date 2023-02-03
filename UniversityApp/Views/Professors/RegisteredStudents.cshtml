@@ -221,7 +221,7 @@ else
 
     <!-- output a paging control that lets the user navigation to the previous page, next page, etc -->
     <nav>
-        @Html.PagedListPager(Model, page => Url.Action("UniversityStudents", new { page = page }), new PagedListRenderOptions()
+        @Html.PagedListPager(Model, page => Url.Action("RegisteredStudents", new { page = page, id=ViewData["courseid"], pageSize=ViewData["pageSize"], sortOrder=ViewData["CurrentSortOrder"], search=ViewData["CurrentFilter"], searchParam=ViewData["searchParam"]}), new PagedListRenderOptions()
     {
         ActiveLiElementClass = "active",
         PageClasses = new[]{ "page-link"},
