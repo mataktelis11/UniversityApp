@@ -534,16 +534,6 @@ namespace UniversityApp.Controllers
 
             await _context.SaveChangesAsync();
 
-            //// get the courses that this Student has registered
-            //var registeredCourses = from c in _context.CourseHasStudents
-            //                        where c.StudentId == student.StudentId
-            //                        select c.Course;
-            //// get the courses that this Student hasnt registered
-            //var availableCourses = _context.Courses.Where(course => !registeredCourses.Contains(course));
-
-            //ViewData["availableCourses"] = availableCourses.ToList();
-            //return View(student);
-
             return RedirectToAction("StudentDetails", new { id = id });
         }
 

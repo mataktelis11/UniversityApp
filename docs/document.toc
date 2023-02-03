@@ -8,10 +8,10 @@
 \contentsline {subsection}{\numberline {3.4}Students Controller}{9}{subsection.3.4}%
 \contentsline {subsubsection}{\numberline {3.4.1}Περιγραφή των μεθόδων}{9}{subsubsection.3.4.1}%
 \contentsline {subsubsection}{\numberline {3.4.2}Σενάριο Εκτέλεσης}{10}{subsubsection.3.4.2}%
-\contentsline {subsection}{\numberline {3.5}Professors Controller}{10}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.5}Professors Controller}{11}{subsection.3.5}%
 \contentsline {subsubsection}{\numberline {3.5.1}Σενάριο Εκτέλεσης}{15}{subsubsection.3.5.1}%
-\contentsline {subsection}{\numberline {3.6}Secretaries Controller}{15}{subsection.3.6}%
-\contentsline {subsubsection}{\numberline {3.6.1}Περιγραφή των μεθόδων}{15}{subsubsection.3.6.1}%
-\contentsline {subsubsection}{\numberline {3.6.2}Σενάριο Εκτέλεσης}{17}{subsubsection.3.6.2}%
-\contentsline {section}{\numberline {4}Οδηγίες εκτέλεσης}{18}{section.4}%
-\contentsline {section}{\numberline {5}Πηγές}{19}{section.5}%
+\contentsline {subsection}{\numberline {3.6}Secretaries Controller}{16}{subsection.3.6}%
+\contentsline {subsubsection}{\numberline {3.6.1}Περιγραφή των μεθόδων}{16}{subsubsection.3.6.1}%
+\contentsline {subsubsection}{\numberline {3.6.2}Σενάριο Εκτέλεσης}{18}{subsubsection.3.6.2}%
+\contentsline {section}{\numberline {4}Οδηγίες εκτέλεσης}{19}{section.4}%
+\contentsline {section}{\numberline {5}Πηγές}{20}{section.5}%

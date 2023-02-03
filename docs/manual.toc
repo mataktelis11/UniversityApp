@@ -3,8 +3,11 @@
 \contentsline {section}{\numberline {2}Η ιστοσελίδα}{2}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Nav Bar}{2}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}Home page}{3}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}Οδηγίες Φοιτητών}{5}{subsection.2.3}%
-\contentsline {subsection}{\numberline {2.4}Οδηγίες Καθηγητών}{8}{subsection.2.4}%
-\contentsline {subsection}{\numberline {2.5}Παράδειγμα ανάρτησης βαθμών μέσω της ιστοσελίδας}{9}{subsection.2.5}%
-\contentsline {subsection}{\numberline {2.6}Παράδειγμα ανάρτησης βαθμών μέσω της ιστοσελίδας}{11}{subsection.2.6}%
-\contentsline {subsection}{\numberline {2.7}Οδηγίες Γραμματείας}{14}{subsection.2.7}%
+\contentsline {subsection}{\numberline {2.3}Οδηγίες Φοιτητών}{6}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Οδηγίες Καθηγητών}{9}{subsection.2.4}%
+\contentsline {subsubsection}{\numberline {2.4.1}Παράδειγμα ανάρτησης βαθμών μέσω της ιστοσελίδας}{10}{subsubsection.2.4.1}%
+\contentsline {subsubsection}{\numberline {2.4.2}Παράδειγμα ανάρτησης βαθμών μέσω της ιστοσελίδας}{12}{subsubsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.5}Οδηγίες Γραμματείας}{15}{subsection.2.5}%
+\contentsline {subsubsection}{\numberline {2.5.1}Σελίδα λίστας Φοιτητών}{16}{subsubsection.2.5.1}%
+\contentsline {subsubsection}{\numberline {2.5.2}Σελίδα λίστας Καθηγητών}{18}{subsubsection.2.5.2}%
+\contentsline {subsubsection}{\numberline {2.5.3}Σελίδα λίστας Μαθημάτων}{20}{subsubsection.2.5.3}%
