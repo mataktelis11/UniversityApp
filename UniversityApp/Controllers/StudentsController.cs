@@ -21,6 +21,47 @@ namespace UniversityApp.Controllers
             _context = context;
         }
 
+
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+        public IActionResult Index()
+        {
+            if (HttpContext.Session.GetString("userid") == null)
+                return View("AuthorizationError");
+
+            if (!(HttpContext.Session.GetString("role").Equals("Students")))
+                return View("NoRightsError");
+
+            return RedirectToAction("Account");
+        }
+
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+        public IActionResult Account()
+        {
+
+            if (HttpContext.Session.GetString("userid") == null)
+                return View("AuthorizationError");
+
+            if (!(HttpContext.Session.GetString("role").Equals("Students")))
+                return View("NoRightsError");
+
+            var student = StudentGetter();
+            student = _context.Students.Include(x => x.User).Where(a => a.Userid == student.Userid).FirstOrDefault();
+
+            // number of registered lessons
+            int reglessons = _context.CourseHasStudents.Where(s => s.StudentId == student.StudentId).Count();
+
+            // number of passed lessons
+            var passedlessons = _context.CourseHasStudents.Where(s => s.StudentId == student.StudentId && s.Grade >= 5);
+
+            int ects = passedlessons.Count() * 5;
+
+            ViewData["reglessons"] = reglessons;
+            ViewData["ects"] = ects;
+
+
+            return View(student);
+        }
+
         // utility function
         public Student StudentGetter()
         {
@@ -36,38 +77,6 @@ namespace UniversityApp.Controllers
             return student;
         }
 
-
-        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-        public IActionResult Semesters(int? semester)
-        {
-            if(HttpContext.Session.GetString("userid")==null)
-                return View("AuthorizationError");
-
-            if (!(HttpContext.Session.GetString("role").Equals("Students")))
-                return View("NoRightsError");
-
-            var student = StudentGetter();
-
-            // semester must be >=1 and <=8
-            if (semester == null || semester < 1)
-            {
-                semester = 1;
-            }
-            else if(semester > 8)
-            {
-                semester = 8;
-            }
-
-            ViewData["CurrentSemester"] = semester;
-
-            var courses = student.CourseHasStudents
-                .Where(c => c.Course.Semester == semester)
-                .OrderBy(c => c.Course.Title);
-           
-            return View(courses);
-        }
-
-
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public IActionResult Grades(string? sortOrder)
         {
@@ -80,7 +89,6 @@ namespace UniversityApp.Controllers
             var student = StudentGetter();
             
             var courses = student.CourseHasStudents.OrderBy(s => s.Course.Semester);
-
 
             ViewData["CurrentSortOrder"] = String.IsNullOrEmpty(sortOrder) ? "title" : sortOrder;
             ViewData["TitleSortOrder"] = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
@@ -136,6 +144,36 @@ namespace UniversityApp.Controllers
         }
 
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+        public IActionResult Semesters(int? semester)
+        {
+            if (HttpContext.Session.GetString("userid") == null)
+                return View("AuthorizationError");
+
+            if (!(HttpContext.Session.GetString("role").Equals("Students")))
+                return View("NoRightsError");
+
+            var student = StudentGetter();
+
+            // semester must be >=1 and <=8
+            if (semester == null || semester < 1)
+            {
+                semester = 1;
+            }
+            else if (semester > 8)
+            {
+                semester = 8;
+            }
+
+            ViewData["CurrentSemester"] = semester;
+
+            var courses = student.CourseHasStudents
+                .Where(c => c.Course.Semester == semester)
+                .OrderBy(c => c.Course.Title);
+
+            return View(courses);
+        }
+
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public IActionResult Total()
         {
             if (HttpContext.Session.GetString("userid") == null)
@@ -175,45 +213,7 @@ namespace UniversityApp.Controllers
             return View();
         }
 
-        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-        public IActionResult Index()
-        {
-            if (HttpContext.Session.GetString("userid") == null)
-                return View("AuthorizationError");
 
-            if (!(HttpContext.Session.GetString("role").Equals("Students")))
-                return View("NoRightsError");
-
-            return RedirectToAction("Account");
-        }
-
-        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-        public IActionResult Account()
-        {
-
-            if (HttpContext.Session.GetString("userid") == null)
-                return View("AuthorizationError");
-
-            if(!(HttpContext.Session.GetString("role").Equals("Students")))
-                return View("NoRightsError");
-
-            var student = StudentGetter();
-            student = _context.Students.Include(x => x.User).Where(a => a.Userid == student.Userid).FirstOrDefault();
-
-            // number of registered lessons
-            int reglessons = _context.CourseHasStudents.Where(s => s.StudentId == student.StudentId).Count();
-
-            // number of passed lessons
-            var passedlessons = _context.CourseHasStudents.Where(s => s.StudentId == student.StudentId && s.Grade >= 5);
-
-            int ects = passedlessons.Count() * 5;
-
-            ViewData["reglessons"] = reglessons;
-            ViewData["ects"] = ects;
-
-
-            return View(student);
-        }
 
         private bool StudentExists(int id)
         {

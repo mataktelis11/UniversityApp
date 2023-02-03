@@ -79,6 +79,7 @@ namespace UniversityApp.Controllers
             ViewData["SemesterSortParam"] = sortOrder == "semester" ? "semester_desc" : "semester";
             ViewData["StudentsSortParam"] = sortOrder == "students" ? "students_desc" : "students";
 
+            // Sorting
             switch (sortOrder)
             {
                 case "title_desc":
@@ -106,8 +107,6 @@ namespace UniversityApp.Controllers
                     break;
             }
 
-
-
             return View(lessons);
         }
 
@@ -125,6 +124,7 @@ namespace UniversityApp.Controllers
             var userid = HttpContext.Session.GetString("userid");
             var professor = _context.Professors.Where(p => p.Userid.ToString().Equals(userid)).FirstOrDefault();
 
+            // check if the Course is actually assigned to the current Professor
             var course = await _context.Courses.FirstOrDefaultAsync(c => c.CourseId == id && c.ProfessorId == professor.ProfessorId);
 
             if (course == null)
@@ -142,11 +142,6 @@ namespace UniversityApp.Controllers
 
             ViewData["CurrentFilter"] = search;
             ViewData["searchParam"] = String.IsNullOrEmpty(searchParam) ? "name" : searchParam;
-
-            //var registered_students = await _context.Courses
-            //    .Include(cs => cs.CourseHasStudents)
-            //    .ThenInclude(cs => cs.Student)
-            //    .FirstOrDefaultAsync(c => c.CourseId == id);
 
             var registered_students =  _context.CourseHasStudents
                 .Where(chs => chs.CourseId == id)
@@ -172,7 +167,7 @@ namespace UniversityApp.Controllers
 
             ViewData["pageSize"] = pageSize ?? 15;
 
-            // Search
+            // Search with parameter
             if (!String.IsNullOrEmpty(search))
             {
                 switch (searchParam)
@@ -232,7 +227,6 @@ namespace UniversityApp.Controllers
                     break;
             }
 
-
             // Pagination
             if (page != null && page < 1)
             {
@@ -240,7 +234,6 @@ namespace UniversityApp.Controllers
             }
             ViewData["Page"] = page;
             
-
             var registered_studentsData = registered_students.ToPagedList(page ?? 1, pageSize ?? 15);
 
             return View(registered_studentsData);
@@ -263,6 +256,7 @@ namespace UniversityApp.Controllers
                 return RedirectToAction("RegisteredStudents", new { id = CourseId });
             }
 
+            // copy file to folder 'Files'
             string filename = usercsv.FileName;
             filename = Path.GetFileName(filename);
 
@@ -334,6 +328,8 @@ namespace UniversityApp.Controllers
             return RedirectToAction("RegisteredStudents", new { id = CourseId });
         }
 
+        // GET: Professors/EditGrades/6
+        // Load a form to edit the Student's grades for specified course
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public async Task<IActionResult> EditGrades(int id)
         {
@@ -343,10 +339,15 @@ namespace UniversityApp.Controllers
             if (!(HttpContext.Session.GetString("role").Equals("Professors")))
                 return View("NoRightsError");
 
-            // add NoRightsError
-
+            // get the Professor model Object
             var userid = HttpContext.Session.GetString("userid");
             var professor = await _context.Professors.Where(p => p.Userid.ToString().Equals(userid)).FirstOrDefaultAsync();
+
+            // check if the Course is actually assigned to the current Professor
+            var course = await _context.Courses.FirstOrDefaultAsync(c => c.CourseId == id && c.ProfessorId == professor.ProfessorId);
+
+            if (course == null)
+                return View("NoRightsError");
 
             ViewData["courseId"] = id;
             ViewData["courseTitle"] = _context.Courses.Where(c => c.CourseId == id).FirstOrDefault().Title;

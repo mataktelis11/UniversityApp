@@ -4,13 +4,14 @@
 \contentsline {section}{\numberline {3}Επίπεδο View και Controller}{4}{section.3}%
 \contentsline {subsection}{\numberline {3.1}Session Management}{4}{subsection.3.1}%
 \contentsline {subsection}{\numberline {3.2}Layout Razor View}{7}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Home Controller}{7}{subsection.3.3}%
-\contentsline {subsection}{\numberline {3.4}Students Controller}{8}{subsection.3.4}%
-\contentsline {subsubsection}{\numberline {3.4.1}Περιγραφή των μεθόδων}{8}{subsubsection.3.4.1}%
-\contentsline {subsubsection}{\numberline {3.4.2}Σενάριο Εκτέλεσης}{9}{subsubsection.3.4.2}%
-\contentsline {subsection}{\numberline {3.5}Professors Controller}{9}{subsection.3.5}%
-\contentsline {subsubsection}{\numberline {3.5.1}Σενάριο Εκτέλεσης}{10}{subsubsection.3.5.1}%
-\contentsline {subsection}{\numberline {3.6}Secretaries Controller}{10}{subsection.3.6}%
-\contentsline {subsubsection}{\numberline {3.6.1}Περιγραφή των μεθόδων}{10}{subsubsection.3.6.1}%
-\contentsline {subsubsection}{\numberline {3.6.2}Σενάριο Εκτέλεσης}{12}{subsubsection.3.6.2}%
-\contentsline {section}{\numberline {4}Οδηγίες εκτέλεσης}{13}{section.4}%
+\contentsline {subsection}{\numberline {3.3}Home Controller}{8}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Students Controller}{9}{subsection.3.4}%
+\contentsline {subsubsection}{\numberline {3.4.1}Περιγραφή των μεθόδων}{9}{subsubsection.3.4.1}%
+\contentsline {subsubsection}{\numberline {3.4.2}Σενάριο Εκτέλεσης}{10}{subsubsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.5}Professors Controller}{10}{subsection.3.5}%
+\contentsline {subsubsection}{\numberline {3.5.1}Σενάριο Εκτέλεσης}{15}{subsubsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.6}Secretaries Controller}{15}{subsection.3.6}%
+\contentsline {subsubsection}{\numberline {3.6.1}Περιγραφή των μεθόδων}{15}{subsubsection.3.6.1}%
+\contentsline {subsubsection}{\numberline {3.6.2}Σενάριο Εκτέλεσης}{17}{subsubsection.3.6.2}%
+\contentsline {section}{\numberline {4}Οδηγίες εκτέλεσης}{18}{section.4}%
+\contentsline {section}{\numberline {5}Πηγές}{19}{section.5}%

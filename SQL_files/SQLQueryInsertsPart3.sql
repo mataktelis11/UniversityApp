@@ -1,5 +1,4 @@
 
--- please run Part3 first!
 -- adding 'Course_has_students'
 
 
