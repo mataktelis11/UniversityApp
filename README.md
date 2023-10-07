@@ -1,16 +1,37 @@
 # University Web Application
 
-This is web application made for a university project. The users are supposed to be 'Students', 'Professors' and 'Secreteries'.
-
-<img align="middle" src="docs/homes3.PNG" width="1200px" >
+This is web application made for a university project. The users are supposed to be 'Students', 'Professors' and 'Secretaries'.
 
 The Professors can register the grades for each student and for each course taught, while each Student can access his account to see his grades. The Secretaries can add more students and professors to the database, as well as assign courses to professors and students.
 
+## Screenshots
 
+**Home page:**
+
+<img align="middle" src="docs/homes3.PNG" width="1200px" >
+
+**Login page:**
+
+<img align="middle" src="docs/logs.PNG" width="1000px" >
+
+**Student Pages:**
+
+<img align="middle" src="docs/studentwel.PNG" width="1200px" >
+
+<img align="middle" src="docs/allgrades.PNG" width="1200px" >
+
+**Professor Pages:**
+
+<img align="middle" src="docs/mylessons.PNG" width="1200px" >
+
+
+<img align="middle" src="docs/mymy.PNG" width="1200px" >
+
+<img align="middle" src="docs/edits234.PNG" width="800px" >
 
 ## Details
 
-- The app was developped with Visual Studio 2022 using ```Asp.NET Core framework (Model View Controller) version 6.0```. The language is ```C#```.
+- The app was developed with Visual Studio 2022 using ```Asp.NET Core framework (Model View Controller) version 6.0```. The language is ```C#```.
 
 - For the database we used ```Microsoft Sql Server 2022``` and the DBMS Microsoft SQL Server Management Studio 18/19.
 
@@ -74,7 +95,7 @@ public IActionResult Grades(string? sortOrder)
 
 2. Open ```Microsoft SQL Server Management Studio 18/19``` and create a new database
 
-3. Open the sql scrits located inside the folder ```SQL_scripts``` in MSQL Management Studio by choosing ```File > Open```
+3. Open the sql scripts located inside the folder ```SQL_scripts``` in MSQL Management Studio by choosing ```File > Open```
 
 4. Execute the sql scripts in the following order:
     - SQLQueryTables.sql
