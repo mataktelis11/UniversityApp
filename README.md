@@ -29,6 +29,22 @@ The Professors can register the grades for each student and for each course taug
 
 <img align="middle" src="docs/edits234.PNG" width="800px" >
 
+
+**Secretaries Pages:**
+
+<p float="middle">
+  <img src="docs/addp.PNG" width="390px" />
+  <img src="docs/creates.PNG" width="390px" /> 
+</p>
+
+<img align="middle" src="docs/datas.PNG" width="1200px" >
+
+<img align="middle" src="docs/detailss.PNG" width="1200px" >
+
+<img align="middle" src="docs/mm.PNG" width="1200px" >
+
+<img align="middle" src="docs/nohelp.PNG" width="1200px" >
+
 ## Details
 
 - The app was developed with Visual Studio 2022 using ```Asp.NET Core framework (Model View Controller) version 6.0```. The language is ```C#```.
